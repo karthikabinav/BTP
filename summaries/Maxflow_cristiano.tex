@@ -70,10 +70,22 @@ Maximum Flow in Undirected Graphs \\ Cristiano, Kelner , et al}
 	\textit{Parallel}:  Let us start with an electrical flow. We will show that any change to the flows will only increase the energy.
 	Let $i_1$ and $i_2$ be the electrical flow through resistors $r_1$ and $r_2$. From Kirchoff's law we have $i_1 \ast r_1 = i_2 \ast r_2 $.
 	The energy now is $\eps = r_1  \ast i_1^2 + r_2 \ast i_2^2$. Let us now redistribute the flow as $i_1 + \delta$ and $i_2 - \delta$. 
-	The value of the flow remains the same. The energy now becomes $\eps' = \eps + \delta^2(r_1+r_2) \geq \eps$. Hence the lemma.
+	The value of the flow remains the same. The energy now becomes $\eps' = \eps + \delta^2(r_1+r_2) \geq \eps$. Hence the lemma. \\
+	
+	\textbf{Incidence Matrix}: The incidence matrix gives the details of the directed edges in a graph. The incidence matrix is denoted
+	by $B$ a n $\ast$ m matrix. The (i,j) entry is 1, if the edge j leaves vertex i. It is defined as -1, if the edge j is incident 
+	vertex i. \\
+	
+	Hence, the max flow problem can now be stated as calculating a vector f, such that.
+	$$Bf = \chi_{s,t}$$
+	Here, $\chi_{s,t}$ is a vector which is 1 at the $s^{th}$ coordinate, -1 at the $t^{th}$ coordinate and 0 elsewhere. \\
+	
+	\textbf{Resistance matrix}:
+	   
+	    
 	
 	
-    
+      
  
   
   
