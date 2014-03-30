@@ -76,8 +76,41 @@ Maximum Flow in Undirected Graphs \\ Cristiano, Kelner , et al}
 	by $B$ a n $\ast$ m matrix. The (i,j) entry is 1, if the edge j leaves vertex i. It is defined as -1, if the edge j is incident 
 	vertex i. \\
 	
-	Hence, the max flow problem can now be stated as $$Bf = \chi_{s,t}$$
+	Hence, the max flow problem can now be stated as calculating a vector f, such that.
+	$$Bf = \chi_{s,t}$$
+	Here, $\chi_{s,t}$ is a vector which is 1 at the $s^{th}$ coordinate, -1 at the $t^{th}$ coordinate and 0 elsewhere. \\
 	
+	\textbf{Resistance matrix}:
+	   This is a diagonal matrix i.e. the off-diagonal entries are all 0. The (i,i) entry of the matrix contains the value $r_i$, that is
+	   the resistance of the $i_th$ edge. \\
+	   
+	   This implies the energy can now be re-written as $R^TfR$ = $||R^{\frac{1}{2}}f||^2$ \\
+	   
+	\textbf{Effective Resistance}: For an electrical flow $f$ of value $1$ in a resistive electrical network, let $\phi$ be the vertex potentials.
+	The effective resistance of the network with respect to the resistances $r$ is given by : 
+	$$R_{eff}(r) = \phi(s) - \phi(t)$$
+	
+	\textbf{Graph Laplacian}: The weighted Laplacian of a graph $G$ with respect to edge resistances $r$ is defined as:
+	$$BR^{-1}B^T$$
+	
+	\textbf{Lemma}: $R_{eff}(r) = \eps_r(f)$ \\
+	    
+	\textbf{Proof}: $R_{eff}(r) = \phi(s) - \phi(t) = \phi^T \chi_{s,t}$ \\
+	
+	Since $f$ is an electrical flow, f(u,v) = $\frac{\phi_u - \phi_v}{r_{u,v}}$. Hence, $f = R^{-1}B^T \phi$.\\
+	
+	$\eps_r(f) = f^TRf = (R^{-1}B^T\phi)^T R (R^{-1} B^T \phi) = \phi^T L \phi$ \\
+	
+	$L \phi = \chi_{s,t}$ \\
+	
+	$\eps_r(f) = (L^{-1}\chi_{s,t})^T L (L^{-1} \chi_{s,t}) = \chi_{s,t}^T L^{-1} \chi_{s,t}$ \\
+	
+	$R_{eff}(r) = (L^{-1}\chi_{s,t})^T \chi_{s,t}$
+	
+      \section{$\delta$-approximate flow}
+	
+	   
+	    
 	    
 	
 	
