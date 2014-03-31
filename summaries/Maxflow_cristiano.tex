@@ -93,6 +93,8 @@ Maximum Flow in Undirected Graphs \\ Cristiano, Kelner , et al}
 	\textbf{Graph Laplacian}: The weighted Laplacian of a graph $G$ with respect to edge resistances $r$ is defined as:
 	$$BR^{-1}B^T$$
 	
+	\textbf{Congestion of an edge}: Congestion of an edge $e$ with respect to flow $f$ is defined as $cong_f(e)$ = $\frac{|f_e|}{u_e}$ \\
+	
 	\textbf{Lemma}: $R_{eff}(r) = \eps_r(f)$ \\
 	    
 	\textbf{Proof}: $R_{eff}(r) = \phi(s) - \phi(t) = \phi^T \chi_{s,t}$ \\
@@ -127,20 +129,82 @@ Maximum Flow in Undirected Graphs \\ Cristiano, Kelner , et al}
 	  $\widetilde{\phi}(s)-\widetilde{\phi}(t) \geq (1-\frac{\delta}{12nmR})\ast F \ast R_{eff}(r)$
 	\end{itemize}
 
+	The algorithms that follow will use the above algorithm as a sub-routine to obtain a $\delta$-approximate electrical flow, for appropriate
+	values of $\delta$.
 	
-	
-      
-	
-	   
+	\section{A $\widetilde{O}(m^{\frac{3}{2}}\eps^{\frac{-5}{2}})$ time flow algorithm}
+	  In this section, first we will have a look at a simpler version of the algorithm. After taking key insights from this algorithm,
+	  we can make appropriate observations and modifications to improve the running time. \\
+	  
+	  \subsection{$(\eps,\rho)$- oracle}
+	    This is the second sub-routine that will be used by the algorithm. The construction of such an algorithm uses the $\delta$-approximate
+	    electrical flow algorithm. \\
 	    
 	    
-	
-	
-      
- 
-  
-  
-   
+	    \textbf{Input} \\
+	    Real number $F>0$ \\
+	    $w$ - vector of edge weights, where $w_e \geq 1 ~~ \forall e \in E$ \\
+	    
+	    \textbf{Output}\\
+	    A s-t flow $f$ satisfying the following criteria \\
+	    
+	    \begin{itemize}
+	     \item 
+	      If $F \leq F^{\ast}$, output a flow f s.t.
+		\begin{itemize}
+		 \item 
+		    $|f| = F$
+		 \item
+		    $\frac{\sum\limits_{e} w_e \ast cong_f(e)}{\sum\limits_{e} w_e} \leq (1+\eps)$
+		 \item
+		    $\max\limits_{e} cong_f(e) \leq \rho$
+		\end{itemize}
+
+	     \item
+		If $F > F^{\ast}$, output a flow $f$ sastisfying the above or ``fail''.
+	  \end{itemize}
+
+	  \subsection{Main Algorithm}
+	      The main algorithm calls the $(\eps,\rho)$ subroutine many times with different weights and then takes an average of all the values
+	      returned by the oracle as the required value of flow. Note, the flow returned by this algorithm should maintain the congestion criteria
+	      for each of the edges. On the other hand, the oracle may return a flow whose congestion at each edge is as bad as $\rho$. But, since
+	      the oracle gives a upper bound on the average congestion, the algorithm uses that critically to, in some sense ``correct'' the value of 
+	      flows. \\
+	      
+	      \textbf{Input} \\
+	      A graph $G$ \\
+	      a vector u of edge capacities \\
+	      A target flow value F \\
+	      ($\eps, \rho)$ - oracle O \\
+	      
+	      \textbf{Output}\\
+	      Either a flor $f$ or ``fail'' indicating $F > F^{\ast}$ \\
+	      
+	      Note, this algorithm requires a target flow value $F$ as an input. Hence, to get a value of maximum flow, we can perform a recursive
+	      doubling and binary search on the value of $F$ to get to the value $F^{\ast}$. \\
+	      
+	      The algorithm goes as follows: \\
+	      
+	      \textbf{Note}: The superscript on the weight vector impies the weights in the $i^{th}$ iteration of the algorithm.
+	      \begin{itemize}
+	       \item 
+		Initialize the weights $w^0$ as $w_e =1$ for all the edges e. Initialize N as $\frac{2\rho \ln(m)}{\eps^2}$
+	      \item
+		for i from 1 to N:
+		  \begin{itemize}
+		   \item 
+		      Query the oracle O with $w^{i-1}$ and target flow as $F$
+		   \item
+		      if O returns a ``fail'', return ``fail''
+		   \item
+		      else: \\
+		      	Let $f^i$ be the value of the returned flow. Update weights as
+			 $$w^{i} = w^{i-1}\ast\left(1+\frac{\eps\ast cong_{f^i}(e)}{\rho}\right)$$
+		  \end{itemize}
+
+		\item
+		  Return $f$ as $\frac{(1-\eps)^2}{(1+\eps)N}\left(\sum\limits_{i} f^i\right)$
+	      \end{itemize}
 
 
 \end{document}
