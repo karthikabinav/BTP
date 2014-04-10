@@ -17,7 +17,7 @@ MakeIndex=
 QuickBuild=
 
 [document-settings,item:Maxflow_cristiano.tex]
-Bookmarks=1,72,208,210,128
+Bookmarks=1,72,128,249,251
 Encoding=UTF-8
 Highlighting=LaTeX
 Indentation Mode=normal
@@ -25,10 +25,10 @@ Mode=LaTeX
 
 [item:Maxflow_cristiano.tex]
 archive=true
-column=0
+column=48
 encoding=UTF-8
 highlight=LaTeX
-line=208
+line=247
 mode=LaTeX
 open=true
 order=0
@@ -44,10 +44,10 @@ open=false
 order=-1
 
 [view-settings,view=0,item:Maxflow_cristiano.tex]
-CursorColumn=0
-CursorLine=208
+CursorColumn=48
+CursorLine=247
 JumpList=24,0,1,0,18,32
-ViMarks=.,208,0,<,210,0,>,208,0,[,208,0,],208,0,^,208,0,a,1,0,b,210,0,c,208,0,d,72,0,e,128,0
+ViMarks=.,247,47,<,251,0,>,249,0,[,247,18,],247,47,^,249,0,a,1,0,b,251,0,c,249,0,d,72,0,e,128,0
 ViRegisterContents=\t   Weighted Laplacian L is defined as a n $\\\\ast$ n matrix\n,\t  \s
 ViRegisterFlags=1,0
 ViRegisterNames=-,^

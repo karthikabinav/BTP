@@ -178,7 +178,7 @@ Maximum Flow in Undirected Graphs \\ Cristiano, Kelner , et al}
 	      ($\eps, \rho)$ - oracle O \\
 	      
 	      \textbf{Output}\\
-	      Either a flor $f$ or ``fail'' indicating $F > F^{\ast}$ \\
+	      Either a flow $f$ or ``fail'' indicating $F > F^{\ast}$ \\
 	      
 	      Note, this algorithm requires a target flow value $F$ as an input. Hence, to get a value of maximum flow, we can perform a recursive
 	      doubling and binary search on the value of $F$ to get to the value $F^{\ast}$. \\
@@ -205,6 +205,47 @@ Maximum Flow in Undirected Graphs \\ Cristiano, Kelner , et al}
 		\item
 		  Return $f$ as $\frac{(1-\eps)^2}{(1+\eps)N}\left(\sum\limits_{i} f^i\right)$
 	      \end{itemize}
+	
+	  \section{Analysis of the simple algorithm}
+	    \subsection{Construction of an ($\eps$, $3\sqrt{\frac{m}{\eps}}$)-oracle}
+		Let us now see, how to construct an ($\eps$,$\rho$)-oracle with parameter $\rho = 3\sqrt{\frac{m}{\eps}}$. \\
+		
+		\textbf{Input} \\
+	      A graph $G$ \\
+	      A vector u of edge capacities \\
+	      A target flow value F \\
+	      Edge weights vector $w$
+	      
+	      \textbf{Output}\\
+	      Either a flow $f$ or ``fail'' indicating $F > F^{\ast}$ \\
+	      
+	      \begin{itemize}
+	       \item 
+		  Set $r_e$ = $\frac{1}{u_e^2}\left(w_e + \frac{\eps}{3m}|w|_1\right)$, for every edge $e \in E$
+		\item	
+		  Now call the $\delta$-approximate electrical flow construction with the above resistances, given graph, the target flow value F
+		  and the value of $\delta$ as $\frac{\eps}{3}$.
+		\item
+		  Let $\widetilde{f}$ be the returned flow. If $\eps_r(\widetilde{f}) > (1+\eps)|w|_1$, then return fail.
+		  Else, return $\widetilde{f}$.
+	      \end{itemize}
 
+	\subsection{Analysis of the construction}
+	  We have to now show that, the above construction indeed satsifies the properties of an ($\eps$, $\rho$)-oracle. \\
+	  
+	  1) It is immediately clear that $|\widetilde{f}| = F$. This is because the approximate electrical flow construction returns a flow with
+	  a target flow value of F. \\
+	  
+	  2) We need to show that, whenever $F \leq F^{\ast}$ the construction doesn't return a fail. To show this consider the following: \\
+	  
+	    Let $f^{\ast}$ be a vector corresponding to the exact maximum flow in the graph. Clearly, $cong_{f^{\ast}}(e) \leq 1$ for all the edges $e \in E$.
+	    $$\eps_r(f^{\ast}) = \sum\limits_e \left(w_e + \frac{\eps}{3m}|w|_1\right)\left( \frac{f^{\ast}}{u_e} \right)^2$$
+	    $$= \sum\limits_e \left(w_e + \frac{\eps}{3m}|w|_1\right)\left( cong_{f^{\ast}}(e) \right)^2$$
+	    $$\leq \sum\limits_e \left(w_e + \frac{\eps}{3m}|w|_1\right)$$
+	    $$\leq \sum\limits_e w_e + \frac{\eps}{3}|w|_1$$
+	    $$\leq |w|_1 \left(1 + \frac{\eps}{3} \right)$$
+	  
+	  Let $f$ be the electrical flow of value $F$. 
+	      
 
 \end{document}
