@@ -31,7 +31,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\def\thesistitle{State-of-the-art algorithms for computing approximate maximum flows in undirected graphs}
+\def\thesistitle{The Maximum-Flow problem in undirected graphs}
 \def\thesisauthor{Karthik Abinav S}
 
 
@@ -73,7 +73,7 @@ diploma.
 \begin{singlespace}
 \noindent {\bf Dr.~N.~S.~Narayanaswamy } \\
 \noindent Research Guide \\ 
-\noindent Assistant Professor \\
+\noindent Associate Professor \\
 \noindent Dept. of Computer Science and Engineering\\
 \noindent IIT-Madras, 600 036 \\
 \end{singlespace}
@@ -111,19 +111,22 @@ extremely large graphs, as in the case of social networks, this algorithm is sti
 
 In 2008, the breakthrough result by Spielman and Teng gave an algorithm to solve the Symetric Diagonally Dominant(SDD) system of equations in 
 near-linear time. This work was immediately extended by Koutis-Miller-Peng which gave an efficient algorithm to produce an incremental graph sparsifier.
-Developement of these techniquies led to the developement of an almost linear time algorithm to the maximum flow problem by Cristiano-Kelner-Madry-Spielman.
+Developement of these techniquies led to the developement of an almost linear time algorithm to the maximum flow problem by Cristiano-Kelner-Madry-Spielman-Teng.
 This involved looking at the graph as a resistive network, approximating the electrical flow and producing an approximate s-t flow from this approximate
 electrical flow. This algorithm broke the running time barrier of Golderg-Rao and gave the first almost-linear time algorithm. \\
 
 In this thesis, we give a survey of the above algorithms for the maximum flow problem. We first start off by giving a brief description of the 
-classcial algorithms. We then present the required tools from spectral graph theory and linear algebra that is required to understand the almost linear 
-time algorithm. Finally, we present the Cristiano-Kelner-Madry-Spielman algorithm in detail. We will also present some of the key theorems from the 
-Koutis-Miller-Peng SDD solver. Finally, we give some insights obtained by us and a recursive implementation of a push-relabel algorithm. \\
-
-
-
+classical algorithms. We then conclude this by giving a completely recursive specification for the push-relabel algorithm.
+We then present the required tools from spectral graph theory and linear algebra that is required to understand the almost linear 
+time algorithm. Finally, we present the Cristiano-Kelner-Madry-Spielman-Teng algorithm in detail. We will also present some of the key theorems from the 
+Koutis-Miller-Peng SDD solver. Finally, we give some arguments to justify the requirement of the weight updates and also show some steps that can possibly
+lead to making the algorithm parallel.\\
 
 \pagebreak
+% \listoftables
+% \addcontentsline{toc}{chapter}{LIST OF TABLES}
+% \listoffigures
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Table of contents etc.
@@ -132,10 +135,10 @@ Koutis-Miller-Peng SDD solver. Finally, we give some insights obtained by us and
 \tableofcontents
 \thispagestyle{empty}
 
-\listoftables
-\addcontentsline{toc}{chapter}{LIST OF TABLES}
-\listoffigures
-\addcontentsline{toc}{chapter}{LIST OF FIGURES}
+% \listoftables
+% \addcontentsline{toc}{chapter}{LIST OF TABLES}
+ \listoffigures
+ \addcontentsline{toc}{chapter}{LIST OF FIGURES}
 \end{singlespace}
 
 
@@ -145,9 +148,11 @@ Koutis-Miller-Peng SDD solver. Finally, we give some insights obtained by us and
  
 \noindent 
 \begin{tabbing}
-xxxxxxxxxxx \= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \kill
+ xxxxxxxxxxx \= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \kill
 \textbf{IITM}   \> Indian Institute of Technology, Madras \\
-\textbf{RTFM} \> Read the Fine Manual \\
+\textbf{BFS} \> Breadth First Search \\
+\textbf{DFS} \> Depth First Search \\
+\textbf{SDD} \> Symetric Diagonally Dominant \\
 \end{tabbing}
 
 \pagebreak
@@ -161,9 +166,15 @@ xxxxxxxxxxx \= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \kill
  \begin{singlespace}
  \begin{tabbing}
  xxxxxxxxxxx \= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \kill
- \textbf{$r$}  \> Radius, $m$ \\
- \textbf{$\alpha$}  \> Angle of thesis in degrees \\
- \textbf{$\beta$}   \> Flight path in degrees \\
+ \textbf{$m$}  \> The number of edges in a graph G \\
+ 
+ \textbf{$n$} \> The number of vertices in a graph G \\
+ 
+ \textbf{$u$}  \> A $m \ast 1$ matrix containing the capacities of the edges \\
+ 
+ \textbf{$U$}  \> This defines the ratio between the highest and lowest capacity in the graph, i.e.\\
+		  \hspace{25mm}$\frac{\displaystyle\max_e u_e}{\displaystyle\min_e u_e}$ \\
+ 
  \end{tabbing}
  \end{singlespace}
  
@@ -180,179 +191,88 @@ xxxxxxxxxxx \= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \kill
 
  \chapter{INTRODUCTION}
  \label{chap:intro}
+    Maximum-Flow problem is an age old optmization problem in mathematics and computer science. Hundreds of researchers have investigated this problem
+    and have given some interesting results. This problem has far-reaching applications in almost every field of engineering and sciences. Hence, this 
+    problem is of great importance, not just theoretically, but also in real-world applications. Hence, getting better and more efficient algorithms
+    for this problem and its variants has always been the pursuit. Inspite, of having had so much research into this problem, for many years we were far from getting an algorithm
+    that runs in time that is good for practical purposes. This gives an indication of the hardness of this problem.
+    
+    \section{Basics}
+      \subsubsection{Graph}
+      A \textit{graph} G($V$, $E$, $\rho$) is defined as a mathematical structure on the set of vertices $V$ and the set of edges $E$ and an adjacency
+      function $\rho : V \times V \rightarrow E$, such that $\rho(a,b) = e$ for $a,b \in V$ and $e \in E$ tells that there exists an edge $e$ between 
+      the vertices $a$ and $b$.
+      
+      \subsubsection{Undirected Graph}
+	An \textit{undirected graph} is a graph where the function $\rho$ is symmetric, i.e. $\rho(a,b) = \rho(b,a)$.
  
- This document provides a simple template of how the provided
- \verb+iitmdiss.cls+ \LaTeX\ class is to be used.  Also provided are
- several useful tips to do various things that might be of use when you
- write your thesis.
- 
- Before reading any further please note that you are strongly advised
- against changing any of the formatting options used in the class
- provided in this directory, unless you are absolutely sure that it
- does not violate the IITM formatting guidelines.  \emph{Please do not
-   change the margins or the spacing.}  If you do change the formatting
- you are on your own (don't blame me if you need to reprint your entire
- thesis).  In the case that you do change the formatting despite these
- warnings, the least I ask is that you do not redistribute your style
- files to your friends (or enemies).
- 
- It is also a good idea to take a quick look at the formatting
- guidelines.  Your office or advisor should have a copy.  If they
- don't, pester them, they really should have the formatting guidelines
- readily available somewhere.
- 
- To compile your sources run the following from the command line:
- \begin{verbatim}
- % latex thesis.tex
- % bibtex thesis
- % latex thesis.tex
- % latex thesis.tex
- \end{verbatim}
- Modify this suitably for your sources.
- 
- To generate PDF's with the links from the \verb+hyperref+ package use
- the following command:
- \begin{verbatim}
- % dvipdfm -o thesis.pdf thesis.dvi
- \end{verbatim}
- 
- \section{Package Options}
- 
- Use this thesis as a basic template to format your thesis.  The
- \verb+iitmdiss+ class can be used by simply using something like this:
- \begin{verbatim}
- \documentclass[PhD]{iitmdiss}  
- \end{verbatim}
- 
- To change the title page for different degrees just change the option
- from \verb+PhD+ to one of \verb+MS+, \verb+MTech+ or \verb+BTech+.
- The dual degree pages are not supported yet but should be quite easy
- to add.  The title page formatting really depends on how large or
- small your thesis title is.  Consequently it might require some hand
- tuning.  Edit your version of \verb+iitmdiss.cls+ suitably to do this.
- I recommend that this be done once your title is final.
- 
- To write a synopsis simply use the \verb+synopsis.tex+ file as a
- simple template.  The synopsis option turns this on and can be used as
- shown below.
- \begin{verbatim}
- \documentclass[PhD,synopsis]{iitmdiss}                                
- \end{verbatim}
- 
- Once again the title page may require some small amount of fine
- tuning.  This is again easily done by editing the class file.
- 
- This sample file uses the \verb+hyperref+ package that makes all
- labels and references clickable in both the generated DVI and PDF
- files.  These are very useful when reading the document online and do
- not affect the output when the files are printed.
- 
- 
- \section{Example Figures and tables}
- 
- Figure \ref{fig:iitm} shows a simple figure for illustration along with
- a long caption.  The formatting of the caption text is automatically
- single spaced and indented.  Table~\ref{tab:sample} shows a sample
- table with the caption placed correctly.  The caption for this should
- always be placed before the table as shown in the example.
- 
- 
- \begin{figure}[htpb]
-   \begin{center}
-     \resizebox{50mm}{!} {\includegraphics *{iitm.eps}}
-     \resizebox{50mm}{!} {\includegraphics *{iitm.eps}}
-     \caption {Two IITM logos in a row.  This is also an
-       illustration of a very long figure caption that wraps around two
-       two lines.  Notice that the caption is single-spaced.}
-   \label{fig:iitm}
-   \end{center}
- \end{figure}
- 
- \begin{table}[htbp]
-   \caption{A sample table with a table caption placed
-     appropriately. This caption is also very long and is
-     single-spaced.  Also notice how the text is aligned.}
-   \begin{center}
-   \begin{tabular}[c]{|c|r|} \hline
-     $x$ & $x^2$ \\ \hline
-     1  &  1   \\
-     2  &  4  \\
-     3  &  9  \\
-     4  &  16  \\
-     5  &  25  \\
-     6  &  36  \\
-     7  &  49  \\
-     8  &  64  \\ \hline
-   \end{tabular}
-   \label{tab:sample}
-   \end{center}
- \end{table}
- 
- \section{Bibliography with BIB\TeX}
- 
- I strongly recommend that you use BIB\TeX\ to automatically generate
- your bibliography.  It makes managing your references much easier.  It
- is an excellent way to organize your references and reuse them.  You
- can use one set of entries for your references and cite them in your
- thesis, papers and reports.  If you haven't used it anytime before
- please invest some time learning how to use it.  
- 
- I've included a simple example BIB\TeX\ file along in this directory
- called \verb+refs.bib+.  The \verb+iitmdiss.cls+ class package which
- is used in this thesis and for the synopsis uses the \verb+natbib+
- package to format the references along with a customized bibliography
- style provided as the \verb+iitm.bst+ file in the directory containing
- \verb+thesis.tex+.  Documentation for the \verb+natbib+ package should
- be available in your distribution of \LaTeX.  Basically, to cite the
- author along with the author name and year use \verb+\cite{key}+ where
- \verb+key+ is the citation key for your bibliography entry.  You can
- also use \verb+\citet{key}+ to get the same effect.  To make the
- citation without the author name in the main text but inside the
- parenthesis use \verb+\citep{key}+.  The following paragraph shows how
- citations can be used in text effectively.
- 
- More information on BIB\TeX\ is available in the book by
- \cite{lamport}.  There are many
- references~\citep{lamport, helmut, david} that explain how to use
- BIB\TeX.  Read the \verb+natbib+ package documentation for more
- details on how to cite things differently. Different type of citations are 
-book~\cite{bellman}, one atricle in the book~\cite{Amarel:1968}, thesis~\cite{manning}, technical report
-~\cite{Ravindran:proof}, journal~\cite{Barto:rtdp}, conference~\cite{knoblock90learning} and other like url~\cite{crawford92theoretical}.
- 
- \section{Other useful \LaTeX\ packages}
- 
- The following packages might be useful when writing your thesis.
- 
- \begin{itemize}  
- \item It is very useful to include line numbers in your document.
-   That way, it is very easy for people to suggest corrections to your
-   text.  I recommend the use of the \texttt{lineno} package for this
-   purpose.  This is not a standard package but can be obtained on the
-   internet.  The directory containing this file should contain a
-   lineno directory that includes the package along with documentation
-   for it.
- 
- \item The \texttt{listings} package should be available with your
-   distribution of \LaTeX.  This package is very useful when one needs
-   to list source code or pseudo-code.
- 
- \item For special figure captions the \texttt{ccaption} package may be
-   useful.  This is specially useful if one has a figure that spans
-   more than two pages and you need to use the same figure number.
- 
- \item The notation page can be entered manually or automatically
-   generated using the \texttt{nomencl} package.
- 
- \end{itemize}
- 
- More details on how to use these specific packages are available along
- with the documentation of the respective packages.
+      \subsubsection{Directed Graph}
+	An \textit{directed graph} is a graph where the function $\rho$ is not necessarily a symmetric function.
+	
+      \subsubsection{Capacitated Graph}
+	A \textit{capacitated graph} is a graph defined as G($V$, $E$, $\rho$, $\psi$), where the first three values in the tuple mean the same as before.
+	The $\psi$ in the definition is a function $\psi: E \rightarrow \mathbb{R}$, which assigns a real number corresponding to every edge $e$ in the 
+	graph. This real number is called the \textit{capacity} of the graph.
+      
+      \subsubsection{s-t Flow}
+	A \textit{s-t flow} is a vector $f \in \mathbb{R}^{|E|}$ such that the following two criteria hold:
+	\begin{itemize}
+	 \item 
+	   Flow Conservation: $$\displaystyle\sum_{e \in E^+(v)} f(e)- \displaystyle\sum_{e \in E^-(v)} f(e) = 0 ~~~~~ \forall v \in V \setminus \{s,t\}$$
+	   where $E^-(v)$ denotes the set $\{a: \rho(a,v) \text{ is defined}\}$ and $E^+(v)$ denotes the set $\{a: \rho(v,a) \text{ is defined}\}$
+	 \item
+	  Capacity maintanence:
+	    $$f(e) \leq \psi(e)~~~~~\forall e \in E$$
+	      
+	\end{itemize}
+	
+	Additionally, the \textit{value} of the flow $f$ is a real number $F$ such that,
+	$$|f| = F = \displaystyle\sum_{e \in E^+(s)} f(e)- \displaystyle\sum_{e \in E^-(s)} f(e)$$
+	
+      \section{Maximum Flow Problem}
+	Given a capacitated graph G($V$, $E$, $\rho$, $\psi$), a source vertex s and a sink vertex t, the goal of the problem is to find a s-t flow
+	such that the value of the flow is maximised among all possible s-t flows. \\
+	
+	\subsection{Simple Linear Program definition}
+	  This problem can be posed as a linear programming problem. The advantages of this are more than just being able to solve LP's efficiently.
+	  The dual of this LP has a very interesting interpretation in graph theory. 
+	  
+	  $$\max \displaystyle\sum_{u:(s,u) \in E} f((s,u))$$
+	  subject to
+	  \begin{itemize}
+	   \item
+	      $\forall v \in V \setminus \{s,t\}$ $\displaystyle\sum_{(u,v) \in E} f((u,v))$ = $\displaystyle\sum_{(v,w) \in E} f((v,w))$
+	   \item
+	      $\forall (u,v) \in E$ $f((u,v)) \leq c((u,v))$
+	   \item
+	      $\forall(u,v) \in E$ $f((u,v)) \geq 0$
+	      
+	  \end{itemize}
+	  
+	  Note that a tuple (a, b) represents an edge e whose end points are a and b. \\
+	  
+	  Clearly, the vector $f \in \mathbb{R}^{|E|}$ forms the set of variables in this LP. The constraints are given to ensure that the set of 
+	  solutions are the set of valid s-t flows. hence, a constraint on the flow conservation on f and the capacity maintanence on f. Hence, for the
+	  given problem instance, the number of variables are polynomial in $|E|$ and $|V|$ and the number of constraints are also polynomial in $|E|$
+	  and $|V|$. \\
+	  
+	  Sometimes, an alternative formulation of the LP is given for this problem. 
+	  $$ \max \displaystyle\sum_{i \in P} f(i) - \lambda (\displaystyle\sum_{v \in V} F(v)) $$
+	  subject to:
+	  
+	  \begin{itemize}
+	   \item 
+	      $\forall (j,k) \in E$  $\gamma((j,k)) \leq c((j,k))$
+	   \item
+	      $\forall i \in P$, 
+		$$f(i) \leq F((j,k))~~~~~\forall (j,k) \in i$$
+	   \item
+	      
+	   
+	  \end{itemize}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Appendices.
-
- \appendix
- 
+	
+	
  \chapter{A SAMPLE APPENDIX}
  
  Just put in text as you would into any chapter with sections and
