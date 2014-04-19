@@ -335,7 +335,25 @@ lead to making the algorithm parallel.\\
 	  \section{Application of Maximum Flow problem in Computer Vision}
 	    In this section, we consider the problem of Energy Minimization, which is a problem very well studied in the computer vision community.
 	  Following the lines of [insert link to paper], we show how this particular problem can be posed as a maximum flow problem. Hence, this will
-	  strengthen the importance of this problem outside the theory community.
+	  strengthen the importance of this problem outside the theory community. \\
+	  
+	  The energy function considered in the computer vision community [Link to grieg, et al paper] is usually represented as :
+	  $$E(L) = \displaystyle\sum_{p \in P} D_{p}(L_{p}) + \displaystyle\sum_{(p,q) \in N} V_{p,q}(L_p, L_q)$$
+	  where 
+	  $L = \{L_p : p \in P\}$ is a labelling of the image P, $D_p$ is a data penalty function, $V_{p,q}$ is an interaction potential, and 
+	  $N$ is a set of all pairs of neighbouring pixel to the current pixel. \\
+	  
+	  Assume the case of binary colouring. We want to colour each pixel with either a black or a white label. The graph is constructed as follows:
+	  \begin{itemize}
+	   \item 
+	    The edges are classified into two types - the T-links and the N-links. The N-links are edges among neighbouring pixels in the image.
+	    The cost of these N-links are the penalty assigned for the discontinuity between the pixels. This can be obtained from the pixel interaction
+	    term $V_{p,q}$ in the energy equation. The T-links, are the edges between the pixel and the terminal node which correponds to either of
+	    the two colours.
+	    
+	  \end{itemize}
+
+	  
 	
  \chapter{A SAMPLE APPENDIX}
  
