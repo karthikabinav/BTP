@@ -15,8 +15,8 @@
 % \usepackage[square,numbers,sort]{natbib}
 \usepackage[square]{natbib}
 \usepackage[hypertex]{hyperref} % hyperlinks for references.
-%\usepackage{algorithmic}
-%\usepackage{algorithm}
+% \usepackage{algorithmic}
+% \usepackage{algorithm}
 
 
 %\include{commands}
@@ -191,7 +191,7 @@ lead to making the algorithm parallel.\\
 
  \chapter{INTRODUCTION}
  \label{chap:intro}
-    Maximum-Flow problem is an age old optmization problem in mathematics and computer science. Hundreds of researchers have investigated this problem
+    Maximum-Flow problem is an age old optimization problem in mathematics and computer science. Hundreds of researchers have investigated this problem
     and have given some interesting results. This problem has far-reaching applications in almost every field of engineering and sciences. Hence, this 
     problem is of great importance, not just theoretically, but also in real-world applications. Hence, getting better and more efficient algorithms
     for this problem and its variants has always been the pursuit. Inspite, of having had so much research into this problem, for many years we were far from getting an algorithm
@@ -229,21 +229,113 @@ lead to making the algorithm parallel.\\
 	Additionally, the \textit{value} of the flow $f$ is a real number $F$ such that,
 	$$|f| = F = \displaystyle\sum_{e \in E^+(s)} f(e)- \displaystyle\sum_{e \in E^-(s)} f(e)$$
 	
+      \subsubsection{s-t Cut}
+	A \textit{s-t cut} is defined as a partition of the vertex set $V$ into $U_1$ and $U_2$ such that, $s \in U_1$ and $t \in U_2$ and the vertices
+	in $V \setminus \{U_1, U_2 \}$ is present exactly in one of $U_1$ and $U_2$.
+      
+      \subsubsection{Minimum s-t Cut Problem}
+	Given a weighted graph G, let $\phi(\{U_1,U_2\})$ denote the sum of weights of edges such that one of its endpoints is in $U_1$ and the other
+	end point is in $U_2$. The \textit{minimum s-t cut problem} is to select that cut, among all possible s-t cuts, whose value of $\phi$ is minimised.
       \section{Maximum Flow Problem}
 	Given a capacitated graph G($V$, $E$, $\rho$, $\psi$), a source vertex s and a sink vertex t, the goal of the problem is to find a s-t flow
 	such that the value of the flow is maximised among all possible s-t flows. \\
 	
 	\subsection{Simple Linear Program definition}
-	  This problem can be posed as a linear programming problem. The advantages of this are more than just being able to solve LP's efficiently.
-	  The dual of this LP has a very interesting interpretation in graph theory. 
+	  This problem can be posed as a linear programming problem. The first observation is that since LP's are efficiently solvable in polynomial
+	  time, this will already give us a polynomial time algorithm. Though, this is helpful, this is not the main goal. The dual to the linear
+	  program has a specific interpretation in graph theory. Hence, one can devise potentially more faster algorithms by using some primal-dual
+	  methods.
+	  
+	  $$\max \displaystyle\sum_{u:(s,u) \in E} f((s,u))$$
+	  subject to
+	  \begin{itemize}
+	   \item
+	      $\forall v \in V \setminus \{s,t\}$ $\displaystyle\sum_{(u,v) \in E} f((u,v))$ = $\displaystyle\sum_{(v,w) \in E} f((v,w))$
+	   \item
+	      $\forall (u,v) \in E$ $f((u,v)) \leq c((u,v))$
+	   \item
+	      $\forall(u,v) \in E$ $f((u,v)) \geq 0$
+	      
+	  \end{itemize}
+	  
+	  Note that a tuple (a, b) represents an edge e whose end points are a and b. \\
+	  
+	  Clearly, the vector $f \in \mathbb{R}^{|E|}$ forms the set of variables in this LP. The constraints are given to ensure that the set of 
+	  solutions are the set of valid s-t flows. hence, a constraint on the flow conservation on f and the capacity maintanence on f. Hence, for the
+	  given problem instance, the number of variables are polynomial in $|E|$ and $|V|$ and the number of constraints are also polynomial in $|E|$
+	  and $|V|$. \\
+	  
+	  Sometimes, an alternative formulation of the LP is given for this problem. 
+	  $$ \max \displaystyle\sum_{i \in P} f(i) - \lambda (\displaystyle\sum_{v \in V} F(v)) $$
+	  subject to:
 	  
 	  \begin{itemize}
+	   \item Aravind-Rajeshwar-Iyer
+	      $\forall (j,k) \in E$  $\gamma((j,k)) \leq c((j,k))$
+	   \item
+	      $\forall i \in P$, 
+		$$f(i) \leq \gamma((j,k))~~~~~\forall (j,k) \in i$$
+	   \item
+	      $\forall v \in V$,
+	      $$F(v) = \displaystyle\sum_{(j,k) \in E_{in}} \gamma((j,k)) - \displaystyle\sum_{(j,k) \in E_{out}} \gamma((j,k))$$
+	   \item
+	      $f \succeq 0$ , $F \succeq 0$, $\gamma \succeq 0$, $\lambda \geq 0$
+	  \end{itemize}
+	  
+	  Here, $f$ is a vector from $\mathbb{R}^{|P|}$, where $|P|$ is the number of s-t paths in the graph. $F$ is a vector from $\mathbb{R}^{|V|}$
+	  and $\gamma$ is a vector from $\mathbb{R}^{|E|}$. $f(i)$ denotes the flow that goes through the path $i$. $F(v)$ denotes the flow that 
+	  is accumulated in the vertex v and $\gamma((i,j))$ denotes the flow that flows through the edge $(i,j)$. \\
+	  
+	  Clearly, the number of variables and the number of constraints are both exponential. Hence, we can't really hope to solve this in polynomial
+	  time. The only advantage of this formulation is that a optimal solution to this LP, helps one visualise the amount of flow that goes through
+	  each path independently. This formulation helps understanding of some of the path augumenting algorithms easier.
+	
+	\subsection{Dual of the Maximum Flow LP}
+	  The dual to the maximum flow LP has a very interesting connection to graph theory. In fact, as observed ahead, the dual is a relaxation 
+	  to the \textit{Minimum Cut Problem}. \\
+	  
+	  $$\min \displaystyle\sum_{(u,v) \in E} c((u,v)) \ast y((u,v))$$
+	  
+	  subject to:
+	  \begin{itemize}
 	   \item 
+	    $\displaystyle \sum_{(u,v) \in p} y((u,v)) \geq 1~~~~~~\forall p \in P$
+	   \item
+	    $y((u,v)) \geq 0 ~~~~~~~~~~ \forall (u,v) \in E$
+	   
 	  \end{itemize}
 
+	  Here, $y$ is the dual vector corresponding to the constraints in the primal. Hence, $y \in \mathbb{R}^{|E|}$. Here $P$ is the set of all
+	  s-t paths in the graph. \\
 	  
+	  From the constraints, we can now interpret this dual as the relaxation to the s-t minimum cut problem. The vector y can be interpreted 
+	  as the weight assigned to each edge in the graph. For every s-t path, the sum of edge weights in that path should be atleast one. And the 
+	  objective is to minimize the weighted sum of these edge weights given by the vector $y$. Hence, one optimal solution to this above LP
+	  will consist of assigning a weight of 1 to the edge with minimum $c$ in every s-t path and 0 to the other edges. This, in fact, gives the 
+	  value of the minimum s-t cut in the graph and the edge with weights 1 forms the edge across the cut. \\
 	  
-	
+	  Now, consider the following randomized rounding procedure to find a cut $(U_1, U_2)$ such that $\phi((U_1, U_2)) \leq OBJ$ where OBJ is 
+	  the value of the objective for the dual, for a given vector $y$. \\
+	  
+	  Let the values given by the verctor $y$ be weights of the edge. Now, consider any shortest path from s to v, and let d(v) be that 
+	  shortest distance for vertex v. Choose a value of $h$ uniformly at random from $[0,1)$. Consider the set 
+	  $R = \{v:d(v) \leq h\}$. Clearly, from the constraints above, corresponding to any feasible solution to the dual, $t$ will not be contained 
+	  in the set $R$ and $s$ will be contained in the set $R$. Hence, $R$ forms a valid s-t cut. \\
+	  
+	  From linearity of expectation, we get
+	  $$\mathbb{E}[\phi(R)] = \displaystyle\sum_{(i,j) \in E} c((i,j)) \mathbb{P}[i \in R \wedge j \notin R]$$
+	  $$\mathbb{P}[i \in R \wedge j \notin R] = \mathbb{P}[d(i) \leq h < d(j)] = d(j)-d(i)$$
+	  Also, from triangle inequality note that 
+	  $$d(j) \leq d(i) + y((i,j))$$
+	  
+	  Hence, $\mathbb{E}[\phi(R)] \leq OBJ$ and therefore, there exists a cut $(U_1,U_2)$, such that $\phi((U_1, U_2)) \leq OBJ$. \\
+	  
+	  Hence, the dual to the maximum flow problem is a relaxation of the s-t minimum cut problem.
+	  
+	  \section{Application of Maximum Flow problem in Computer Vision}
+	    In this section, we consider the problem of Energy Minimization, which is a problem very well studied in the computer vision community.
+	  Following the lines of [insert link to paper], we show how this particular problem can be posed as a maximum flow problem. Hence, this will
+	  strengthen the importance of this problem outside the theory community.
 	
  \chapter{A SAMPLE APPENDIX}
  

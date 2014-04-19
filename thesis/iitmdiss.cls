@@ -64,9 +64,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%  Load the correct class.
 \if@Synopsis
-    \LoadClass[12pt,a4paper]{article}
+    \LoadClass[11pt,a4paper]{article}
 \else
-    \LoadClass[12pt,a4paper]{report}
+    \LoadClass[11pt,a4paper]{report}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -74,9 +74,8 @@
 %\RequirePackage[compat2,a4paper,left=1.5in,right=1in,top=1in,bottom=0.667in,
                 %nohead]{geometry}[2002/07/08]
 %\parskip 8pt
-
-\RequirePackage[a4paper,text={15.42cm,
-23cm},nohead,left=1.3in,right=1in,top=1.3in,
+% {15.42cm,23cm}
+\RequirePackage[a4paper,text={15.42cm,23cm},nohead,left=1.3in,right=1in,top=1.3in,
 footskip=30pt,bottom=1in]{geometry}
 \parskip 8pt
 \setlength\oddsidemargin{0.52cm}
