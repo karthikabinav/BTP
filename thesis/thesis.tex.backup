@@ -111,7 +111,7 @@ extremely large graphs, as in the case of social networks, this algorithm is sti
 
 In 2008, the breakthrough result by Spielman and Teng gave an algorithm to solve the Symetric Diagonally Dominant(SDD) system of equations in 
 near-linear time. This work was immediately extended by Koutis-Miller-Peng which gave an efficient algorithm to produce an incremental graph sparsifier.
-Developement of these techniquies led to the developement of an almost linear time algorithm to the maximum flow problem by Cristiano-Kelner-Madry-Spielman-Teng.
+Development of these techniques led to the development of an almost linear time algorithm to the maximum flow problem by Cristiano-Kelner-Madry-Spielman-Teng.
 This involved looking at the graph as a resistive network, approximating the electrical flow and producing an approximate s-t flow from this approximate
 electrical flow. This algorithm broke the running time barrier of Golderg-Rao and gave the first almost-linear time algorithm. \\
 
@@ -152,7 +152,7 @@ lead to making the algorithm parallel.\\
 \textbf{IITM}   \> Indian Institute of Technology, Madras \\
 \textbf{BFS} \> Breadth First Search \\
 \textbf{DFS} \> Depth First Search \\
-\textbf{SDD} \> Symetric Diagonally Dominant \\
+\textbf{SDD} \> Symmetric Diagonally Dominant \\
 \end{tabbing}
 
 \pagebreak
@@ -193,7 +193,7 @@ lead to making the algorithm parallel.\\
  \label{chap:intro}
     Maximum-Flow problem is an age old optimization problem in mathematics and computer science. Hundreds of researchers have investigated this problem
     and have given some interesting results. This problem has far-reaching applications in almost every field of engineering and sciences. Hence, this 
-    problem is of great importance, not just theoretically, but also in real-world applications. Hence, getting better and more efficient algorithms
+    problem is of great importance, not just theoretically, but also in real-world applications. Devising better and more efficient algorithms
     for this problem and its variants has always been the pursuit. Inspite, of having had so much research into this problem, for many years we were far from getting an algorithm
     that runs in time that is good for practical purposes. This gives an indication of the hardness of this problem.
     
@@ -221,7 +221,7 @@ lead to making the algorithm parallel.\\
 	   Flow Conservation: $$\displaystyle\sum_{e \in E^+(v)} f(e)- \displaystyle\sum_{e \in E^-(v)} f(e) = 0 ~~~~~ \forall v \in V \setminus \{s,t\}$$
 	   where $E^-(v)$ denotes the set $\{a: \rho(a,v) \text{ is defined}\}$ and $E^+(v)$ denotes the set $\{a: \rho(v,a) \text{ is defined}\}$
 	 \item
-	  Capacity maintanence:
+	  Capacity maintenance:
 	    $$f(e) \leq \psi(e)~~~~~\forall e \in E$$
 	      
 	\end{itemize}
@@ -235,10 +235,10 @@ lead to making the algorithm parallel.\\
       
       \subsubsection{Minimum s-t Cut Problem}
 	Given a weighted graph G, let $\phi(\{U_1,U_2\})$ denote the sum of weights of edges such that one of its endpoints is in $U_1$ and the other
-	end point is in $U_2$. The \textit{minimum s-t cut problem} is to select that cut, among all possible s-t cuts, whose value of $\phi$ is minimised.
+	end point is in $U_2$. The \textit{minimum s-t cut problem} is to select that cut, among all possible s-t cuts, whose value of $\phi$ is minimized.
       \section{Maximum Flow Problem}
 	Given a capacitated graph G($V$, $E$, $\rho$, $\psi$), a source vertex s and a sink vertex t, the goal of the problem is to find a s-t flow
-	such that the value of the flow is maximised among all possible s-t flows. \\
+	such that the value of the flow is maximized among all possible s-t flows. \\
 	
 	\subsection{Simple Linear Program definition}
 	  This problem can be posed as a linear programming problem. The first observation is that since LP's are efficiently solvable in polynomial
@@ -261,7 +261,7 @@ lead to making the algorithm parallel.\\
 	  Note that a tuple (a, b) represents an edge e whose end points are a and b. \\
 	  
 	  Clearly, the vector $f \in \mathbb{R}^{|E|}$ forms the set of variables in this LP. The constraints are given to ensure that the set of 
-	  solutions are the set of valid s-t flows. hence, a constraint on the flow conservation on f and the capacity maintanence on f. Hence, for the
+	  solutions are the set of valid s-t flows. hence, a constraint on the flow conservation on f and the capacity maintenance on f. Hence, for the
 	  given problem instance, the number of variables are polynomial in $|E|$ and $|V|$ and the number of constraints are also polynomial in $|E|$
 	  and $|V|$. \\
 	  
@@ -270,7 +270,7 @@ lead to making the algorithm parallel.\\
 	  subject to:
 	  
 	  \begin{itemize}
-	   \item Aravind-Rajeshwar-Iyer
+	   \item 
 	      $\forall (j,k) \in E$  $\gamma((j,k)) \leq c((j,k))$
 	   \item
 	      $\forall i \in P$, 
@@ -287,8 +287,8 @@ lead to making the algorithm parallel.\\
 	  is accumulated in the vertex v and $\gamma((i,j))$ denotes the flow that flows through the edge $(i,j)$. \\
 	  
 	  Clearly, the number of variables and the number of constraints are both exponential. Hence, we can't really hope to solve this in polynomial
-	  time. The only advantage of this formulation is that a optimal solution to this LP, helps one visualise the amount of flow that goes through
-	  each path independently. This formulation helps understanding of some of the path augumenting algorithms easier.
+	  time. The only advantage of this formulation is that a optimal solution to this LP, helps one visualize the amount of flow that goes through
+	  each path independently. This formulation helps understanding of some of the path augmenting algorithms easier.
 	
 	\subsection{Dual of the Maximum Flow LP}
 	  The dual to the maximum flow LP has a very interesting connection to graph theory. In fact, as observed ahead, the dual is a relaxation 
@@ -317,7 +317,7 @@ lead to making the algorithm parallel.\\
 	  Now, consider the following randomized rounding procedure to find a cut $(U_1, U_2)$ such that $\phi((U_1, U_2)) \leq OBJ$ where OBJ is 
 	  the value of the objective for the dual, for a given vector $y$. \\
 	  
-	  Let the values given by the verctor $y$ be weights of the edge. Now, consider any shortest path from s to v, and let d(v) be that 
+	  Let the values given by the vector $y$ be weights of the edge. Now, consider any shortest path from s to v, and let d(v) be that 
 	  shortest distance for vertex v. Choose a value of $h$ uniformly at random from $[0,1)$. Consider the set 
 	  $R = \{v:d(v) \leq h\}$. Clearly, from the constraints above, corresponding to any feasible solution to the dual, $t$ will not be contained 
 	  in the set $R$ and $s$ will be contained in the set $R$. Hence, $R$ forms a valid s-t cut. \\
@@ -340,22 +340,54 @@ lead to making the algorithm parallel.\\
 	  The energy function considered in the computer vision community [Link to grieg, et al paper] is usually represented as :
 	  $$E(L) = \displaystyle\sum_{p \in P} D_{p}(L_{p}) + \displaystyle\sum_{(p,q) \in N} V_{p,q}(L_p, L_q)$$
 	  where 
-	  $L = \{L_p : p \in P\}$ is a labelling of the image P, $D_p$ is a data penalty function, $V_{p,q}$ is an interaction potential, and 
-	  $N$ is a set of all pairs of neighbouring pixel to the current pixel. \\
+	  $L = \{L_p : p \in P\}$ is a labeling of the image P, $D_p$ is a data penalty function, $V_{p,q}$ is an interaction potential, and 
+	  $N$ is a set of all pairs of neighboring pixel to the current pixel. \\
 	  
-	  Assume the case of binary colouring. We want to colour each pixel with either a black or a white label. The graph is constructed as follows:
+	  Assume the case of binary coloring. We want to colour each pixel with either a black or a white label. The graph is constructed as follows:
 	  \begin{itemize}
+	   \item
+	    Each pixel in the image forms a vertex in this graph.
+	   \item
+	    Additionally, two vertices are added, the vertex corresponding to a black label(s-vertex) and the vertex corresponding to a 
+	    white vertex(t-vertex).
+	   
 	   \item 
-	    The edges are classified into two types - the T-links and the N-links. The N-links are edges among neighbouring pixels in the image.
+	    The edges are classified into two types - the T-links and the N-links.
+	    \begin{itemize}
+	     \item 
+		The N-links are edges among neighboring pixels in the image.
 	    The cost of these N-links are the penalty assigned for the discontinuity between the pixels. This can be obtained from the pixel interaction
-	    term $V_{p,q}$ in the energy equation. The T-links, are the edges between the pixel and the terminal node which correponds to either of
-	    the two colours.
+	    term $V_{p,q}$ in the energy equation.
+	    \item
+		The T-links, are the edges between the pixel and the terminal node which corresponds to either of
+	    the two colours. It signifies the penalty of assigning the label corresponding to the terminal to that pixel. This is obtained from
+	    the term $D_p$ in the energy equation.
+	    \end{itemize}
+	    
+	    Any s-t cut partitions the pixels into two disjoint groups. Some vertices present in the same partition as the black label vertex
+	    and other vertices present in the same partition as the white label vertex. Hence, for an appropriate setting of the weights based
+	    on the parameters of an energy, a minimum s-t cut cost will correspond to a labeling with the minimum value of this energy. [link to
+	    that paper]
+	    
 	    
 	  \end{itemize}
 
+
+	 \chapter{Classical Algorithms}
+	  In this chapter, we describe some of the classical algorithms to find the exact value of the maximum flow in an undirected graph. These
+	  algorithms have been widely used and give a lot of insight into the nature of the problem. 
 	  
+	  \section{Ford-Fulkerson Augmenting Path Algorithm}
+	    This is the probably the most widely known algorithm for this problem. 
+	  
+	  
+	 \chapter{Spectral Graphs}
+	 
+	 \chapter{Cristiano-Kelner-Madry-Spielman-Teng Algorithm}
+	 
+	 
 	
- \chapter{A SAMPLE APPENDIX}
+    \chapter{A SAMPLE APPENDIX}
  
  Just put in text as you would into any chapter with sections and
  whatnot.  Thats the end of it.
