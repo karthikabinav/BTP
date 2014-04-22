@@ -105,8 +105,9 @@ researchers are sought after creating faster and more efficient algorithms for t
 Some of the classical algorithms to solve this problem are the Ford-Fulkerson's augmenting path algorithm and the Dinic's Algorithm. These algorithms
 compute the exact value of the maximum flow. It is also fairly straightforward to obtain the optimal flow vector after the termination of the
 algorithm. The main drawback with this algorithm is that the running time, though polynomial, is very high and is expensive to use in many practical
-situations. Following these algorithms a series of push-relabel algorithms were devised which had a slightly better running time as compared to the 
-classical algorithms. The series of algorithms terminated with the algorithm by Goldberg-Rao which gave a O($m^{\frac{3}{2}}$)-time algorithm. For 
+situations. Following these algorithms a series of algorithms based on push-relabel and blocking flow techniques were devised which had a slightly better running time as compared to the 
+classical algorithms. The series of algorithms terminated with the algorithm by Goldberg-Rao which gave a O($\min(n^{\frac{2}{3}},m^{\frac{1}{2}}) \log(\frac{n^2}{m}) \log U$)-time algorithm
+for edge capacities in $\{1,2,\ldots,U\}$. For 
 extremely large graphs, as in the case of social networks, this algorithm is still far from being practical. \\
 
 In 2008, the breakthrough result by Spielman and Teng gave an algorithm to solve the Symetric Diagonally Dominant(SDD) system of equations in 
@@ -379,10 +380,188 @@ lead to making the algorithm parallel.\\
 	  
 	  \section{Ford-Fulkerson Augmenting Path Algorithm}
 	    This is the probably the most widely known algorithm for this problem. This algorithm falls into the class of primal-dual algorithms.
-	    \begin
 	    
+	    \begin{program}
+	      \mbox{\textbf{Ford-Fulkerson algorithm to compute the maximum flow}}
+	      \BEGIN \\ %
+		\FOR \text{every edge (i,j)} \in E \DO
+		  \text{Initialise f((i,j)) = 0}
+		\OD
+		\WHILE \exists \text{ a path p from s to t in the residual network } G_f 
+		    c_f(p) = \min\{c_f((i,j)): (i,j) \in p\}
+		    \FOR \text{each edge (i,j) } \in p \DO
+		      \IF (i,j)\in E 
+		      \THEN 
+			f((i,j)) = f((i,j)) + c_f(p)
+		      
+		      \ELSE
+			f((i,j)) = f((i,j)) - c_f(p)
+		      \FI
+		    \OD
+		 
+	      \END
+	    \end{program}
+	    
+	    The running time of this algorithm mostly depends the augmentation method to obtain the residual network. We can show that 
+	    for a suitably ill-set of edge capacities, the number of iterations taken by the above algorithm can be very large if the augmenting
+	    paths are not chose carefully. Dinic's algorithm precisely solves this part by choosing the shortest augmenting path in each iteration
+	    and hence, bounding the overall running time to $O(V^2E)$.
 	  
-	  
+	  \section{Dinic's Algorithm}
+	    This algorithm is almost identical to the Ford-Fulkerson algorithm, except for the fact that it chooses the shortest augmenting path using 
+	    a Breadth-First search.
+	    
+	    \begin{program}
+	      \mbox{\textbf{Dinic's algorithm to compute the maximum flow}}
+	      \BEGIN \\ %
+		\FOR \text{every edge (i,j)} \in E \DO
+		  \text{Initialise f((i,j)) = 0}
+		\OD
+		\WHILE \exists \text{ a \textbf{shortest unweighted path p} from s to t in the residual network } G_f 
+		    c_f(p) = \min\{c_f((i,j)): (i,j) \in p\}
+		    \FOR \text{each edge (i,j) } \in p \DO
+		      \IF (i,j)\in E 
+		      \THEN 
+			f((i,j)) = f((i,j)) + c_f(p)
+		      
+		      \ELSE
+			f((i,j)) = f((i,j)) - c_f(p)
+		      \FI
+		    \OD
+		 
+	      \END
+	    \end{program}
+	    	  
+	    The part of the algorithm that is in bold is the only difference between this algorithm and Ford-Fulkerson's algorithm. The advantage 
+	    however is that now, the number of residual graphs generated is bounded independent of the edge capacities. \\
+	    
+	    The above algorithms were the most efficient known for a long time in the literature until, goldberg and others subsequently introduced the 
+	    class of algorithms known as the push-relabel algorithms. The algorithms above always maintained edge capacities, while violating the 
+	    reservoir capacity at the vertices. Push-relabel algorithms on the other hand, do the converse. In every iteration, the flow is 
+	    conserved at every vertex, whereas the edge capacity may be violated. And hence, the algorithm progresses towards ``correcting'' these violations
+	    at the edges. \\
+	    
+	   \section{Push-Relabel Algorithms}
+	      In this section, we will describe the general template of any push-relabel algorithm and present a fully recursive specification
+	      of the relabel-to-front algorithm. A completely recursive specification hence, allows programmers to directly to adapt it into languages
+	      such as prolog. \\
+	      
+	      
+	      \subsubsection{Generic Template of the push-relabel algorithm}
+	      In this section we will describe a generic template for any push-relabel algorithm. This is adapted from the text given by 
+	      [bibreference to cormen]
+	      
+	      Associate with every vertex in the graph two parameters, namely potential and reservoir.
+	      \begin{itemize}
+	       \item 
+		  The potential is a measure of knowing the direction in which particular flow should be sent.
+	      In some sense, it is used to measure the progress of the algorithm between two iterations of the algorithm.
+	      The flow is always sent from a vertex of higher potential to a vertex of lower potential. \\
+	      
+	      \item
+		  The reservoir stores the excessive flow that has been sent to this vertex. Since, in this algorithm the flow conservation is maintained,
+		  some flow that has already been sent to this vertex cannot be routed further ahead. Hence, this keeps track of the excessive flow 
+		  that accumulates at every vertex. \\
+		  
+		  
+	      \end{itemize}
+
+	      
+	      \begin{program}
+	            
+	      \PROC{INIT\_PREFLOW(G, s):}
+	      \BEGIN \\ %
+		\FOR \text{every vertex v} \in V \DO
+		  potential(v) := 0
+		  reservoir(v) := 0
+		\OD
+		
+		\FOR \text{each edge } (i,j) \in E \DO
+		  f((i,j)) := 0
+		\OD
+		
+		\text{potential(s)} = n
+		
+		\FOR \text{each vertex v } \in N(s) \DO
+		  f((s,v)) = c((s,v))
+		  reservoir(v) = c(s,v)
+		  reservoir(s) = reservoir(s) - c((s,v))
+		\OD
+		
+	      \END
+	    \end{program}
+	      The above procedure initialises the required variables and vectors before the start of the algorithm. \\
+	      
+	    \textbf{Overflowing vertex} : We say a vertex v is \textit{overflowing}, if the reservoir at vertex $v$ has positive flow accumulated in it,
+	    i.e. reservoir(v) $>0$. \\
+	    
+	    As the name suggests, at every iteration we associate two types of operations, a push operation and the relabel operation.
+	    \begin{itemize}
+	     \item 
+	      \textit{Push operation}: This operation is performed on vertices u and v by pusing some of the accumulated flow at u to vertex v.
+	      This is applicable only when the vertex u is overflowing, $c_f((u,v))>0$ and potential(u) = potential(v) + 1. Here, $c_f$ refers to the 
+	      capacities in the residual network with respect to the flow f. The operation involves pushing $\min($reservoir(u), $c_f((u,v))$) units of flow
+	      from u to v.
+	     \item
+	      \textit{Relabel}: This operation involves re-assigning the potential of the vertex u. This is applicable only when $u$ is overflowing, and
+	      $\forall v \in V$ such that $(u,v) \in E_f$, we have potential(u) $\leq$ potential(v). Here, $E_f$ = $\{(i,j) \in E : f((i,j)) < c((i,j))\}$.
+	      The operation involves re-assigning the potential of this vertex u with one more than the minimum of all such $v$.
+	    \end{itemize}
+	    
+	    \begin{program}
+	      \mbox{\textbf{Push Operation}}
+	      
+	      \PROC{PUSH(u, v):}
+	      \BEGIN \\ %
+		\Delta_f((u,v)) = \min(\text{reservoir(u)}, c_f((u,v)))
+		
+		\IF (u,v) \in E_f
+		  \THEN
+		    f((u,v)) = f((u,v)) + \Delta_f((u,v))
+		  \ELSE
+		    f((v,u)) = f((v,u)) - \Delta_f((u,v))
+		\FI
+		
+		\text{reservoir(u) = reservoir(u)} - \Delta_f((u,v))
+		\text{reservoir(v) = reservoir(v)} + \Delta_f((u,v))
+	      \END
+	    \end{program}
+	    
+	    \begin{program}
+	      \mbox{\textbf{Relabel Operation}}
+	      
+	      \PROC{RELABEL(u):}
+	      \BEGIN \\ %
+		\text{potential(u) = } 1 + \min \{\text{potential(v)} : (u,v) \in E_f \}
+	      \END
+	    \end{program}
+	    
+	    With the above two functions available, a generic push-relabel algorithm looks as follows:
+	    
+	    \begin{program}
+	      \mbox{\textbf{Push Relabel Template}}
+	      
+	      \PROC{MAX-FLOW(G, s, t):}
+	      \BEGIN \\ %
+		\text{INIT\_FLOW(G, s)}
+		\WHILE \text{exists an applicable push or relabel operation} \DO
+		   \text{Call the appropriate push or relabel operation} 
+		 \OD
+	      \END
+	    \end{program}
+
+	    The proof of correctness of this algorithm can be shown by using the potential function on the vertices. We omit the proof here. The 
+	    reader is encouraged to read [bib to cormen] for more details. \\
+	    	    
+	    Based on the specific implementation of the template i.e. the order of push and relabel operations performed, we can bound the running time 
+	    of the algorithm. In the following sub-section, we give a fully recursive specification of the relabel-to-front algorithm and bound the 
+	    running time of this algorithm. \\
+	    
+	    
+	    
+	   \section{Goldberg-Rao Blocking Flow Algorithm}
+	    In this section, we briefly describe the idea behind the goldberg-rao's algorithm. This algorithm uses the technique of blocking flow 
+	    
 	 \chapter{Spectral Graphs}
 	 
 	 \chapter{Cristiano-Kelner-Madry-Spielman-Teng Algorithm}
