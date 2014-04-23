@@ -468,8 +468,7 @@ lead to making the algorithm parallel.\\
 
 	      
 	      \begin{program}
-	      \mbox{\textbf{Push-Relabel Generic Template}}
-	      
+	            
 	      \PROC{INIT\_PREFLOW(G, s):}
 	      \BEGIN \\ %
 		\FOR \text{every vertex v} \in V \DO
@@ -518,16 +517,77 @@ lead to making the algorithm parallel.\\
 		
 		\IF (u,v) \in E_f
 		  \THEN
-		    f((u,v)) = f((u,v)) + Delta_f((u,v))
+		    f((u,v)) = f((u,v)) + \Delta_f((u,v))
 		  \ELSE
-		    f((u,v)) = f((u,v)) + Delta_f((u,v))
+		    f((v,u)) = f((v,u)) - \Delta_f((u,v))
+		\FI
+		
+		\text{reservoir(u) = reservoir(u)} - \Delta_f((u,v))
+		\text{reservoir(v) = reservoir(v)} + \Delta_f((u,v))
 	      \END
 	    \end{program}
 	    
+	    \begin{program}
+	      \mbox{\textbf{Relabel Operation}}
+	      
+	      \PROC{RELABEL(u):}
+	      \BEGIN \\ %
+		\text{potential(u) = } 1 + \min \{\text{potential(v)} : (u,v) \in E_f \}
+	      \END
+	    \end{program}
+	    
+	    With the above two functions available, a generic push-relabel algorithm looks as follows:
+	    
+	    \begin{program}
+	      \mbox{\textbf{Push Relabel Template}}
+	      
+	      \PROC{MAX-FLOW(G, s, t):}
+	      \BEGIN \\ %
+		\text{INIT\_FLOW(G, s)}
+		\WHILE \text{exists an applicable push or relabel operation} \DO
+		   \text{Call the appropriate push or relabel operation} 
+		 \OD
+	      \END
+	    \end{program}
 
+	    The proof of correctness of this algorithm can be shown by using the potential function on the vertices. We omit the proof here. The 
+	    reader is encouraged to read [bib to cormen] for more details. \\
+	    	    
+	    Based on the specific implementation of the template i.e. the order of push and relabel operations performed, we can bound the running time 
+	    of the algorithm. In the following sub-section, we give a fully recursive specification of the relabel-to-front algorithm and bound the 
+	    running time of this algorithm. \\
+	    
+	    
 	    
 	   \section{Goldberg-Rao Blocking Flow Algorithm}
-	    In this section, we briefly describe the idea behind the goldberg-rao's algorithm. This algorithm uses the technique of blocking flow 
+	    In this section, we briefly describe the idea behind the goldberg-rao's algorithm. The description of this algorithm is adapted from 
+	    [link to the lecture notes containing the algorithm] \\
+	    
+	    Before describing the main algorithm, let us first have some definitions in place. \\
+	    
+	    \textbf{Delta indicator}: We define a vector $L$, which is a delta indicator for a particular flow f i.e.
+	    \[ L((i,j)) = \left\{ 
+	      \begin{array}{l l}
+	      1 & \quad u_f((i,j)) \leq \Delta\\
+	      0 & \quad \text{otherwise}
+	      \end{array} \right.\]
+	    
+	    
+	    \textbf{Admissible Edge}: We call an edge $(i, j) \in E_f$ admissible with respect to the flow f, if dist(i) = dist(j) + $L_f$((i,j)). Here,
+	    the dist(v) refers to the shortest distance of vertex v from the source s. \\
+	    
+	    \begin{program}
+	      \mbox{\textbf{Goldberg-Rao Algorithm}}
+	      
+	      \PROC{Goldberg-Rao(G, s, t):}
+	      \BEGIN \\ %
+		\text{Initialise F as mU, where U = } \displaystyle\max_{(i,j) \in E} u((i,j))
+		\text{Initialise f as 0}
+		
+		\WHILE F \geq 1 \DO
+		  \text{Assign } \Delta \text{ as } \frac{F}{2 \ast \min(m^{\frac{1}{2}}, n^{\frac{2}{3}})}
+	      \END
+	    \end{program}
 	    
 	 \chapter{Spectral Graphs}
 	 

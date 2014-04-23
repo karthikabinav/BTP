@@ -560,8 +560,57 @@ lead to making the algorithm parallel.\\
 	    
 	    
 	   \section{Goldberg-Rao Blocking Flow Algorithm}
-	    In this section, we briefly describe the idea behind the goldberg-rao's algorithm. This algorithm uses the technique of blocking flow 
+	    In this section, we briefly describe the idea behind the goldberg-rao's algorithm. The description of this algorithm is adapted from 
+	    [link to the lecture notes containing the algorithm] \\
 	    
+	    Before describing the main algorithm, let us first have some definitions in place. \\
+	    
+	    \textbf{Delta indicator}: We define a vector $L$, which is a delta indicator for a particular flow f i.e.
+	    \[ L((i,j)) = \left\{ 
+	      \begin{array}{l l}
+	      1 & \quad u_f((i,j)) \leq \Delta\\
+	      0 & \quad \text{otherwise}
+	      \end{array} \right.\]
+	    
+	    
+	    \textbf{Admissible Edge}: We call an edge $(i, j) \in E_f$ admissible with respect to the flow f, if dist(i) = dist(j) + $L_f$((i,j)). Here,
+	    the dist(v) refers to the shortest distance of vertex v to sink t. \\
+	    
+	    \textbf{Blocking flow}: A flow f is \textit{blocking} if every s-t path in the graph G has atleast one completely saturated edge. \\
+	    
+	    \begin{program}
+	      \mbox{\textbf{Goldberg-Rao Algorithm}}
+	      
+	      \PROC{Goldberg-Rao(G, s, t):}
+	      \BEGIN \\ %
+		\text{Initialise F as mU, where U = } \displaystyle\max_{(i,j) \in E} u((i,j))
+		\text{Initialise f as 0}
+		\text{Define } \varLambda \text{ as } \min(m^{\frac{1}{2}}, n^{\frac{2}{3}})
+		
+		\WHILE F \geq 1 \DO
+		  \text{Assign } \Delta \text{ as } \frac{F}{2 \ast \varLambda}
+		  
+		  \FOR i:=1 \TO 5 \ast \varLambda \DO
+		    \text{- Compute the Delta indicator vector L}
+		    \text{- Compute dist(i), using the vector L as the vector of edge lengths}
+		    \text{- Shrink the strongly-connected components of admissible edges}
+		    \text{- Find a flow }\tilde{f} \text{ in the shrunken graph s.t. it is either a blocking flow or value of the flow is }
+		    \frac{\Delta}{4}
+		    \text{- Assign } \bar{f} \text{ as }\tilde{f} \text{ with the flows completely routed within the edges of the }
+		    \text{shrunken components.}
+		    \text{ - }f = f + \bar{f}
+		  \OD
+		  F = \frac{F}{2}
+		\OD
+	      \END
+	    \end{program}
+	    
+	    In the above algorithm, \textit{shrinking} a strongly connected component(SCC) means, replacing the entire SCC by a 
+	    single vertex, whose incoming edges are the incoming edges of all vertices of the SCC, and whose outgoing edges
+	    are outgoing edges of all vertices of the SCC. \\
+	    
+	    As again, we encourage the reader to refer to [link to the notes] for a complete analysis of the correctness of the above algorithm
+	    and its running time.
 	 \chapter{Spectral Graphs}
 	 
 	 \chapter{Cristiano-Kelner-Madry-Spielman-Teng Algorithm}
