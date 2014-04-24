@@ -385,7 +385,7 @@ lead to making the algorithm parallel.\\
 	      \mbox{\textbf{Ford-Fulkerson algorithm to compute the maximum flow}}
 	      \BEGIN \\ %
 		\FOR \text{every edge (i,j)} \in E \DO
-		  \text{Initialise f((i,j)) = 0}
+		  \text{Initialize f((i,j)) = 0}
 		\OD
 		\WHILE \exists \text{ a path p from s to t in the residual network } G_f 
 		    c_f(p) = \min\{c_f((i,j)): (i,j) \in p\}
@@ -415,7 +415,7 @@ lead to making the algorithm parallel.\\
 	      \mbox{\textbf{Dinic's algorithm to compute the maximum flow}}
 	      \BEGIN \\ %
 		\FOR \text{every edge (i,j)} \in E \DO
-		  \text{Initialise f((i,j)) = 0}
+		  \text{Initialize f((i,j)) = 0}
 		\OD
 		\WHILE \exists \text{ a \textbf{shortest unweighted path p} from s to t in the residual network } G_f 
 		    c_f(p) = \min\{c_f((i,j)): (i,j) \in p\}
@@ -490,7 +490,7 @@ lead to making the algorithm parallel.\\
 		
 	      \END
 	    \end{program}
-	      The above procedure initialises the required variables and vectors before the start of the algorithm. \\
+	      The above procedure initializes the required variables and vectors before the start of the algorithm. \\
 	      
 	    \textbf{Overflowing vertex} : We say a vertex v is \textit{overflowing}, if the reservoir at vertex $v$ has positive flow accumulated in it,
 	    i.e. reservoir(v) $>0$. \\
@@ -498,7 +498,7 @@ lead to making the algorithm parallel.\\
 	    As the name suggests, at every iteration we associate two types of operations, a push operation and the relabel operation.
 	    \begin{itemize}
 	     \item 
-	      \textit{Push operation}: This operation is performed on vertices u and v by pusing some of the accumulated flow at u to vertex v.
+	      \textit{Push operation}: This operation is performed on vertices u and v by pushing some of the accumulated flow at u to vertex v.
 	      This is applicable only when the vertex u is overflowing, $c_f((u,v))>0$ and potential(u) = potential(v) + 1. Here, $c_f$ refers to the 
 	      capacities in the residual network with respect to the flow f. The operation involves pushing $\min($reservoir(u), $c_f((u,v))$) units of flow
 	      from u to v.
@@ -583,8 +583,8 @@ lead to making the algorithm parallel.\\
 	      
 	      \PROC{Goldberg-Rao(G, s, t):}
 	      \BEGIN \\ %
-		\text{Initialise F as mU, where U = } \displaystyle\max_{(i,j) \in E} u((i,j))
-		\text{Initialise f as 0}
+		\text{Initialize F as mU, where U = } \displaystyle\max_{(i,j) \in E} u((i,j))
+		\text{Initialize f as 0}
 		\text{Define } \varLambda \text{ as } \min(m^{\frac{1}{2}}, n^{\frac{2}{3}})
 		
 		\WHILE F \geq 1 \DO
@@ -617,7 +617,7 @@ lead to making the algorithm parallel.\\
 	     For a detailed explanation of some of these topics, the reader is advised to refer to [link to Lx=b].\\
 	     
 	     \section{Eigen Values}
-	       Throughout this report, we will be dealing with sqaure matrices which are symmetric unless explicitly mentioned otherwise. \\
+	       Throughout this report, we will be dealing with square matrices which are symmetric unless explicitly mentioned otherwise. \\
 	       
 	       \textbf{Eigen value}: A value $\lambda$ is called the \textit{eigen value} of the matrix A if there exists a vector $x$ such that 
 	       $A.x = \lambda . x$. This vector $x$ is called the \textit{eigen vector} of the matrix A. \\
@@ -689,7 +689,7 @@ lead to making the algorithm parallel.\\
 		      edge corresponds to a resistor of some appropriate value. A voltage of
 		      one unit is applied across the vertices s and t. The network thus formed is an electrical network. \\
 		      
-		      In this section, we will formalise the above notion and provide some useful definitions and theorems. \\
+		      In this section, we will formalize the above notion and provide some useful definitions and theorems. \\
 		      
 		      \textbf{Incidence Matrix}: \\
 		      Consider an arbitrary orientation of the edges in an undirected graph G. We define a $m \ast n$ matrix B, which is called 
@@ -746,7 +746,7 @@ lead to making the algorithm parallel.\\
  		    \textbf{Electrical flow}: Let 1A of current be inducted at vertex s and removed at vertex t. We define $f^{\ast}$ as the electrical 
  		    flow and is given by $BL^{-1}(e_s-e_t)$. \\
  		    
- 		    \textbf{Electrical enery}: Let $r$ be the vector of resistances of every edge(Here it is the all 1's vector). Let $f$ be the 
+ 		    \textbf{Electrical energy}: Let $r$ be the vector of resistances of every edge(Here it is the all 1's vector). Let $f$ be the 
  		    vector of electrical current through each edge. The electrical energy is
  		    $$\epsilon_r(f) = \displaystyle\sum_{e}r_e f_{e}^{2}$$
  		    
