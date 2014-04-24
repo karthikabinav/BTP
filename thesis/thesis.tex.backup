@@ -216,7 +216,7 @@ lead to making the algorithm parallel.\\
 	graph. This real number is called the \textit{capacity} of the graph.
       
       \subsubsection{s-t Flow}
-	A \textit{s-t flow} is a vector $f \in \mathbb{R}^{|E|}$ such that the following two criteria hold:
+	A \textit{s-t flow} is a vector $f \in \mathbb{R}^{\mid E \mid}$ such that the following two criteria hold:
 	\begin{itemize}
 	 \item 
 	   Flow Conservation: $$\displaystyle\sum_{e \in E^+(v)} f(e)- \displaystyle\sum_{e \in E^-(v)} f(e) = 0 ~~~~~ \forall v \in V \setminus \{s,t\}$$
@@ -228,7 +228,7 @@ lead to making the algorithm parallel.\\
 	\end{itemize}
 	
 	Additionally, the \textit{value} of the flow $f$ is a real number $F$ such that,
-	$$|f| = F = \displaystyle\sum_{e \in E^+(s)} f(e)- \displaystyle\sum_{e \in E^-(s)} f(e)$$
+	$$\mid f\mid  = F = \displaystyle\sum_{e \in E^+(s)} f(e)- \displaystyle\sum_{e \in E^-(s)} f(e)$$
 	
       \subsubsection{s-t Cut}
 	A \textit{s-t cut} is defined as a partition of the vertex set $V$ into $U_1$ and $U_2$ such that, $s \in U_1$ and $t \in U_2$ and the vertices
@@ -261,10 +261,10 @@ lead to making the algorithm parallel.\\
 	  
 	  Note that a tuple (a, b) represents an edge e whose end points are a and b. \\
 	  
-	  Clearly, the vector $f \in \mathbb{R}^{|E|}$ forms the set of variables in this LP. The constraints are given to ensure that the set of 
+	  Clearly, the vector $f \in \mathbb{R}^{\mid E\mid }$ forms the set of variables in this LP. The constraints are given to ensure that the set of 
 	  solutions are the set of valid s-t flows. hence, a constraint on the flow conservation on f and the capacity maintenance on f. Hence, for the
-	  given problem instance, the number of variables are polynomial in $|E|$ and $|V|$ and the number of constraints are also polynomial in $|E|$
-	  and $|V|$. \\
+	  given problem instance, the number of variables are polynomial in $\mid E\mid $ and $\mid V\mid $ and the number of constraints are also polynomial in $\mid E\mid $
+	  and $\mid V\mid $. \\
 	  
 	  Sometimes, an alternative formulation of the LP is given for this problem. 
 	  $$ \max \displaystyle\sum_{i \in P} f(i) - \lambda (\displaystyle\sum_{v \in V} F(v)) $$
@@ -283,8 +283,8 @@ lead to making the algorithm parallel.\\
 	      $f \succeq 0$ , $F \succeq 0$, $\gamma \succeq 0$, $\lambda \geq 0$
 	  \end{itemize}
 	  
-	  Here, $f$ is a vector from $\mathbb{R}^{|P|}$, where $|P|$ is the number of s-t paths in the graph. $F$ is a vector from $\mathbb{R}^{|V|}$
-	  and $\gamma$ is a vector from $\mathbb{R}^{|E|}$. $f(i)$ denotes the flow that goes through the path $i$. $F(v)$ denotes the flow that 
+	  Here, $f$ is a vector from $\mathbb{R}^{\mid P\mid }$, where $\mid P\mid $ is the number of s-t paths in the graph. $F$ is a vector from $\mathbb{R}^{\mid V\mid }$
+	  and $\gamma$ is a vector from $\mathbb{R}^{\mid E\mid }$. $f(i)$ denotes the flow that goes through the path $i$. $F(v)$ denotes the flow that 
 	  is accumulated in the vertex v and $\gamma((i,j))$ denotes the flow that flows through the edge $(i,j)$. \\
 	  
 	  Clearly, the number of variables and the number of constraints are both exponential. Hence, we can't really hope to solve this in polynomial
@@ -306,7 +306,7 @@ lead to making the algorithm parallel.\\
 	   
 	  \end{itemize}
 
-	  Here, $y$ is the dual vector corresponding to the constraints in the primal. Hence, $y \in \mathbb{R}^{|E|}$. Here $P$ is the set of all
+	  Here, $y$ is the dual vector corresponding to the constraints in the primal. Hence, $y \in \mathbb{R}^{\mid E\mid }$. Here $P$ is the set of all
 	  s-t paths in the graph. \\
 	  
 	  From the constraints, we can now interpret this dual as the relaxation to the s-t minimum cut problem. The vector y can be interpreted 
@@ -574,7 +574,9 @@ lead to making the algorithm parallel.\\
 	    
 	    
 	    \textbf{Admissible Edge}: We call an edge $(i, j) \in E_f$ admissible with respect to the flow f, if dist(i) = dist(j) + $L_f$((i,j)). Here,
-	    the dist(v) refers to the shortest distance of vertex v from the source s. \\
+	    the dist(v) refers to the shortest distance of vertex v to sink t. \\
+	    
+	    \textbf{Blocking flow}: A flow f is \textit{blocking} if every s-t path in the graph G has atleast one completely saturated edge. \\
 	    
 	    \begin{program}
 	      \mbox{\textbf{Goldberg-Rao Algorithm}}
@@ -583,14 +585,153 @@ lead to making the algorithm parallel.\\
 	      \BEGIN \\ %
 		\text{Initialise F as mU, where U = } \displaystyle\max_{(i,j) \in E} u((i,j))
 		\text{Initialise f as 0}
+		\text{Define } \varLambda \text{ as } \min(m^{\frac{1}{2}}, n^{\frac{2}{3}})
 		
 		\WHILE F \geq 1 \DO
-		  \text{Assign } \Delta \text{ as } \frac{F}{2 \ast \min(m^{\frac{1}{2}}, n^{\frac{2}{3}})}
+		  \text{Assign } \Delta \text{ as } \frac{F}{2 \ast \varLambda}
+		  
+		  \FOR i:=1 \TO 5 \ast \varLambda \DO
+		    \text{- Compute the Delta indicator vector L}
+		    \text{- Compute dist(i), using the vector L as the vector of edge lengths}
+		    \text{- Shrink the strongly-connected components of admissible edges}
+		    \text{- Find a flow }\tilde{f} \text{ in the shrunken graph s.t. it is either a blocking flow or value of the flow is }
+		    \frac{\Delta}{4}
+		    \text{- Assign } \bar{f} \text{ as }\tilde{f} \text{ with the flows completely routed within the edges of the }
+		    \text{shrunken components.}
+		    \text{ - }f = f + \bar{f}
+		  \OD
+		  F = \frac{F}{2}
+		\OD
 	      \END
 	    \end{program}
 	    
+	    In the above algorithm, \textit{shrinking} a strongly connected component(SCC) means, replacing the entire SCC by a 
+	    single vertex, whose incoming edges are the incoming edges of all vertices of the SCC, and whose outgoing edges
+	    are outgoing edges of all vertices of the SCC. \\
+	    
+	    As again, we encourage the reader to refer to [link to the notes] for a complete analysis of the correctness of the above algorithm
+	    and its running time.
 	 \chapter{Spectral Graphs}
-	 
+	     In this chapter, we give some requisite mathematics from spectral graph theory. The definitions and theorems stated in this chapter,
+	     will be the key to understanding the breakthrough Cristiano-Kelner-Madry-Spielman-Teng algorithm and our attempts and observations. We only give the required amount of definitions and would avoid most proofs. This section is adapted from the monograph [link to lx=b].
+	     For a detailed explanation of some of these topics, the reader is advised to refer to [link to Lx=b].\\
+	     
+	     \section{Eigen Values}
+	       Throughout this report, we will be dealing with sqaure matrices which are symmetric unless explicitly mentioned otherwise. \\
+	       
+	       \textbf{Eigen value}: A value $\lambda$ is called the \textit{eigen value} of the matrix A if there exists a vector $x$ such that 
+	       $A.x = \lambda . x$. This vector $x$ is called the \textit{eigen vector} of the matrix A. \\
+	       
+	       \textbf{Proposition}: Let $\lambda_1 \leq \lambda_2 \leq \ldots \leq \lambda_n$ be the eigen values of a $n \ast n$ matrix
+	       A. Let $v_1 , v_2 , \ldots, v_n$ be the corresponding eigen vectors. Then, the matrix A can be written as $\displaystyle\sum_{i=1}^{n} \lambda_i v_i v_i^T$ \\
+	       
+	       \textbf{Alternate characterization of eigen values}: \\
+	       
+		The $k^{th}$ smallest eigen value can be expressed as 
+		$$\lambda_k(A) = \displaystyle\min_{x \in \mathbb{R}^n \setminus \{0\}~:~x^T.v_i = 0~~\forall i \in \{1,2,\ldots,k-1\}} \frac{x^TAx}{x^Tx}$$
+		
+		Alternatively, it can also be expressed as:
+		$$\lambda_k(A) = \displaystyle\max_{x \in \mathbb{R}^n \setminus \{0\}~:~x^T.v_i = 0~~\forall i \in \{k+1,k+2,\ldots,n\}} \frac{x^TAx}{x^Tx}$$
+	       
+	    \section{Graph Laplacian}
+		Graph Laplacian is a $n \ast n$ matrix which gives lot of algebraic properties of a graph. This matrix is useful for testing many properties
+		of a graph algebraically. For example, one can test connectivity of a graph using the eigen values of this matrix. In fact, we can also extend
+		this and find the number of connected components in the graph by using the eigen values. \\
+		
+		Let $A$ be the adjacency matrix of the graph and let $D$ be a diagonal matrix which contains the degree of the vertex $i$ in the 
+		$i^{th}$ entry of the principal diagonal and 0 elsewhere. The \textit{graph laplacian} $L$ is defined as $D - A$. \\
+		
+		\textbf{Proposition}: The graph Laplacian L is a positive semi-definite matrix i.e. $\lambda_1(L) \geq 0$. \\
+		
+		In fact, we can also claim that graph laplacian is not positive definite. It can be easily shown that $\lambda_1(L) = 0$. \\
+		
+		The above definition also translates to a weighted graph, where every edge of weight $w$ is replaced by $w$ parallel edges and use the 
+		same definition as above. \\
+		
+		One important advantage of this laplacian is that we can test connectivity properties using the eigen values of this matrix. The 
+		following theorem gives the exact relationship. \\
+		
+		\textbf{Theorem}: \\
+		A graph G is connected if and only if the second smallest eigen value of its laplacian is strictly greater than 0. \\
+		
+		In fact, a more generalized version of the above theorem can be shown. \\
+		
+		\textbf{Theorem}: \\
+		Let G be a graph and $L$ be the corresponding laplacian matrix. Let $\lambda_1(L) \leq \lambda_2(L) \leq \ldots \leq \lambda_n(L)$ be the
+		eigen values of L. Let $i$ be such that $\lambda_{i}(L) = 0 $ and $\lambda_{i+1}(L) > 0$.
+		Then, the graph G has exactly $i$ connected components. \\
+		
+		Plugging $i=1$ in the above equation gives the theorem on connectivity of the graph. \\
+		
+		\section{Laplacian system of equations}
+		  A special subset of system of linear equations is a laplacian system of equations. In this case $A.x = b$ system, has the matrix 
+		  $A$ as a graph laplacian corresponding to some graph G. Hence, these are equations of the form $L.x = b$. It turns out that some 
+		  optimization problems over graphs can be posed as a laplacian system of equations. In fact, one such procedure is used in the 
+		  Cristiano-Kelner-Madry-Spielman-Teng algorithm and hence, being able to solve this system effectively is a requirement. \\
+		  
+		  We know that a gaussian procedure to solve $A.x = b$ takes about $O(n^3)$ steps. This is not practically relevant since we are 
+		  looking for flow algorithms that are close to linear time. But, it turns out that for the case of laplacian systems there exists 
+		  nice solvers which can solve it efficiently. The following theorem states this more precisely. \\
+		  
+		  \textbf{Theorem}: \\
+		    There exists an algorithm for solving the Laplacian system which takes as input a graph laplacian L, a vector b and an error parameter
+		    $\epsilon$ and returns a solution $x$ to the system such that:
+		    $$\|x - L^{-1}b \|_L \leq \epsilon \|L^{-1}b\|_L$$
+		    
+		    Additionally, this algorithm runs in time $\tilde{O}(m \log(\frac{1}{\epsilon}))$ where m is the number of non-zero entries in the 
+		    laplacian matrix. \\
+		    
+		    We would like to refer to the reader [link to olivia simpson's research exam] for a brief survey on the development of various 
+		    Laplacian solvers.
+		    
+		    \section{Electrical Flows}
+		      The key idea leading to the breakthrough of the newer algorithm was to visualize the graph as an electrical network. Every
+		      edge corresponds to a resistor of some appropriate value. A voltage of
+		      one unit is applied across the vertices s and t. The network thus formed is an electrical network. \\
+		      
+		      In this section, we will formalise the above notion and provide some useful definitions and theorems. \\
+		      
+		      \textbf{Incidence Matrix}: \\
+		      Consider an arbitrary orientation of the edges in an undirected graph G. We define a $m \ast n$ matrix B, which is called 
+		      the \textit{incidence matrix}, as follows: 
+		      
+		      \[ B(i,j) = \left\{ 
+		      \begin{array}{l l}
+		      -1 & \quad \text{if edge i leaves vertex j}\\
+		      1 & \quad \text{if edge i enters vertex j} \\
+		      0 & \quad \text{otherwise}
+		      \end{array} \right.\]
+		      
+		     The graph laplacian can now be related to this incidence matrix B by the following theorem. \\
+		     
+		     \textbf{Theorem}: \\
+		     For a graph G having an incidence matrix B and a laplacian L,  $B^TB = L$. \\
+		     
+		     Note in the above theorem, there is no mention of the orientation of the edges for B. Hence, it is true for any arbitrary
+		     orientation of the edges. \\
+		     
+		     \textbf{Current vector}: As stated before, we can look at a graph as an electrical network. Replace every undirected edge by 
+		     a resistor of resistance 1. Now, associate a voltage difference of $v$ across the vertices s and t. The current flowing through
+ 		     each of the resistors(which are edges in the original graph) is given by the \textit{current vector}. It is denoted as $c$. \\
+ 		     
+ 		     Since, the above is an electrical network, we know that the current and voltage satisfies the Kirchoff's current and voltage laws.
+ 		     Using the laws, we can easily show that, $B^TB.v = c$ and hence, $L.v = c$. Therefore, given the current flowing through each of 
+ 		     the edges and the laplacian, finding the vertex potentials is essentially solving a laplacian system of equations. \\
+ 		     
+ 		     \textbf{Effective Resistance}: Given a particular current vector $c$, we define the effective resistance of an edge $e=(i,j)$ as the 
+ 		     potential difference across e when a current of value 1A is sent across i to j. \\
+ 		     
+ 		     \textbf{Proposition}: The effective resistance $R_{eff}(e) = (e_i - e_j)^T L^{-1} (e_i - e_j)$. Here, $e_i$ is a vector of length
+ 		     $\mid V \mid$ which has 1 at the $i^{th}$ location and 0 elsewhere.
+ 		     
+ 		     
+ 		     
+		   
+		
+		
+		
+	      
+	      
 	 \chapter{Cristiano-Kelner-Madry-Spielman-Teng Algorithm}
 	 
 	 
