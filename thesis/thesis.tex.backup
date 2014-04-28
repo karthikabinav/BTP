@@ -1,5 +1,7 @@
 \documentclass[BTech]{iitmdiss}
 
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools}
 \usepackage{epstopdf}
 \usepackage{times}
 \usepackage{epsf}
@@ -7,7 +9,7 @@
 \usepackage{setspace}
 \usepackage{amsmath}
 \usepackage{amsthm}
-\usepackage{txfonts,pxfonts,amsfonts}
+ \usepackage{amsfonts}
 \usepackage{epsfig}
 \usepackage{caption}
 \usepackage{subfig}
@@ -17,6 +19,7 @@
 \usepackage[hypertex]{hyperref} % hyperlinks for references.
 % \usepackage{algorithmic}
 \usepackage{program}
+\usepackage[boxed, algochapter, boxruled]{algorithm2e}
 
 
 %\include{commands}
@@ -84,6 +87,7 @@ Date:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Acknowledgements
 \acknowledgements
+
 
 Acknoledgements
 
@@ -381,26 +385,27 @@ lead to making the algorithm parallel.\\
 	  \section{Ford-Fulkerson Augmenting Path Algorithm}
 	    This is the probably the most widely known algorithm for this problem. This algorithm falls into the class of primal-dual algorithms.
 	    
-	    \begin{program}
-	      \mbox{\textbf{Ford-Fulkerson algorithm to compute the maximum flow}}
-	      \BEGIN \\ %
-		\FOR \text{every edge (i,j)} \in E \DO
-		  \text{Initialize f((i,j)) = 0}
-		\OD
-		\WHILE \exists \text{ a path p from s to t in the residual network } G_f 
-		    c_f(p) = \min\{c_f((i,j)): (i,j) \in p\}
-		    \FOR \text{each edge (i,j) } \in p \DO
-		      \IF (i,j)\in E 
-		      \THEN 
-			f((i,j)) = f((i,j)) + c_f(p)
-		      
-		      \ELSE
-			f((i,j)) = f((i,j)) - c_f(p)
-		      \FI
-		    \OD
-		 
-	      \END
-	    \end{program}
+
+	    \begin{algorithm}[H]
+
+% 	      \BEGIN \\ %
+		\For{every edge (i,j) $\in$ E}{
+		  Initialize f((i,j)) = 0\;
+		}
+ 		\While{$\exists$ a path p from s to t in the residual network $G_f$}{ 
+ 		    $c_f(p) = \min\{c_f((i,j)): (i,j) \in p\}$ \;
+ 		    \For{each edge (i,j) $\in$ p}{
+			\eIf{(i,j) $\in$ E}{ 
+			  f((i,j)) = f((i,j)) + $c_f(p)$\;
+			}
+			{
+ 				f((i,j)) = f((i,j)) - $c_f$(p)\;	
+			}
+
+		    }
+		}
+		\caption{Ford-Fulkerson algorithm to compute the maximum flow}
+	    \end{algorithm}
 	    
 	    The running time of this algorithm mostly depends the augmentation method to obtain the residual network. We can show that 
 	    for a suitably ill-set of edge capacities, the number of iterations taken by the above algorithm can be very large if the augmenting
@@ -411,26 +416,27 @@ lead to making the algorithm parallel.\\
 	    This algorithm is almost identical to the Ford-Fulkerson algorithm, except for the fact that it chooses the shortest augmenting path using 
 	    a Breadth-First search.
 	    
-	    \begin{program}
-	      \mbox{\textbf{Dinic's algorithm to compute the maximum flow}}
-	      \BEGIN \\ %
-		\FOR \text{every edge (i,j)} \in E \DO
-		  \text{Initialize f((i,j)) = 0}
-		\OD
-		\WHILE \exists \text{ a \textbf{shortest unweighted path p} from s to t in the residual network } G_f 
-		    c_f(p) = \min\{c_f((i,j)): (i,j) \in p\}
-		    \FOR \text{each edge (i,j) } \in p \DO
-		      \IF (i,j)\in E 
-		      \THEN 
-			f((i,j)) = f((i,j)) + c_f(p)
+	    \begin{algorithm}[H]
+	      
+	      
+		\For{every edge (i,j) $\in$ E}{
+		  Initialize f((i,j)) = 0 \;
+		}
+		
+		\While{$\exists$ a \textbf{shortest unweighted path p} from s to t in the residual network $G_f$}{
+		    $c_f(p) = \min\{c_f((i,j)): (i,j) \in p\}$\;
+		    \For{each edge (i,j) $\in$ p}{
+		      \eIf{(i,j) $\in$ E}{
 		      
-		      \ELSE
-			f((i,j)) = f((i,j)) - c_f(p)
-		      \FI
-		    \OD
-		 
-	      \END
-	    \end{program}
+			f((i,j)) = f((i,j)) + $c_f$(p)\;
+		      }
+		      {
+			f((i,j)) = f((i,j)) - $c_f$(p)\;
+		      }
+		   } 
+		}    
+	      \caption{Dinic's algorithm to compute the maximum flow}
+	    \end{algorithm}
 	    	  
 	    The part of the algorithm that is in bold is the only difference between this algorithm and Ford-Fulkerson's algorithm. The advantage 
 	    however is that now, the number of residual graphs generated is bounded independent of the edge capacities. \\
@@ -467,29 +473,30 @@ lead to making the algorithm parallel.\\
 	      \end{itemize}
 
 	      
-	      \begin{program}
+	      \begin{algorithm}[H]
 	            
-	      \PROC{INIT\_PREFLOW(G, s):}
-	      \BEGIN \\ %
-		\FOR \text{every vertex v} \in V \DO
-		  potential(v) := 0
-		  reservoir(v) := 0
-		\OD
+	      \Begin( INIT\_PREFLOW {(G,s)}: ){
 		
-		\FOR \text{each edge } (i,j) \in E \DO
-		  f((i,j)) := 0
-		\OD
+ 		\For{every vertex v $\in$ V}{
+ 		  potential(v) := 0 \;
+ 		  reservoir(v) := 0 \;
+ 		}
 		
-		\text{potential(s)} = n
+ 		\For{each edge (i,j) $\in$ E}{
+ 		  f((i,j)) := 0 \;
+ 		}
 		
-		\FOR \text{each vertex v } \in N(s) \DO
-		  f((s,v)) = c((s,v))
-		  reservoir(v) = c(s,v)
-		  reservoir(s) = reservoir(s) - c((s,v))
-		\OD
+ 		potential(s) = n \;
 		
-	      \END
-	    \end{program}
+ 		\For{each vertex v $\in$ N(s)}{
+ 		  f((s,v)) = c((s,v)) \;
+ 		  reservoir(v) = c(s,v) \;
+ 		  reservoir(s) = reservoir(s) - c((s,v)) \;
+ 		}
+ 		\caption{Initializing the preflow}
+	    }
+	    
+	    \end{algorithm}
 	      The above procedure initializes the required variables and vectors before the start of the algorithm. \\
 	      
 	    \textbf{Overflowing vertex} : We say a vertex v is \textit{overflowing}, if the reservoir at vertex $v$ has positive flow accumulated in it,
@@ -508,47 +515,47 @@ lead to making the algorithm parallel.\\
 	      The operation involves re-assigning the potential of this vertex u with one more than the minimum of all such $v$.
 	    \end{itemize}
 	    
-	    \begin{program}
-	      \mbox{\textbf{Push Operation}}
-	      
-	      \PROC{PUSH(u, v):}
-	      \BEGIN \\ %
-		\Delta_f((u,v)) = \min(\text{reservoir(u)}, c_f((u,v)))
+	    \begin{algorithm}[H]
+	      \Begin(PUSH{(u, v)}:)
+	      {
+		$\Delta_f((u,v)) = \min(\text{reservoir(u)}, c_f((u,v)))$ \;
 		
-		\IF (u,v) \in E_f
-		  \THEN
-		    f((u,v)) = f((u,v)) + \Delta_f((u,v))
-		  \ELSE
-		    f((v,u)) = f((v,u)) - \Delta_f((u,v))
-		\FI
-		
-		\text{reservoir(u) = reservoir(u)} - \Delta_f((u,v))
-		\text{reservoir(v) = reservoir(v)} + \Delta_f((u,v))
-	      \END
-	    \end{program}
+		\eIf{(u,v) $\in E_f$}
+		{
+		    f((u,v)) = f((u,v)) + $\Delta_f((u,v))$ \;
+		}
+		{
+		  f((v,u)) = f((v,u)) - $\Delta_f((u,v))$ \;
+		}
+				
+		reservoir(u) = reservoir(u) - $\Delta_f((u,v))$ \;
+		reservoir(v) = reservoir(v) + $\Delta_f((u,v))$ \;
+	      }
+      
+	      \caption{Push Operation}
+	    \end{algorithm}
 	    
-	    \begin{program}
-	      \mbox{\textbf{Relabel Operation}}
+	    \begin{algorithm}[H]
+	      \caption{Relabel Operation}
 	      
-	      \PROC{RELABEL(u):}
-	      \BEGIN \\ %
-		\text{potential(u) = } 1 + \min \{\text{potential(v)} : (u,v) \in E_f \}
-	      \END
-	    \end{program}
+	      \Begin(RELABEL{(u)}:){
+		potential(u) =  1 + $\min \{\text{potential(v)} : (u,v) \in E_f \}$ \;
+	      }
+	    \end{algorithm}
 	    
 	    With the above two functions available, a generic push-relabel algorithm looks as follows:
 	    
-	    \begin{program}
-	      \mbox{\textbf{Push Relabel Template}}
+	    \begin{algorithm}[H]
+	      \caption{Push Relabel Template}
 	      
-	      \PROC{MAX-FLOW(G, s, t):}
-	      \BEGIN \\ %
-		\text{INIT\_FLOW(G, s)}
-		\WHILE \text{exists an applicable push or relabel operation} \DO
-		   \text{Call the appropriate push or relabel operation} 
-		 \OD
-	      \END
-	    \end{program}
+	      \Begin(MAX-FLOW{(G, s, t)}:)
+	      {
+		INIT\_FLOW(G, s) \;
+		\While{$\exists$ an applicable push or relabel operation}{
+		   Call the appropriate push or relabel operation \; 
+		}
+	      }
+	    \end{algorithm}
 
 	    The proof of correctness of this algorithm can be shown by using the potential function on the vertices. We omit the proof here. The 
 	    reader is encouraged to read [bib to cormen] for more details. \\
@@ -578,32 +585,32 @@ lead to making the algorithm parallel.\\
 	    
 	    \textbf{Blocking flow}: A flow f is \textit{blocking} if every s-t path in the graph G has atleast one completely saturated edge. \\
 	    
-	    \begin{program}
-	      \mbox{\textbf{Goldberg-Rao Algorithm}}
+	    \begin{algorithm}[H]
+	      \caption{Goldberg-Rao Algorithm}
 	      
-	      \PROC{Goldberg-Rao(G, s, t):}
-	      \BEGIN \\ %
-		\text{Initialize F as mU, where U = } \displaystyle\max_{(i,j) \in E} u((i,j))
-		\text{Initialize f as 0}
-		\text{Define } \varLambda \text{ as } \min(m^{\frac{1}{2}}, n^{\frac{2}{3}})
+	      \Begin(Goldberg-Rao{(G, s, t)}:)
+	      {
+		Initialize F as mU, where U =  $\displaystyle\max_{(i,j) \in E} u((i,j))$ \;
+		Initialize f as 0 \;
+		Define $\varLambda$ as $\min(m^{\frac{1}{2}}, n^{\frac{2}{3}})$ \;
 		
-		\WHILE F \geq 1 \DO
-		  \text{Assign } \Delta \text{ as } \frac{F}{2 \ast \varLambda}
+		\While{ F $\geq$ 1}{
+		  Assign $\Delta$ as $\frac{F}{2 \ast \varLambda}$ \;
 		  
-		  \FOR i:=1 \TO 5 \ast \varLambda \DO
-		    \text{- Compute the Delta indicator vector L}
-		    \text{- Compute dist(i), using the vector L as the vector of edge lengths}
-		    \text{- Shrink the strongly-connected components of admissible edges}
-		    \text{- Find a flow }\tilde{f} \text{ in the shrunken graph s.t. it is either a blocking flow or value of the flow is }
-		    \frac{\Delta}{4}
-		    \text{- Assign } \bar{f} \text{ as }\tilde{f} \text{ with the flows completely routed within the edges of the }
-		    \text{shrunken components.}
-		    \text{ - }f = f + \bar{f}
-		  \OD
-		  F = \frac{F}{2}
-		\OD
-	      \END
-	    \end{program}
+		  \For{i:=1 to 5 $\ast \varLambda$}{
+		    - Compute the Delta indicator vector L \;
+		    - Compute dist(i), using the vector L as the vector of edge lengths \;
+		    - Shrink the strongly-connected components of admissible edges \;
+		    - Find a flow $\tilde{f}$ in the shrunken graph s.t. it is either a blocking flow or value of the flow is 
+		    $\frac{\Delta}{4}$ \;
+		    - Assign $\bar{f}$ as $\tilde{f}$ with the flows completely routed within the edges of the
+		      shrunken components.\;
+		    - $f = f + \bar{f}$ \;
+		  }
+		  F = $\frac{F}{2}$ \;
+		}
+	      }
+	    \end{algorithm}
 	    
 	    In the above algorithm, \textit{shrinking} a strongly connected component(SCC) means, replacing the entire SCC by a 
 	    single vertex, whose incoming edges are the incoming edges of all vertices of the SCC, and whose outgoing edges
@@ -778,7 +785,30 @@ lead to making the algorithm parallel.\\
 	 making the algorithm run a even larger graphs.\\
 	 
 	 \section{Overview}
-	    The key idea of the CKMST algorithm is that electrical flow
+	    The key idea of the CKMST algorithm is that given an electrical circuit, an approximate set of currents and node potentials can be calculated
+	 very efficiently using some of the fast SDD solvers. The research on algorithms for laplacian solvers is a closely related topic. But, 
+	 in this report we will avoid stating them in great detail and just state the necessary theorems whenever needed. The CKMST algorithm in
+	 particular, uses the Koutis-Miller-Peng algorithm[Link to the Koutis, Miller, Peng paper] as a subroutine. Given, an approximation to the 
+	 electrical currents and potentials(in short we call this the electrical flow), the algorithm, then constructs two subroutines. 
+	 
+	 \begin{itemize}
+	  \item 
+	    \textbf{$(\epsilon, \rho)$ - oracle}: The authors call this an oracle since, given a flow value $F$ and a graph $G$ whose every
+	    edge capacity is 1, this subroutine either returns a flow f whose edge capacities are violated by atmost $\rho$ on each edge 
+	    and whose average is atmost $\epsilon$ or returns a fail which indicates that the required flow value $F$ is too large. Note, that 
+	    having an upperbound on the average makes the sub-routine do more work.
+	  \item
+	    \textbf{Weights update routine}: This function assigns different weights to each edge in each iteration and then uses the flow returned 
+	    by the oracle for a suitable $\epsilon$ and $\rho$ to finally return a flow which does not violate edge capacity at all edges. The main 
+	    intuition behind why a flow that has violated edge capacities in some iteration can be modified to give a flow that does not violate 
+	    any capacity is the fact that the oracle maintains the average capacity as a weighted average over the weights used by the weights
+	    update routine. Hence, by suitably modifying the weights across iterations, one can obtain a required flow.
+	 \end{itemize}
+
+	 
+	 
+	 
+	 
 	 
 	 
 	 

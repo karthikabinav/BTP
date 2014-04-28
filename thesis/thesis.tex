@@ -793,10 +793,31 @@ lead to making the algorithm parallel.\\
 	 
 	 \begin{itemize}
 	  \item 
-	    
+	    \textbf{$(\epsilon, \rho)$ - oracle}: The authors call this an oracle since, given a flow value $F$ and a graph $G$ whose every
+	    edge capacity is 1, this subroutine either returns a flow f whose edge capacities are violated by atmost $\rho$ on each edge 
+	    and whose average is atmost $\epsilon$ or returns a fail which indicates that the required flow value $F$ is too large. Note, that 
+	    having an upperbound on the average makes the sub-routine do more work.
+	  \item
+	    \textbf{Weights update routine}: This function assigns different weights to each edge in each iteration and then uses the flow returned 
+	    by the oracle for a suitable $\epsilon$ and $\rho$ to finally return a flow which does not violate edge capacity at all edges. The main 
+	    intuition behind why a flow that has violated edge capacities in some iteration can be modified to give a flow that does not violate 
+	    any capacity is the fact that the oracle maintains the average capacity as a weighted average over the weights used by the weights
+	    update routine. Hence, by suitably modifying the weights across iterations, one can obtain a required flow.
 	 \end{itemize}
 
-	 
+	  This algorithm achieves a $(1- \epsilon)$- approximation to maximum flow problem in undirected graphs. The main drawback with this algorithm,
+	  as we will see ahead, is that it doesn't actually give a flow vector, but merely gives the value of the flow. This issue was resolved 
+	  in a follow-up work by Orecchia, Kelner et al[link to paper], which adapts a completely different approach using a variety of new techniques
+	  such as non-euclidean gradient descent, construction of oblivious routing and flow sparsifiers. \\
+	  
+	  An important attempt has been to make this algorithm parallel or atleast ``less'' serial. To do that efficiently, a two step method is 
+	  required. Firstly, the update routine itself should be modified to ensure that some updates can be done in parallel. In this regard, we make
+	  certain observations on the update procedure which will lead to a modification in making every two iterations into two parallel iterations.
+	  Although the main crux of the algorithm is in the weights update method, it is also helpful to try and make the subroutine that computes the
+	  approximate electrical flow parallel. This requires the SDD solver itself to have a parallel implementation. In this regard some progress has
+	  been made recently by [link to the new STOC paper].
+	  
+	  
 	 
 	 
 	 
