@@ -75,9 +75,11 @@
                 %nohead]{geometry}[2002/07/08]
 %\parskip 8pt
 % {15.42cm,23cm}
+
+
 \RequirePackage[a4paper,text={15.42cm,23cm},nohead,left=1.3in,right=1in,top=1.3in,
 footskip=30pt,bottom=1in]{geometry}
-\parskip 8pt
+\parskip 6pt
 \setlength\oddsidemargin{0.52cm}
 \setlength\evensidemargin{0.6cm}
 \renewcommand{\@pnumwidth}{2.5em}
