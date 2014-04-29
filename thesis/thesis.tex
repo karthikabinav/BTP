@@ -179,7 +179,8 @@ lead to making the algorithm parallel.\\
  
  \textbf{$U$}  \> This defines the ratio between the highest and lowest capacity in the graph, i.e.\\
 		  \hspace{25mm}$\frac{\displaystyle\max_e u_e}{\displaystyle\min_e u_e}$ \\
- 
+ \textbf{$R$}  \> This defines the ratio between the highest and lowest resistance in an electrical network, i.e.\\
+		  \hspace{25mm}$\frac{\displaystyle\max_e r_e}{\displaystyle\min_e r_e}$ \\
  \end{tabbing}
  \end{singlespace}
  
@@ -779,15 +780,15 @@ lead to making the algorithm parallel.\\
 	      
 	      
 	 \chapter{Cristiano-Kelner-Madry-Spielman-Teng Algorithm}
-	    In this chapter we describe the Cristiano-Kelner-Madry-Spielman-Teng algorithm[CKMST] in full detail. This will help the reader understand
-	 this new approach which manages to get to a near linear running time for the maximum flow problem in undirected graphs. Later in the section
-	 we will also provide some observations and give a method which could possibly lead to a parallel version of the same. This might help in 
-	 making the algorithm run a even larger graphs.\\
+	    In this chapter we describe the Cristiano-Kelner-Madry-Spielman-Teng algorithm[CKMST] in detail. This will aid the reader to understand
+	 the new tools used to get to a near linear running time for the maximum flow problem in undirected graphs. Later in the section
+	 we will also provide some observations and give a method which could possibly lead to a parallel version of the same. This will help in 
+	 making the algorithm further robust and hence, can compute the maximum flow in even larger graphs.\\
 	 
 	 \section{Overview}
 	    The key idea of the CKMST algorithm is that given an electrical circuit, an approximate set of currents and node potentials can be calculated
-	 very efficiently using some of the fast SDD solvers. The research on algorithms for laplacian solvers is a closely related topic. But, 
-	 in this report we will avoid stating them in great detail and just state the necessary theorems whenever needed. The CKMST algorithm in
+	 very efficiently using a fast SDD solver. The research on algorithms for laplacian solvers is a closely related topic. But, 
+	 in this report we will avoid stating them in detail and just state the necessary theorems whenever needed. The CKMST algorithm in
 	 particular, uses the Koutis-Miller-Peng algorithm[Link to the Koutis, Miller, Peng paper] as a subroutine. Given, an approximation to the 
 	 electrical currents and potentials(in short we call this the electrical flow), the algorithm, then constructs two subroutines. 
 	 
@@ -815,15 +816,152 @@ lead to making the algorithm parallel.\\
 	  certain observations on the update procedure which will lead to a modification in making every two iterations into two parallel iterations.
 	  Although the main crux of the algorithm is in the weights update method, it is also helpful to try and make the subroutine that computes the
 	  approximate electrical flow parallel. This requires the SDD solver itself to have a parallel implementation. In this regard some progress has
-	  been made recently by [link to the new STOC paper].
+	  been made recently by [link to the new STOC paper]. \\
+	
+	\section{A $\widetilde{O}(m^{\frac{3}{2}}\epsilon^{\frac{-5}{2}})$ time flow algorithm}
+	  In this section, first we will have a look at a simpler version of the algorithm. After taking key insights from this algorithm,
+	  we can make appropriate observations and modifications to improve the running time. \\
+	  \subsection{$\delta$-approximate flow}
+	    This subroutine is the one which approximates an electrical flow with another flow, known as the $\delta$-approximate flow, whose value is
+	    $F$. This routine uses the solver by Koutis-Miller-Peng as a black-box.
 	  
+	  \begin{algorithm}[H]
+	   \caption{$\delta$-approximate flow}
+	   \KwIn
+	      {\\
+	      $\delta>0$\\
+	      $F>0$ \\
+	      Vector $r$ of resistances in which the ratio of the largest to smallest resistance is atmost $R$ \\
+	      }
+	    \KwOut{\\
+	      Vector potentials $\widetilde{\phi}$,\\ An s-t flow $\widetilde{f}$ of value F
+	    }
+	    
+	    \Begin{
+	     - Scale all the resistances between 1 and R. \\
+	     - Invoke the Koutis-Miller-Peng solver to compute vertex potentials $\widetilde{\phi}$ and $\widetilde{f}$ given F, L , G \\
+	     - Define $i_{ext} = B\widetilde{f}$. \\
+	     - Compute flow $f'$ in the spanning tree of the graph, with demands at each vertex as F$\psi_{s,t} - i_{ext}$. \\
+	     - Return $f'$ + $\widetilde{f}$ as the approximate electrical flow. \\
+	     
+	    }
+	  \end{algorithm}
+
+	    The above can be computed in time $\widetilde{O}(m \log(\frac{R}{\delta}))$. \\
+	    Additionally the output satisfies the following : 
+	  \begin{itemize}
+	  \item 
+	    $\epsilon_r(\widetilde{f}) \leq \epsilon_r(f)\ast [1+\delta]$
+	  \item
+	    For every edge e, \\
+	    
+	    $\mid r_e f_e^2 - r_e \widetilde{f}^2 \mid \leq \frac{\delta}{2mR}\epsilon_r(f)$
+	  \item
+	    $\widetilde{\phi}(s)-\widetilde{\phi}(t) \geq (1-\frac{\delta}{12nmR})\ast F \ast R_{eff}(r)$
+	  \end{itemize}
 	  
-	 
-	 
-	 
-	 
-	 
-	 
+	The algorithms that follow will use the above algorithm as a sub-routine to obtain a $\delta$-approximate electrical flow, for appropriate
+	values of $\delta$.
+	
+	
+	  
+	  \subsection{$(\epsilon,\rho)$- oracle}
+	    This is the second sub-routine that will be used by the algorithm. The construction of such an algorithm uses the $\delta$-approximate
+	    electrical flow algorithm. \\
+	    
+	    \begin{algorithm}[H]
+	     \caption{An ($\epsilon, 3 \sqrt{\frac{m}{\epsilon}}$) - oracle}
+	     \KwIn{
+		\\
+		Real number $F>0$ \\
+		$w$ - vector of edge weights, where $w_e \geq 1 ~~ \forall e \in E$ \\
+	     }
+	     \KwOut{
+	      \\
+	      A s-t flow $f$ satisfying the criteria. \\
+	     
+	     }
+	     \Begin{
+		- Assign $r_e$ as $\frac{1}{u_e^2}\left( w_e + \frac{\epsilon \mid w \mid _1}{3m} \right)$ for each edge $e$ in the graph. \newline
+		- Invoke Algorithm 4.1 using the above resistances and $\frac{\epsilon}{3}$ as the value of $\delta$. \newline
+		- Let $\overline{f}$ be the returned approximate electrical flow. \newline
+		\eIf{$\epsilon_r(\overline{f}) > (1+\epsilon)\mid w \mid _1$}
+		{
+		    Return ``fail''
+		 }
+		 {
+		    Return $\overline{f}$
+		 }
+     
+	     }
+	    \end{algorithm}
+   
+	    A generic oracle has the following properties.
+	    \begin{itemize}
+	     \item 
+	      If $F \leq F^{\ast}$, output a flow f s.t. \\
+	      
+		\begin{itemize}
+		 \item 
+		    $|f| = F$ \\
+		 \item
+		    $\frac{\sum\limits_{e} w_e \ast cong_f(e)}{\sum\limits_{e} w_e} \leq (1+\epsilon)$ \\
+		 \item
+		    $\max\limits_{e} cong_f(e) \leq \rho$ \\
+		\end{itemize}
+
+	     \item
+		If $F > F^{\ast}$, output a flow $f$ satisfying the above or ``fail''.
+	  \end{itemize}
+	    Hence, this oracle returns a flow which relaxes the constraint criteria on every edge by a factor of $\rho$, but at the same time ensures
+	    that not too many edge capacities are violated by constraining the average to have an upper bound of $\epsilon$.
+	    
+	  \subsection{Main Algorithm}
+	      The main algorithm calls the $(\epsilon,\rho)$ subroutine many times with different weights and then takes an average of all the values
+	      returned by the oracle as the required value of flow. Note, the flow returned by this algorithm should maintain the congestion criteria
+	      for each of the edges. On the other hand, the oracle may return a flow whose congestion at each edge is as bad as $\rho$. But, since
+	      the oracle gives a upper bound on the average congestion, the algorithm uses that critically to, in some sense ``correct'' the value of 
+	      flows. \\
+	      
+	      Note, this algorithm requires a target flow value $F$ as an input. Hence, to get a value of maximum flow, we can perform a recursive
+	      doubling and binary search on the value of $F$ to get to the value $F^{\ast}$. \\
+	      
+	      \textbf{Note}: The superscript on the weight vector implies the weights in the $i^{th}$ iteration of the algorithm. \\
+	      
+	      \begin{algorithm}[H]
+	        \caption{A $\widetilde{O}(m^{\frac{3}{2}}\epsilon^{\frac{-5}{2}})$ time flow algorithm for maximum flow}
+	        \KwIn{
+		  \\
+		  A graph $G$ \\
+		  A vector u of edge capacities \\
+		  A target flow value F \\
+		  ($\epsilon, \rho)$ - oracle O \\
+		}
+		\KwOut{
+		  \\
+		  Either a flow $f$ or ``fail'' indicating $F > F^{\ast}$ \\
+		}
+		\Begin{
+		  - Initialize the weights $w^0$ as $w_e =1$ for all the edges e. \newline
+		  - Initialize N as $\frac{2\rho \ln(m)}{\epsilon^2}$ \newline
+		  \For{i =1 to N}
+		  {
+		    - Query the oracle O with $w^{i-1}$ and target flow as $F$ \newline
+		    \eIf{O returns a ``fail''}
+		    {
+			return ``fail''
+		    
+		    }
+		    {
+			 - Let $f^i$ be the value of the returned flow. \newline
+			 - Update weights as
+			 $$w^{i} = w^{i-1}\ast\left(1+\frac{\epsilon\ast cong_{f^i}(e)}{\rho}\right)$$
+		    }
+		  }
+		  - Return $f$ as $\frac{(1-\epsilon)^2}{(1+\epsilon)N}\left(\sum\limits_{i} f^i\right)$
+		}
+	      \end{algorithm}
+
 	 
 	
     \chapter{A SAMPLE APPENDIX}
