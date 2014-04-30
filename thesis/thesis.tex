@@ -93,8 +93,14 @@ Date:
 % Acknowledgements
 \acknowledgements
 
-
-Acknoledgements
+  I would like to thank Prof. Narayanaswamy for guiding me through the course of this project and giving me pointers to various reading material
+  whenever I needed them. The discussions with him during the course of project enhanced my understanding of this topic and shaped my new ideas.
+  I would also like to convey my sincere gratitude to the other theory professors in the department namely Prof. Jayalal Sarma, Prof. Ragavendra Rao and
+  Prof. Pandu Rangan for the various courses I took with them which helped me enhance my interest towards this subject. \\
+  
+  I would also like to thank my parents and brother for their constant support during the ups and downs of my life. I would also like to thank 
+  my wingmates and classmates for their constant encouragement and help during my years of stay here. And finally, I would also like to thank the department
+  for providing an opportunity to conduct research as undergraduate, which greatly helped me in making an informed career choice.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Abstract
@@ -128,8 +134,7 @@ electrical flow. This algorithm broke the running time barrier of Golderg-Rao an
 In this thesis, we give a survey of the above algorithms for the maximum flow problem. We first start off by giving a brief description of the 
 classical algorithms. We then conclude this by giving a completely recursive specification for the push-relabel algorithm.
 We then present the required tools from spectral graph theory and linear algebra that is required to understand the almost linear 
-time algorithm. Finally, we present the Cristiano-Kelner-Madry-Spielman-Teng algorithm in detail. We will also present some of the key theorems from the 
-Koutis-Miller-Peng SDD solver. Finally, we give some arguments to justify the requirement of the weight updates and also show some steps that can possibly
+time algorithm. We then present the Cristiano-Kelner-Madry-Spielman-Teng algorithm in detail. Finally, we give some arguments to justify the requirement of the weight updates and also show some steps that can possibly
 lead to making the algorithm parallel.\\
 
 \pagebreak
@@ -160,9 +165,13 @@ lead to making the algorithm parallel.\\
 \begin{tabbing}
  xxxxxxxxxxx \= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \kill
 \textbf{IITM}   \> Indian Institute of Technology, Madras \\
+ \textbf{LP}  \> Linear Program \\
 \textbf{BFS} \> Breadth First Search \\
 \textbf{DFS} \> Depth First Search \\
+ \textbf{SCC} \> Strongly Connected Components \\
 \textbf{SDD} \> Symmetric Diagonally Dominant \\
+\textbf{CKMST} \> Cristiano-Kelner-Madry-Spielman-Teng Algorithm \\
+ \textbf{KMP} \> Koutis-Miller-Peng Solver \\
 \end{tabbing}
 
 \pagebreak
@@ -181,6 +190,8 @@ lead to making the algorithm parallel.\\
  \textbf{$n$} \> The number of vertices in a graph G \\
  
  \textbf{$u$}  \> A $m \ast 1$ matrix containing the capacities of the edges \\
+ 
+ \textbf{$r$}  \> A $m \ast 1$ matrix containing the resistances of the links in the network \\
  
  \textbf{$U$}  \> This defines the ratio between the highest and lowest capacity in the graph, i.e.\\
 		  \hspace{25mm}$\frac{\displaystyle\max_e u_e}{\displaystyle\min_e u_e}$ \\
@@ -993,7 +1004,7 @@ lead to making the algorithm parallel.\\
 		}
 	      \end{algorithm}
 	    
-	\section{Observations and a baby step towards parallelism}
+	\section{Our observations and a baby step towards parallelism}
 	  As stated earlier, the weights update procedure above inherently makes this algorithm highly sequential. In this section, we try and modify 
 	  some parameters of the algorithm which gives a first step towards parallelism. We hope that this can be fully extended to make it completely
 	  parallel. \\
@@ -1159,7 +1170,7 @@ lead to making the algorithm parallel.\\
 	     
 	     }
 	     \Begin{
-		- Set $\rho$ as $\frac{8m^{\frac{1}{3}}\log(m)^{\frac{1}{3}}}{\epsilon}$ \newline
+		- Set $\rho$ as $\frac{8m^{\frac{1}{3}}(\log m)^{\frac{1}{3}}}{\epsilon}$ \newline
 		- Assign $r_e$ as $\frac{1}{u_e^2}\left( w_e + \frac{\epsilon \| w \| _1}{3m} \right)$ for each edge $e$ in the $E \setminus H$. \newline
 		- Invoke Algorithm 4.1 using the above resistances and $\frac{\epsilon}{3}$ as the value of $\delta$.
 		  Invoke it on the graph G(V, $E \setminus H$).\newline
@@ -1182,11 +1193,9 @@ lead to making the algorithm parallel.\\
 	    \end{algorithm}
 	     As the reader would have observed, this just makes a small modification to the original oracle. It just ensures that those edges which have been
 	     filled to capacity are eliminated from the graph. \\
-	     
-	     Similarly the main weights update will be modified to accommodate for the removal of forbidden edges.
-	     
+	    	     
 	     \begin{algorithm}[H]
-	        \caption{A $\widetilde{O}(m^{\frac{3}{2}}\epsilon^{\frac{-5}{2}})$ time flow algorithm for maximum flow}
+	        \caption{A $\widetilde{O}(m^{\frac{4}{3}}\epsilon^{-3})$ time flow algorithm for maximum flow}
 	        \KwIn{
 		  \\
 		  A graph $G$ \\
@@ -1200,10 +1209,12 @@ lead to making the algorithm parallel.\\
 		}
 		\Begin{
 		  - Initialize the weights $w^0$ as $w_e =1$ for all the edges e. \newline
+		  - Initialize H as $\phi$ \newline
+		  - Initialize $\rho$ as $\frac{8 m^{\frac{1}{3}} \log^{\frac{1}{3}} m}{\epsilon}$ and N as $\frac{2 \rho \log m}{\epsilon^2}$ \newline
 		  - Initialize N as $\frac{2\rho \ln(m)}{\epsilon^2}$ \newline
 		  \For{i =1 to N}
 		  {
-		    - Query the oracle O with $w^{i-1}$ and target flow as $F$ \newline
+		    - Query the oracle O with $w^{i-1}$, target flow as $F$ and the forbidden edge set as H \newline
 		    \eIf{O returns a ``fail''}
 		    {
 			return ``fail''
@@ -1211,6 +1222,7 @@ lead to making the algorithm parallel.\\
 		    }
 		    {
 			 - Let $f^i$ be the value of the returned flow. \newline
+			 - Replace H with the set $H'$ returned by the oracle. \newline
 			 - Update weights as
 			 $$w^{i} = w^{i-1}\ast\left(1+\frac{\epsilon\ast cong_{f^i}(e)}{\rho}\right)$$
 		    }
@@ -1219,6 +1231,60 @@ lead to making the algorithm parallel.\\
 		}
 	      \end{algorithm}
 	      
+	      Similarly the main weights update is modified to accommodate for the removal of forbidden edges. As it is already clear, the weights update
+	      mechanism is untouched in this modified algorithm. Hence, our approach towards a parallel version can be easily adopted here. \\
+	      
+	      \subsection{Correctness and Running Time of the modified algorithm}
+		
+		The strategy to show the correctness is to prove a bound on u(H), which is the total capacity of the edges added to set H when the algorithm
+		terminates. Also, the number of edges in set H is upperbounded at the end of the algorithm. More formally, the following theorem is proved. \\
+		
+		\begin{thm}
+		  At the end of the algorithm, the following bounds hold true:
+		  $$ \mid H \mid \leq \frac{30 m \log m}{\epsilon^2 \rho ^2} ~~~~~ and$$ 
+		  $$ u(H) \leq \frac{30 m F \log m}{\epsilon^2 \rho ^3}$$
+		  
+		\end{thm}
+		
+		We will avoid the detailed proof of this theorem. The reader is advised to take a look at [link to paper] for the proof. We will 
+		just give the overall idea here. The key idea is to use the resistances of the network as potential function and note that edges
+		that are added into H set are those that contribute to a significant fraction of the energy. Then, bound the maximum change in effective
+		resistance during the run of the algorithm and hence bound H. \\
+		
+		Given this theorem, we will briefly show how the authors prove the running time. \\
+		
+		\begin{thm}
+		  For $F \leq F^{\ast}$, the algorithm returns a flow $\overline{f}$, which is an (1-$\epsilon$)- approximation to F, in time
+		  $\widetilde{O}(m^{\frac{4}{3}} \epsilon^{-3})$.
+		\end{thm}
+		
+		\begin{proof}
+		  The ($\epsilon, \rho$) - oracle either adds edges to the set H or makes a call to algorithm 4.1. The number of calls made to this 
+		  algorithm is atmost N + $\mid H \mid$. And from theorem 8 we have an upper bound on $\mid H \mid$. Plugging this value and the 
+		  value of N used, we get the required running time as 
+		  (N + $\mid H \mid$)$\widetilde{O}(m \log(\frac{1}{\epsilon})) \leq \widetilde{O}(m^{\frac{4}{3}} \epsilon^{-3})$. \\
+		  
+		  Now, we need to show the part where it returns a flow $\overline{f}$, whenever $F \leq F^{\ast}$. \\
+		  
+		  Substitute the value $\rho$ used in the algorithm in theorem 8. We get,
+		  $$u(H) \leq \frac{\epsilon F}{12}$$
+		  
+		  Hence, during the entire algorithm, the graph has a flow atleast $F^{\ast} - \frac{\epsilon F}{12} \geq (1-\frac{\epsilon}{12})F$.
+		\end{proof}
+		
+		We will now show the step 2 by using the sparsification technique given by Karger et al. More formally, by direct application of the 
+		following theorem given by them, we get the required improvement. 
+		
+		\begin{thm}
+		 Given a T(m,n,$\epsilon$) algorithm to find a (1-$\epsilon$)-approximate flow in undirected graph, it can be used to obtain 
+		 a (1-$\epsilon$)-approximate flow in time $\widetilde{O}(\frac{\epsilon^2 m}{n}T(\widetilde{O}(n \epsilon^{-2}),n,\epsilon))$ using 
+		 ``graph smoothing'' as defined by Karger, et al.
+		\end{thm}
+
+		Hence, a direct application of this theorem with T(m,n,$\epsilon$) = $\widetilde{O}(m^{\frac{4}{3}} \epsilon^{-3})$ gives 
+		the required bound of $\widetilde{O}(mn^{\frac{1}{3}} \epsilon^{\frac{-11}{3}})$.
+		
+		
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography.
 \pagebreak
