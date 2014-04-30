@@ -888,8 +888,6 @@ lead to making the algorithm parallel.\\
 	  
 	The algorithms that follow will use the above algorithm as a sub-routine to obtain a $\delta$-approximate electrical flow, for appropriate
 	values of $\delta$.
-	
-	
 	  
 	  \subsection{$(\epsilon,\rho)$- oracle}
 	    This is the second sub-routine that will be used by the algorithm. The construction of such an algorithm uses the $\delta$-approximate
@@ -1073,12 +1071,119 @@ lead to making the algorithm parallel.\\
 	      &\geq \displaystyle\prod_{j=1}^i (\frac{cong_{f^j}(e)}{\rho}+ \alpha. cong_{f^i}(e))\text{\hspace{15mm}( }\frac{cong_{f^j}(e)}{\rho} \leq 1 \text{, from oracle promise)} \\		  
 	      & \geq \displaystyle\prod_{j=1}^i \left[ \frac{cong_{f^j}(e)}{\rho} \left( 1 + \rho.\alpha \right ) \right] \\
 	      &\text{We will place the first restriction on }\alpha. \text{ We want that } \rho.\alpha < \frac{1}{2} \\
+	      \text{Therefore, }& \geq \displaystyle\prod_{j=1}^{i} e^{ \left[ \frac{cong_{f^j}(e)}{\rho}. (1-\rho.\alpha).\rho.\alpha \right]}
+		\text{\hspace{15mm}(Because, }(1+x) \geq e^{x(1-x)}~~\forall~0<x<\frac{1}{2} \text{ )}\\
+	      & \geq e^{\left[ (1-\rho.\alpha). \alpha. \displaystyle\sum_{j=1}^i cong_{f^j}(e) \right]} \\
 	    \end{align*}
-	     
-	     
 	    \end{proof}
+	    
+	    \begin{thm}
+	     For values of $\alpha$, $\beta$, N, such that 
+		  $$\alpha.\rho \leq \frac{1}{2}~~~and$$
+		  $$ \frac{\beta \log m}{(1-\rho \alpha).\alpha.N} + \frac{\beta (1 + \epsilon)}{(1- \rho \alpha)} \leq 1$$
+	     The flow returned by the modified algorithm maintains capacity constraints on all edges $e \in E$.	    
+	    \end{thm}
+	    
+	    \begin{proof}
+	      From theorem 6 we have,
+	      $$\|w_e^N\|_1 \geq w_e^N \geq e^{\left[ (1-\rho.\alpha). \alpha. \displaystyle\sum_{j=1}^N cong_{f^j}(e) \right]}$$
+	      
+	      From theorem 5 we have, 
+	      $$\displaystyle\sum_{e \in E} w^N_e = \|w^N\|_1 \leq m e^{N\alpha(1+\epsilon)}$$
+	      
+	      Combining the two, we get 
+	      $$e^{\left[ (1-\rho.\alpha). \alpha. \displaystyle\sum_{j=1}^N cong_{f^j}(e) \right]} \leq m e^{N\alpha(1+\epsilon)} \text{\hspace{20mm} .. (1)}$$
+	      
+	      Also, we know that $\overline{f} = \beta. \frac{\displaystyle\sum_{i}f^i }{N}$.\\
+	      Dividing by capacities on both sides of the equation,
+	      we get $\displaystyle\sum_{j=1}^N cong_{f^j}(e) = cong_{\overline{f}}(e) \frac{N}{\beta}$. \\
+	      
+	      Plugging this into (1) and taking log on both sides to get an upperbound on $cong_{\overline{f}}(e)$ as follows
+	      $$cong_{\overline{f}}(e) \leq \frac{\beta \log m}{(1-\rho \alpha).\alpha.N} + \frac{\beta (1 + \epsilon)}{(1- \rho \alpha)}$$
+	      
+	      Setting an upperbound of 1 to this 
+	      upperbound will ensure that the edge capacities on every edge will be maintained. This gives the required theorem.
+	    \end{proof}
+	    
+	    Given the above theorems we will now show a possible approach to get to parallelism. The original algorithm uses $\alpha$ as $\frac{\epsilon}{\rho}$
+	    and runs for N = $\frac{2 \rho \log m}{\epsilon^2}$ steps. On the other hand, theorem 7 gives a generalized relationship between the values of 
+	    $\alpha$ and N. Hence, our approach is to try and run many instances of the above algorithm on different values of ($\alpha$, N, $\beta$)
+	    satisfying the above theorem and finally take a some combination of the outputs obtained. The most intuitive method to merge the solutions
+	    is to take the best of the solutions. Since, all of them return an $O(1-\epsilon)$ approximation to the flow, the best solution also will 
+	    be a O($1-\epsilon$) - approximation. \\
+	    
+	    We have attempted to start off with a simplistic method to get the various tuples to be run in parallel. We first assume that we have a 
+	    constant k number of processors. Hence, we will need k tuples of the form ($\alpha_i, N_i, \beta_i$). \\
+	    
+	    We use $N_1 = N_2 = \ldots = N_k = N$, where N is the value used in the original algorithm. Now, fixing N we have to choose 
+	    $k$ values of $\alpha$, one for each $\alpha_i$ such that $\alpha_i.\rho \leq \frac{1}{2}$. This will give us corresponding $k$ values of 
+	    $\beta$, one for each $\beta_i$. Hence, in some sense, we get a k repeated trials of the same algorithm for different parameters and 
+	    we choose the best outcome among these. \\
+	    
+	    We call this the baby-step because, asymptotically, the approximation ratio has remained the same. We just have managed to possibly be 
+	    better off in terms of the constants. We have been pursuing this approach primarily for the fact that, we believe this could be extended
+	    further to possibly logarithmic in $\rho$ number of processors and hope to get to a closer approximation ratio. The other advantage is that 
+	    this approach easily translates to the modification of CKMST algorithm. In their work, they start off with this algorithm and perform a modification
+	    to this to get to another algorithm which performs even better in terms of running time. This approach can be directly translated in that 
+	    setting since, their modification still uses the same weights update procedure.
 
-
+	    
+	    \section{A $\widetilde{O}(m n^{\frac{1}{3}}\epsilon^{\frac{-11}{3}})$ time flow algorithm}
+	      In this section, we continue to explain the algorithm proposed by Cristiano, et al. They use the previous algorithm as a base and further improve 
+	      the running time. This improvement from the previous algorithm is achieved in two steps.
+	      \begin{itemize}
+	       \item 
+		In the first step, by making some observations and hence, modifying the updates procedure and the ($\epsilon, \rho$)-oracle a
+		$\widetilde(m^{\frac{4}{3}}\epsilon^{-3})$ algorithm is obtained.
+	      \item
+		 In the second step, the randomized sparsification method, as introduced by Benczar and Karger[link to the paper], is used to first 
+		 sparsify the graph and then apply the algorithm which gives the required $\widetilde{O}(m n^{\frac{1}{3}}\epsilon^{\frac{-11}{3}})$
+		 time flow algorithm.
+	      \end{itemize}
+	      
+	      The key idea to execute the first step is to notice that, once an edge has been filled to capacity, it is better to remove it altogether
+	      from the graph rather than assigning a large weight to it. This way the graph becomes smaller and smaller in subsequent iterations,
+	      hence making the remaining steps faster. They call this set of edges removed as the forbidden edges. \\
+	      
+	      \begin{algorithm}[H]
+	     \caption{A modified ($\epsilon, \rho$) - oracle}
+	     \KwIn{
+		\\
+		Real number $F>0$ \\
+		$w$ - vector of edge weights, where $w_e \geq 1 ~~ \forall e \in E$ \\
+		set H of forbidden edges \\
+	     }
+	     \KwOut{
+	      \\
+	      A s-t flow $f$ satisfying the criteria and a set H' of forbidden edges. \\
+	     
+	     }
+	     \Begin{
+		- Set $\rho$ as $\frac{8m^{\frac{1}{3}}\log(m)^{\frac{1}{3}}}{\epsilon}$ \newline
+		- Assign $r_e$ as $\frac{1}{u_e^2}\left( w_e + \frac{\epsilon \| w \| _1}{3m} \right)$ for each edge $e$ in the $E \setminus H$. \newline
+		- Invoke Algorithm 4.1 using the above resistances and $\frac{\epsilon}{3}$ as the value of $\delta$.
+		  Invoke it on the graph G(V, $E \setminus H$).\newline
+		- Let $\overline{f}$ be the returned approximate electrical flow. \newline
+		\uIf{$\epsilon_r(\overline{f}) > (1+\epsilon)\| w \| _1$ or s,t are disconnected on the set of edges $E \setminus H$}
+		{
+		    Return ``fail''
+		 }
+		 \uElseIf{$\exists~e$ with $cong_{\overline{f}}(e) > \rho$}
+		 {
+		    - Add all $e$ satisfying the condition $cong_{\overline{f}}(e) > \rho$ to the set H. \\
+		    - Restart this procedure. \\
+		 }
+		 \lElse
+		 {
+		    Return $\overline{f}$
+		 }
+     
+	     }
+	    \end{algorithm}
+	     As the reader would have observed, this just makes a small modification to the original oracle. It just ensures that those edges which have been
+	     filled to capacity are eliminated from the graph.
+	      
+	      
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography.
 \pagebreak
