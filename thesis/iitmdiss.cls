@@ -79,7 +79,7 @@
 
 \RequirePackage[a4paper,text={15.42cm,23cm},nohead,left=1.3in,right=1in,top=1.3in,
 footskip=30pt,bottom=1in]{geometry}
-\parskip 6pt
+\parskip 2pt
 \setlength\oddsidemargin{0.52cm}
 \setlength\evensidemargin{0.6cm}
 \renewcommand{\@pnumwidth}{2.5em}

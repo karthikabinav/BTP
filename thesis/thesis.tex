@@ -2,6 +2,7 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage{mathtools}
+\usepackage{amsthm}
 \usepackage{epstopdf}
 \usepackage{times}
 \usepackage{epsf}
@@ -56,6 +57,10 @@
 \end{singlespace} 
 
 
+\newtheorem{thm}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{modif}{Modification}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Certificate
@@ -142,8 +147,8 @@ lead to making the algorithm parallel.\\
 
 % \listoftables
 % \addcontentsline{toc}{chapter}{LIST OF TABLES}
- \listoffigures
- \addcontentsline{toc}{chapter}{LIST OF FIGURES}
+%  \listoffigures
+%  \addcontentsline{toc}{chapter}{LIST OF FIGURES}
 \end{singlespace}
 
 
@@ -630,8 +635,10 @@ lead to making the algorithm parallel.\\
 	       \textbf{Eigen value}: A value $\lambda$ is called the \textit{eigen value} of the matrix A if there exists a vector $x$ such that 
 	       $A.x = \lambda . x$. This vector $x$ is called the \textit{eigen vector} of the matrix A. \\
 	       
-	       \textbf{Proposition}: Let $\lambda_1 \leq \lambda_2 \leq \ldots \leq \lambda_n$ be the eigen values of a $n \ast n$ matrix
-	       A. Let $v_1 , v_2 , \ldots, v_n$ be the corresponding eigen vectors. Then, the matrix A can be written as $\displaystyle\sum_{i=1}^{n} \lambda_i v_i v_i^T$ \\
+	       \begin{prop}
+	       Let $\lambda_1 \leq \lambda_2 \leq \ldots \leq \lambda_n$ be the eigen values of a $n \ast n$ matrix
+	       A. Let $v_1 , v_2 , \ldots, v_n$ be the corresponding eigen vectors. Then, the matrix A can be written as $\displaystyle\sum_{i=1}^{n} \lambda_i v_i v_i^T$ 
+	       \end{prop}
 	       
 	       \textbf{Alternate characterization of eigen values}: \\
 	       
@@ -649,7 +656,11 @@ lead to making the algorithm parallel.\\
 		Let $A$ be the adjacency matrix of the graph and let $D$ be a diagonal matrix which contains the degree of the vertex $i$ in the 
 		$i^{th}$ entry of the principal diagonal and 0 elsewhere. The \textit{graph laplacian} $L$ is defined as $D - A$. \\
 		
-		\textbf{Proposition}: The graph Laplacian L is a positive semi-definite matrix i.e. $\lambda_1(L) \geq 0$. \\
+		\begin{prop}
+		The graph Laplacian L is a positive semi-definite matrix i.e. $\lambda_1(L) \geq 0$.
+		 
+		\end{prop}
+
 		
 		In fact, we can also claim that graph laplacian is not positive definite. It can be easily shown that $\lambda_1(L) = 0$. \\
 		
@@ -659,15 +670,17 @@ lead to making the algorithm parallel.\\
 		One important advantage of this laplacian is that we can test connectivity properties using the eigen values of this matrix. The 
 		following theorem gives the exact relationship. \\
 		
-		\textbf{Theorem}: \\
-		A graph G is connected if and only if the second smallest eigen value of its laplacian is strictly greater than 0. \\
+		\begin{thm}
+		A graph G is connected if and only if the second smallest eigen value of its laplacian is strictly greater than 0. 
+		\end{thm}
 		
 		In fact, a more generalized version of the above theorem can be shown. \\
 		
-		\textbf{Theorem}: \\
+		\begin{thm}
 		Let G be a graph and $L$ be the corresponding laplacian matrix. Let $\lambda_1(L) \leq \lambda_2(L) \leq \ldots \leq \lambda_n(L)$ be the
 		eigen values of L. Let $i$ be such that $\lambda_{i}(L) = 0 $ and $\lambda_{i+1}(L) > 0$.
-		Then, the graph G has exactly $i$ connected components. \\
+		Then, the graph G has exactly $i$ connected components. 
+		\end{thm}
 		
 		Plugging $i=1$ in the above equation gives the theorem on connectivity of the graph. \\
 		
@@ -681,15 +694,16 @@ lead to making the algorithm parallel.\\
 		  looking for flow algorithms that are close to linear time. But, it turns out that for the case of laplacian systems there exists 
 		  nice solvers which can solve it efficiently. The following theorem states this more precisely. \\
 		  
-		  \textbf{Theorem}: \\
+		  \begin{thm}
 		    There exists an algorithm for solving the Laplacian system which takes as input a graph laplacian L, a vector b and an error parameter
 		    $\epsilon$ and returns a solution $x$ to the system such that:
 		    $$\|x - L^{-1}b \|_L \leq \epsilon \|L^{-1}b\|_L$$
+		  \end{thm}
 		    
 		    Additionally, this algorithm runs in time $\tilde{O}(m \log(\frac{1}{\epsilon}))$ where m is the number of non-zero entries in the 
 		    laplacian matrix. \\
 		    
-		    We would like to refer to the reader [link to olivia simpson's research exam] for a brief survey on the development of various 
+		    We would like to direct the reader [link to olivia simpson's research exam] for a brief survey on the development of various 
 		    Laplacian solvers.
 		    
 		    \section{Electrical Flows}
@@ -712,8 +726,11 @@ lead to making the algorithm parallel.\\
 		      
 		     The graph laplacian can now be related to this incidence matrix B by the following theorem. \\
 		     
-		     \textbf{Theorem}: \\
-		     For a graph G having an incidence matrix B and a laplacian L,  $B^TB = L$. \\
+		     
+		     \begin{thm}
+		     
+		     For a graph G having an incidence matrix B and a laplacian L,  $B^TB = L$. 
+		     \end{thm}
 		     
 		     Note in the above theorem, there is no mention of the orientation of the edges for B. Hence, it is true for any arbitrary
 		     orientation of the edges. \\
@@ -729,11 +746,15 @@ lead to making the algorithm parallel.\\
  		     \textbf{Effective Resistance}: Given a particular current vector $c$, we define the effective resistance of an edge $e=(i,j)$ as the 
  		     potential difference across e when a current of value 1A is sent across i to j. \\
  		     
- 		     \textbf{Proposition}: The effective resistance $R_{eff}(e) = (e_i - e_j)^T L^{-1} (e_i - e_j)$. Here, $e_i$ is a vector of length
- 		     $\mid V \mid$ which has 1 at the $i^{th}$ location and 0 elsewhere. \\
+ 		     \begin{prop}
+		      The effective resistance $R_{eff}(e) = (e_i - e_j)^T L^{-1} (e_i - e_j)$. Here, $e_i$ is a vector of length
+ 		     $\mid V \mid$ which has 1 at the $i^{th}$ location and 0 elsewhere. 
+ 		      
+ 		     \end{prop}
+
  		     
  		     We would like to know what is the voltage across a particular edge, when a current of 1A is put across a fixed set of two vertices
- 		     s and t. To do that we will now define the following matrix called the \textit{$\Pi$ matrix}.
+ 		     s and t. To do that we will now define the following matrix called the \textit{$\Pi$ matrix}. \\
  		     
  		     \textbf{$\Pi$ matrix}: \\
  		     This matrix is defined on $\mathbb{R}^{\mid E \mid \ast \mid E \mid}$. 
@@ -758,10 +779,11 @@ lead to making the algorithm parallel.\\
  		    vector of electrical current through each edge. The electrical energy is
  		    $$\epsilon_r(f) = \displaystyle\sum_{e}r_e f_{e}^{2}$$
  		    
- 		    \textbf{Lemma}: \\
-		    Among all valid flows of value F, the one that minimizes the energy is the electrical flow. \\
+ 		    \begin{lemma}
+		    Among all valid flows of value F, the one that minimizes the energy is the electrical flow.
+		    \end{lemma}
 		    
-		  \textbf{Proof}: \\
+		  \begin{proof}
 		    Consider the case of two resistors in series and two resistors in parallel. If we prove the lemma for these two cases, it applies for 
 		    any general circuit. \\
 		    
@@ -771,9 +793,13 @@ lead to making the algorithm parallel.\\
 		    Let $i_1$ and $i_2$ be the electrical flow through resistors $r_1$ and $r_2$. From Kirchoff's law we have $i_1 \ast r_1 = i_2 \ast r_2 $.
 		    The energy now is $\epsilon = r_1  \ast i_1^2 + r_2 \ast i_2^2$. Let us now redistribute the flow as $i_1 + \delta$ and $i_2 - \delta$. 
 		    The value of the flow remains the same. The energy now becomes $\epsilon' = \epsilon + \delta^2(r_1+r_2) \geq \epsilon$. Hence the lemma. \\
- 		     
-		   \textbf{Proposition}: For $r$ being the all 1's vector and an electrical flow $f^{\ast}$, the energy of this flow is given by
+ 		  \end{proof}
+ 		  
+		   \begin{prop} For $r$ being the all 1's vector and an electrical flow $f^{\ast}$, the energy of this flow is given by
 		      $$\epsilon(f^{\ast}) = (e_s - e_t)^T L^{-1} (e_s-e_t)$$
+		    
+		   \end{prop}
+ 
 		
 		
 		
@@ -882,10 +908,10 @@ lead to making the algorithm parallel.\\
 	     
 	     }
 	     \Begin{
-		- Assign $r_e$ as $\frac{1}{u_e^2}\left( w_e + \frac{\epsilon \mid w \mid _1}{3m} \right)$ for each edge $e$ in the graph. \newline
+		- Assign $r_e$ as $\frac{1}{u_e^2}\left( w_e + \frac{\epsilon \| w \| _1}{3m} \right)$ for each edge $e$ in the graph. \newline
 		- Invoke Algorithm 4.1 using the above resistances and $\frac{\epsilon}{3}$ as the value of $\delta$. \newline
 		- Let $\overline{f}$ be the returned approximate electrical flow. \newline
-		\eIf{$\epsilon_r(\overline{f}) > (1+\epsilon)\mid w \mid _1$}
+		\eIf{$\epsilon_r(\overline{f}) > (1+\epsilon)\| w \| _1$}
 		{
 		    Return ``fail''
 		 }
@@ -923,8 +949,15 @@ lead to making the algorithm parallel.\\
 	      the oracle gives a upper bound on the average congestion, the algorithm uses that critically to, in some sense ``correct'' the value of 
 	      flows. \\
 	      
+	      The update of weights in each iteration of the algorithm is the key to the correctness of this algorithm. One severe drawback that can 
+	      be seen is that, to update the weights in the $i^{th}$ iteration, we need the flow values from the $i-1^{th}$ iteration. Hence, this 
+	      induces a serious serial dependency on the algorithm. Hence, to try and attempt to make this algorithm parallel, one of the steps that 
+	      needs to be taken is to try and modify the weights update procedure. This is where our first observation, which we later state as a theorem,
+	      will help.\\
+	      
 	      Note, this algorithm requires a target flow value $F$ as an input. Hence, to get a value of maximum flow, we can perform a recursive
 	      doubling and binary search on the value of $F$ to get to the value $F^{\ast}$. \\
+	      
 	      
 	      \textbf{Note}: The superscript on the weight vector implies the weights in the $i^{th}$ iteration of the algorithm. \\
 	      
@@ -961,29 +994,117 @@ lead to making the algorithm parallel.\\
 		  - Return $f$ as $\frac{(1-\epsilon)^2}{(1+\epsilon)N}\left(\sum\limits_{i} f^i\right)$
 		}
 	      \end{algorithm}
+	    
+	\section{Observations and a baby step towards parallelism}
+	  As stated earlier, the weights update procedure above inherently makes this algorithm highly sequential. In this section, we try and modify 
+	  some parameters of the algorithm which gives a first step towards parallelism. We hope that this can be fully extended to make it completely
+	  parallel. \\
+	  
+	  Clearly, the two key parameters of the algorithm are the the number of iterations it runs for, which is N, and the weights update mechanism.
+	  Once, these two are fixed, the final multiplicative term for the averaging of all the flows is fixed. Here, we fix these as variables and prove bounds 
+	  on these variables. This is done similar to the technique with which the correctness of the CKMST algorithm was shown [link to paper]. \\
+	  
+	  \begin{modif}
+	    Replace the number of iterations $\frac{2 \rho ln m}{\epsilon^2}$ with a variable N. The exact value of this will be fixed after the analysis.
+	  \end{modif}
+	  
+	  The main rationale behind changing this value is that, we try to divide the iterations among many parallel processors, such that their total
+	  sum of iterations remain the same as that of the sequential version. In some sense, we will perform the first few iterations on one processor,
+	  and the next few on another without waiting for the first few to complete and finally merge the two outputs. 
+	  
+	  \begin{modif}
+	   Modify the weights update procedure as 
+	   $$w^{i} = w^{i-1} \ast \left( 1+\alpha \ast cong_{f^i}(e)\right)$$
+	  \end{modif}
+	  
+	  Again, we just know that the weights should be proportional to the congestion of that edge. If a particular edge has been alloted more flow
+	  than its capacity in previous iteration, we should penalize it by having a higher weight for that edge. Hence, its flow in the next iteration
+	  will be smaller owing to the upper bound on the average.
+	  
+          \begin{modif}
+	    Modify the final flow as $\overline{f} = \beta \ast \frac{\displaystyle\sum_{i}f^i}{N}$
+          \end{modif}
+  
+	   Again, the old parameter that was included in the algorithm was a consequence of the particular weights update mechanism. Since, we are seeking
+	   to modify that, this also will be a new parameter for this generic weights update mechanism. \\
+	   
+	   As the reader would have observed, we have now made the original algorithm less specific by replacing some of the 
+	   key values with variables. We will now proceed to the analysis of this algorithm with these variables and show these modifications 
+	   can possibly lead to some parallelism. \\
+	   
+	   Define $\mu^i$ as $\displaystyle\sum_{e \in E} w^i$. Now we will use this as a potential function to give upper and lower bounds on the 
+	   weights during the run of the algorithm. \\
+	   
+	   Clearly, we have $\mu^0 = m$, since initially all the weights are 1. 
+	   
+	   \begin{thm}
+	      For any iteration i,
+		$\mu^{i+1} \leq \mu^i e^{\alpha (1+\epsilon) }$
+	   \end{thm}
+	   
+	   \begin{proof}
+	      The proof for this is similar to the one given in [link to the paper]. 
+	      \begin{align*}
+	      \hspace{2em}&\hspace{-2em}\mu^{i+1}\\
+	      &= \displaystyle\sum_{e \in E} w_e^{i+1} \text{\hspace{15mm}(From definition)}\\
+	      &= \displaystyle\sum_{e \in E} w_e^{i} ( 1+ \alpha. cong_{f^i}(e) )\text{\hspace{15mm}(from the modified weights update procedure)} \\		  
+	      &= \displaystyle\sum_{e \in E} w_e^i + \alpha \displaystyle\sum_{e \in E} w_e^i~cong_{f^{i}}(e) \\
+	      &  \leq \mu^i + \alpha (1+\epsilon) \displaystyle\sum_{e \in E} w_e^i \text{\hspace{15mm}(From the upper bound on average of the flow)} \\
+	      & = \mu^i(1 + \alpha(1+\epsilon))\\
+	      & \leq \mu^i e^{\alpha(1+\epsilon)} \text{\hspace{15mm}Because }(1+x \leq e^x)\\
+	    \end{align*}
+	      
+	   \end{proof}
+	    From the theorem above we can easily conclude that $\displaystyle\sum_{e \in E} w^N_e \leq m e^{N\alpha(1+\epsilon)}$. Also, notice that 
+	    so far we haven't placed any restriction on $\alpha$. Hence, for literally any value of $\alpha$ the above would go through.
 
-	 
-	
-    \chapter{A SAMPLE APPENDIX}
- 
- Just put in text as you would into any chapter with sections and
- whatnot.  Thats the end of it.
+	    \begin{thm}
+	      For any iteration i and any edge e, 
+	        $$w_e^i \geq e^{(1-\rho \alpha).\alpha.\displaystyle\sum_{j=1}^{i} cong_{f^j}(e)}$$
+	    \end{thm}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% List of papers
+	    \begin{proof}
+	      This theorem can again be proved in a similar fashion. We just need to carefully assign some restrictions on the value of $\alpha$
+	      to complete it. 
+	      
+	      \begin{align*}
+	      \hspace{2em}&\hspace{-2em} w_e^{i}\\
+	      &= \displaystyle\prod_{j=1}^{i} (1 + \alpha.cong_{f^j}(e)) \text{\hspace{15mm}(From definition)}\\
+	      &\geq \displaystyle\prod_{j=1}^i (\frac{cong_{f^j}(e)}{\rho}+ \alpha. cong_{f^i}(e))\text{\hspace{15mm}( }\frac{cong_{f^j}(e)}{\rho} \leq 1 \text{, from oracle promise)} \\		  
+	      & \geq \displaystyle\prod_{j=1}^i \left[ \frac{cong_{f^j}(e)}{\rho} \left( 1 + \rho.\alpha \right ) \right] \\
+	      &\text{We will place the first restriction on }\alpha. \text{ We want that } \rho.\alpha < \frac{1}{2} \\
+	      \text{Therefore, }& \geq \displaystyle\prod_{j=1}^{i} e^{ \left[ \frac{cong_{f^j}(e)}{\rho}. (1-\rho.\alpha).\rho.\alpha \right]}
+		\text{\hspace{15mm}(Because, }(1+x) \geq e^{x(1-x)}~~\forall~0<x<\frac{1}{2} \text{ )}\\
+	      & \geq e^{\left[ (1-\rho.\alpha). \alpha. \displaystyle\sum_{j=1}^i cong_{f^j}(e) \right]} \\
+	    \end{align*}
+	    \end{proof}
+	    
+	    \begin{thm}
+	     For values of $\alpha$, $\beta$, N, such that 
+		  $$\alpha.\rho \leq \frac{1}{2}~~~and$$
+		  $$ \frac{\beta \log m}{(1-\rho \alpha).\alpha.N} + \frac{\beta (1 + \epsilon)}{(1- \rho \alpha)} \leq 1$$
+	     The flow returned by the modified algorithm maintains capacity constraints on all edges $e \in E$.	    
+	    \end{thm}
+	    
+	    \begin{proof}
+	      From theorem 6 we have,
+	      $$\|w_e^N\|_1 \geq w_e^N \geq e^{\left[ (1-\rho.\alpha). \alpha. \displaystyle\sum_{j=1}^N cong_{f^j}(e) \right]}$$
+	      
+	      From theorem 5 we have, 
+	      $$\displaystyle\sum_{e \in E} w^N_e = \|w^N\|_1 \leq m e^{N\alpha(1+\epsilon)}$$
+	      
+	      Combining the two, we get 
+	      $$e^{\left[ (1-\rho.\alpha). \alpha. \displaystyle\sum_{j=1}^N cong_{f^j}(e) \right]} \leq m e^{N\alpha(1+\epsilon)} \text{\hspace{20mm} .. (1)}$$
+	      
+	      Also, we know that $\overline{f} = \beta. \frac{\displaystyle\sum_{i}f^i }{N}$.\\
+	      Dividing by capacities on both sides of the equation,
+	      we get $\displaystyle\sum_{j=1}^N cong_{f^j}(e) = cong_{\overline{f}}(e) \frac{N}{\beta}$. \\
+	      
+	      Plugging this into (1) and take log on both sides to get an upperbound on $cong_{\overline{f}}(e)$. Setting an upperbound of 1 to this 
+	      upperbound will ensure that the edge capacities on every edge will be maintained. This gives the required theorem.
+	    \end{proof}
 
-\chapter*{Publications}
-\vspace{-0.3cm}
 
-\begin{enumerate}
-\item S. M. Narayanamurthy and B. Ravindran (2007). \newblock
-  Efficiently Exploiting Symmetries in Real Time Dynamic Programming. \newblock {\em
-  IJCAI 2007, Proceedings of the 20th International Joint Conference on
-  Artificial Intelligence}, pages 2556--2561.
-\end{enumerate}
-
-%\nocite{bellman, Amarel:1968, manning, knoblock90learning,
-%crawford92theoretical, Barto:rtdp, Ravindran:proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography.
