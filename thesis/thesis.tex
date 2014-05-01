@@ -21,6 +21,7 @@
 % \usepackage{algorithmic}
 \usepackage{program}
 \usepackage[boxed, algochapter, boxruled]{algorithm2e}
+% \usepackage{cite}
 
 
 %\include{commands}
@@ -358,7 +359,7 @@ lead to making the algorithm parallel.\\
 	  
 	  \section{Application of Maximum Flow problem in Computer Vision}
 	    In this section, we consider the problem of Energy Minimization, which is a problem very well studied in the computer vision community.
-	  Following the lines of [insert link to paper], we show how this particular problem can be posed as a maximum flow problem. Hence, this will
+	  Following the lines of \cite{Boykov:2004:ECM:1018034.1018355}, we show how this particular problem can be posed as a maximum flow problem. Hence, this will
 	  strengthen the importance of this problem outside the theory community. \\
 	  
 	  The energy function considered in the computer vision community [Link to grieg, et al paper] is usually represented as :
@@ -390,8 +391,7 @@ lead to making the algorithm parallel.\\
 	    
 	    Any s-t cut partitions the pixels into two disjoint groups. Some vertices present in the same partition as the black label vertex
 	    and other vertices present in the same partition as the white label vertex. Hence, for an appropriate setting of the weights based
-	    on the parameters of an energy, a minimum s-t cut cost will correspond to a labeling with the minimum value of this energy. [link to
-	    that paper]
+	    on the parameters of an energy, a minimum s-t cut cost will correspond to a labeling with the minimum value of this energy.
 	    
 	    
 	  \end{itemize}
@@ -474,7 +474,7 @@ lead to making the algorithm parallel.\\
 	      
 	      \subsubsection{Generic Template of the push-relabel algorithm}
 	      In this section we will describe a generic template for any push-relabel algorithm. This is adapted from the text given by 
-	      [bibreference to cormen]
+	      \cite{clrs}.
 	      
 	      Associate with every vertex in the graph two parameters, namely potential and reservoir.
 	      \begin{itemize}
@@ -577,7 +577,7 @@ lead to making the algorithm parallel.\\
 	    \end{algorithm}
 
 	    The proof of correctness of this algorithm can be shown by using the potential function on the vertices. We omit the proof here. The 
-	    reader is encouraged to read [bib to cormen] for more details. \\
+	    reader is encouraged to read \cite{clrs} for more details. \\
 	    	    
 	    Based on the specific implementation of the template i.e. the order of push and relabel operations performed, we can bound the running time 
 	    of the algorithm. In the following sub-section, we give a fully recursive specification of the relabel-to-front algorithm and bound the 
@@ -693,7 +693,7 @@ lead to making the algorithm parallel.\\
 	      \end{prop}
 	      
 	      \begin{proof}
-		We give a rough idea of the proof. For complete details, the reader is encouraged to refer [link to cormen].\\
+		We give a rough idea of the proof. For complete details, the reader is encouraged to refer \cite{clrs}.\\
 		
 		Define ``phase'' as number of operations between two calls to relabel function. Number of relabel operations is O($n^2$). 
 		Number of calls to discharge function between two phases is O($	n$). Next, bound the number of operations taken by discharge function
@@ -705,7 +705,7 @@ lead to making the algorithm parallel.\\
 	    
 	   \section{Goldberg-Rao Blocking Flow Algorithm}
 	    In this section, we briefly describe the idea behind the Goldberg-Rao's algorithm. The description of this algorithm is adapted from 
-	    [link to the lecture notes containing the algorithm] \\
+	    \cite{williamson} \\
 	    
 	    Before describing the main algorithm, we need the following definitions. \\
 	    
@@ -755,12 +755,12 @@ lead to making the algorithm parallel.\\
 	    single vertex, whose incoming edges are the incoming edges of all vertices of the SCC, and whose outgoing edges
 	    are outgoing edges of all vertices of the SCC. \\
 	    
-	    As again, we encourage the reader to refer to [link to the notes] for a complete analysis of the correctness of the above algorithm
+	    As again, we encourage the reader to refer to the lecture notes by \cite{williamson} for a complete analysis of the correctness of the above algorithm
 	    and its running time.
 	 \chapter{Spectral Graphs}
 	     In this chapter, we give some requisite mathematics from spectral graph theory. The definitions and theorems stated in this chapter,
-	     will be the key to understanding the breakthrough Cristiano-Kelner-Madry-Spielman-Teng algorithm and our attempts and observations. We only give the required amount of definitions and would avoid most proofs. This section is adapted from the monograph [link to lx=b].
-	     For a detailed explanation of some of these topics, the reader is advised to refer to [link to Lx=b].\\
+	     will be the key to understanding the breakthrough Cristiano-Kelner-Madry-Spielman-Teng algorithm and our attempts and observations. We only give the required amount of definitions and would avoid most proofs. This section is adapted from the monograph \cite{DBLP:journals/fttcs/Vishnoi13}.
+	     For a detailed explanation of some of these topics, the reader is advised to refer to it.\\
 	     
 	     \section{Eigen Values}
 	       Throughout this report, we will be dealing with square matrices which are symmetric unless explicitly mentioned otherwise. \\
@@ -836,7 +836,7 @@ lead to making the algorithm parallel.\\
 		    Additionally, this algorithm runs in time $\tilde{O}(m \log(\frac{1}{\epsilon}))$ where m is the number of non-zero entries in the 
 		    laplacian matrix. \\
 		    
-		    We would like to direct the reader [link to olivia simpson's research exam] for a brief survey on the development of various 
+		    We would like to direct the reader to a brief survey by \cite{olivia} on the development of various 
 		    Laplacian solvers.
 		    
 		    \section{Electrical Flows}
@@ -967,7 +967,7 @@ lead to making the algorithm parallel.\\
 
 	  This algorithm achieves a $(1- \epsilon)$- approximation to maximum flow problem in undirected graphs. The main drawback with this algorithm,
 	  as we will see ahead, is that it doesn't actually give a flow vector, but merely gives the value of the flow. This issue was resolved 
-	  in a follow-up work by Orecchia, Kelner et al[link to paper], which adapts a completely different approach using a variety of new techniques
+	  in a follow-up work by \cite{DBLP:journals/corr/abs-1304-2338}, which adapts a completely different approach using a variety of new techniques
 	  such as non-euclidean gradient descent, construction of oblivious routing and flow sparsifiers. \\
 	  
 	  An important attempt has been to make this algorithm parallel or atleast ``less'' serial. To do that efficiently, a two step method is 
@@ -975,7 +975,7 @@ lead to making the algorithm parallel.\\
 	  certain observations on the update procedure which will lead to a modification in making every two iterations into two parallel iterations.
 	  Although the main crux of the algorithm is in the weights update method, it is also helpful to try and make the subroutine that computes the
 	  approximate electrical flow parallel. This requires the SDD solver itself to have a parallel implementation. In this regard some progress has
-	  been made recently by [link to the new STOC paper]. \\
+	  been made recently by \cite{DBLP:journals/corr/PengS13}. \\
 	
 	\section{A $\widetilde{O}(m^{\frac{3}{2}}\epsilon^{\frac{-5}{2}})$ time flow algorithm}
 	  In this section, first we will have a look at a simpler version of the algorithm. After taking key insights from this algorithm,
@@ -1133,7 +1133,7 @@ lead to making the algorithm parallel.\\
 	  
 	  Clearly, the two key parameters of the algorithm are the the number of iterations it runs for, which is N, and the weights update mechanism.
 	  Once, these two are fixed, the final multiplicative term for the averaging of all the flows is fixed. Here, we fix these as variables and prove bounds 
-	  on these variables. This is done similar to the technique with which the correctness of the CKMST algorithm was shown [link to paper]. \\
+	  on these variables. This is done similar to the technique with which the correctness of the CKMST algorithm was shown by \cite{DBLP:journals/corr/abs-1010-2921}. \\
 	  
 	  \begin{modif}
 	    Replace the number of iterations $\frac{2 \rho ln m}{\epsilon^2}$ with a variable N. The exact value of this will be fixed after the analysis.
@@ -1174,7 +1174,7 @@ lead to making the algorithm parallel.\\
 	   \end{thm}
 	   
 	   \begin{proof}
-	      The proof for this is similar to the one given in [link to the paper]. 
+	      The proof for this is similar to the one given by \cite{DBLP:journals/corr/abs-1010-2921}. 
 	      \begin{align*}
 	      \hspace{2em}&\hspace{-2em}\mu^{i+1}\\
 	      &= \displaystyle\sum_{e \in E} w_e^{i+1} \text{\hspace{15mm}(From definition)}\\
@@ -1269,7 +1269,7 @@ lead to making the algorithm parallel.\\
 		In the first step, by making some observations and hence, modifying the updates procedure and the ($\epsilon, \rho$)-oracle a
 		$\widetilde(m^{\frac{4}{3}}\epsilon^{-3})$ algorithm is obtained.
 	      \item
-		 In the second step, the randomized sparsification method, as introduced by Benczar and Karger[link to the paper], is used to first 
+		 In the second step, the randomized sparsification method, as introduced by \cite{Benczur:1996:ASM:237814.237827}, is used to first 
 		 sparsify the graph and then apply the algorithm which gives the required $\widetilde{O}(m n^{\frac{1}{3}}\epsilon^{\frac{-11}{3}})$
 		 time flow algorithm.
 	      \end{itemize}
@@ -1368,7 +1368,7 @@ lead to making the algorithm parallel.\\
 		  
 		\end{thm}
 		
-		We will avoid the detailed proof of this theorem. The reader is advised to take a look at [link to paper] for the proof. We will 
+		We will avoid the detailed proof of this theorem. The reader is advised to take a look at the proof given by \cite{DBLP:journals/corr/abs-1010-2921}. We will 
 		just give the overall idea here. The key idea is to use the resistances of the network as potential function and note that edges
 		that are added into H set are those that contribute to a significant fraction of the energy. Then, bound the maximum change in effective
 		resistance during the run of the algorithm and hence bound H. \\
@@ -1408,14 +1408,14 @@ lead to making the algorithm parallel.\\
 		
 		The drawback with using the above method of sparsification is that it is a probabilistic method. Hence, even though one can efficiently
 		approximate the value of the flow, it is not possible to get a vector $f$ which is the approximation for this flow. This was an important
-		open problem until recently Kelner, Orrechia, et al [link to paper], devised a different procedure that obtains a near linear time approximation for this
+		open problem until recently \cite{DBLP:journals/corr/abs-1304-2338}, devised a different procedure that obtains a near linear time approximation for this
 		problem which also gives the flow vector which approximates it. 
 		
 		\section{Future Directions and Important Open Problems}
 		 This work has received lot of attention and still far from completeness. One important direction as we have tried in this work is to
 		 get a parallel version of the same algorithm. This way it can be run in even larger graphs. It is also worthwhile to note that 
-		 the newer algorithm that followed this [link to kelner paper] is also inherently sequential. Hence, it is currently an open problem to
-		 to make these sequence of algorithms parallel. A first step towards this has been [link to STOC] where the authors have managed
+		 the newer algorithm that followed this by \cite{DBLP:journals/corr/abs-1304-2338} is also inherently sequential. Hence, it is currently an open problem to
+		 to make these sequence of algorithms parallel. A first step towards this has been by \cite{DBLP:journals/corr/PengS13} where the authors have managed
 		 to give a fully parallel solver for Laplacian systems. \\
 		 
 		 Another important direction is devising a similar algorithm for directed graphs. The above algorithm looks at the graph as an electrical

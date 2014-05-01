@@ -7,22 +7,6 @@
   isbn = "978-0-262-03384-8"
 }
 
-@book{williamson,
-  author = "David P Williamson, Kathleen King",
-  title = "Lecture Notes on Network Flows",
-  publisher = "Lecture Notes",
-  year = "2007",
-}
-
-@article{olivia,
-  author    = {Olivia Simpson},
-  title     = {Fast Linear Solvers for Laplacian Systems},
-  journal   = {UCSD Research Exam},
-  year      = {2013},
-  pages     = {1-17},
-  
-}
-
 @article{DBLP:journals/fttcs/Vishnoi13,
   author    = {Nisheeth K. Vishnoi},
   title     = {Lx = b},
