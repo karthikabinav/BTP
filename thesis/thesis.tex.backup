@@ -61,6 +61,7 @@
 \newtheorem{lemma}{Lemma}
 \newtheorem{prop}{Proposition}
 \newtheorem{modif}{Modification}
+\newtheorem{defn}{Definition}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Certificate
@@ -582,13 +583,23 @@ lead to making the algorithm parallel.\\
 	    of the algorithm. In the following sub-section, we give a fully recursive specification of the relabel-to-front algorithm and bound the 
 	    running time of this algorithm. \\
 	    
+	    We will need the following definition before describing the algorithm.
+	    
+	    \begin{defn}[\textbf{Admissible edge}]
+	       We call an edge $(i, j) \in E_f$ admissible with respect to the flow f, if dist(i) = dist(j) + $L_f$((i,j)). Here,
+	    the dist(v) refers to the shortest distance of vertex v to sink t. \\
+	    \end{defn}
+
+	    
+	    
+	    
 	    \subsection{Fully Recursive Specification of the Relabel-To-Front Algorithm}
 	      Relabel-To-Front is a specific implementation of the generic push-relabel template. In this algorithm, a list of vertices is maintained during
-	      the run of the algorithm. At any point, the lis is traversed from left to right, looking for an overflowing vertex and a ``discharge''
+	      the run of the algorithm. At any point, the list is traversed from left to right, looking for an overflowing vertex and a ``discharge''
 	      operation is performed on it. A discharge operation either performs a push or a relabel. If the relabel operation is performed on a vertex v,
 	      it is then brought to the front of the list. Hence, the name ``Relabel-To-Front''. \\
 	      
-	      The algoritm contains one key procedure known as the ``discharge'' procedure. The procedure performs the action as follows:
+	      The algorithm contains one key procedure known as the ``discharge'' procedure. The procedure performs the action as follows:
 	      \begin{itemize}
 	       \item 
 		If there is no more vertices left in the list of vertex u 's neighbour, i.e. reached the end of the neighbour list, a relabel operation
@@ -647,7 +658,9 @@ lead to making the algorithm parallel.\\
 	       
 	      \end{algorithm}
 	      The procedure compute flow recursively calls the discharge function on different set of vertices and reorganizes the list. More formally,
-	      it looks as follows
+	      it looks as follows \\
+	      
+	      \textbf{Note}: Follow(list, v) is the vertex that follows vertex v in the list l. \\
 	      
 	      \begin{algorithm}
 	       \caption{Recursive computation of flow}
@@ -657,31 +670,59 @@ lead to making the algorithm parallel.\\
 		  {
 		      return \;
 		  }
+		  
+		  Initialize currentPotential as potential(u) \;
+		  Discharge(u) \;
+		  \If{ potential(u) $>$ currentPotential }
+		  {
+		      Remove u from mainList and add it to the head of the list \;
+		  
+		  }
+		  
+		  Set u as Follow(mainList, u) \;
+		  computeFlow(u) \;
 	       
 	       }
 	       
 	      \end{algorithm}
+	      
+	      This completes the specification of the algorithm. The following proposition proves the bound on the running time.
+	      
+	      \begin{prop}
+	       The above Relabel-To-Front runs in time O($n^3$)
+	      \end{prop}
+	      
+	      \begin{proof}
+		We give a rough idea of the proof. For complete details, the reader is encouraged to refer [link to cormen].\\
+		
+		Define ``phase'' as number of operations between two calls to relabel function. Number of relabel operations is O($n^2$). 
+		Number of calls to discharge function between two phases is O($	n$). Next, bound the number of operations taken by discharge function
+		and hence prove overall running time is O($n^3$).
+	       
+	      \end{proof}
 
 
 	    
 	   \section{Goldberg-Rao Blocking Flow Algorithm}
-	    In this section, we briefly describe the idea behind the goldberg-rao's algorithm. The description of this algorithm is adapted from 
+	    In this section, we briefly describe the idea behind the Goldberg-Rao's algorithm. The description of this algorithm is adapted from 
 	    [link to the lecture notes containing the algorithm] \\
 	    
-	    Before describing the main algorithm, let us first have some definitions in place. \\
+	    Before describing the main algorithm, we need the following definitions. \\
 	    
-	    \textbf{Delta indicator}: We define a vector $L$, which is a delta indicator for a particular flow f i.e.
+	    \begin{defn}[\textbf{Delta indicator}]
+	      A vector $L$, which is a delta indicator for a particular flow f i.e.
 	    \[ L((i,j)) = \left\{ 
 	      \begin{array}{l l}
 	      1 & \quad u_f((i,j)) \leq \Delta\\
 	      0 & \quad \text{otherwise}
 	      \end{array} \right.\]
+	    \end{defn}
 	    
+	    \begin{defn}[\textbf{Blocking flow}]
+	      A flow f is \textit{blocking} if every s-t path in the graph G has atleast one completely saturated edge. \\
+	    \end{defn}
+
 	    
-	    \textbf{Admissible Edge}: We call an edge $(i, j) \in E_f$ admissible with respect to the flow f, if dist(i) = dist(j) + $L_f$((i,j)). Here,
-	    the dist(v) refers to the shortest distance of vertex v to sink t. \\
-	    
-	    \textbf{Blocking flow}: A flow f is \textit{blocking} if every s-t path in the graph G has atleast one completely saturated edge. \\
 	    
 	    \begin{algorithm}[H]
 	      \caption{Goldberg-Rao Algorithm}
@@ -1363,8 +1404,21 @@ lead to making the algorithm parallel.\\
 		\end{thm}
 
 		Hence, a direct application of this theorem with T(m,n,$\epsilon$) = $\widetilde{O}(m^{\frac{4}{3}} \epsilon^{-3})$ gives 
-		the required bound of $\widetilde{O}(mn^{\frac{1}{3}} \epsilon^{\frac{-11}{3}})$.
+		the required bound of $\widetilde{O}(mn^{\frac{1}{3}} \epsilon^{\frac{-11}{3}})$. \\
 		
+		The drawback with using the above method of sparsification is that it is a probabilistic method. Hence, even though one can efficiently
+		approximate the value of the flow, it is not possible to get a vector $f$ which is the approximation for this flow. This was an important
+		open problem until recently Kelner, Orrechia, et al [link to paper], devised a different procedure that obtains a near linear time approximation for this
+		problem which also gives the flow vector which approximates it. 
+		
+		\section{Future Directions and Important Open Problems}
+		 This work has received lot of attention and still far from completeness. One important direction as we have tried in this work is to
+		 get a parallel version of the same algorithm. This way it can be run in even larger graphs. It is also worthwhile to note that 
+		 the newer algorithm that followed this [link to kelner paper] is also inherently sequential. Hence, it is currently an open problem to
+		 to make all of these sequence of algorithms parallel. A first step towards this has been [link to STOC] where the authors have managed
+		 to give a fully parallel solver for Laplacian systems. \\
+		 
+		 Another important direction is devising a similar algorithm for directed graphs. 
 		
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography.
