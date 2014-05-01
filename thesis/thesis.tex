@@ -127,8 +127,8 @@ classical algorithms. The series of algorithms terminated with the algorithm by 
 for edge capacities in $\{1,2,\ldots,U\}$. For 
 extremely large graphs, as in the case of social networks, this algorithm is still far from being practical. \\
 
-In 2008, the breakthrough result by Spielman and Teng gave an algorithm to solve the Symetric Diagonally Dominant(SDD) system of equations in 
-near-linear time. This work was immediately extended by Koutis-Miller-Peng which gave an efficient algorithm to produce an incremental graph sparsifier.
+In 2008, the breakthrough result by \cite{DBLP:journals/corr/abs-0808-4134}, they gave an algorithm to solve the Symetric Diagonally Dominant(SDD) system of equations in 
+near-linear time. This work was immediately extended by \cite{DBLP:journals/corr/abs-1003-2958} which gave an efficient algorithm to produce an incremental graph sparsifier.
 Development of these techniques led to the development of an almost linear time algorithm to the maximum flow problem by Cristiano-Kelner-Madry-Spielman-Teng.
 This involved looking at the graph as a resistive network, approximating the electrical flow and producing an approximate s-t flow from this approximate
 electrical flow. This algorithm broke the running time barrier of Golderg-Rao and gave the first almost-linear time algorithm. \\
@@ -359,10 +359,10 @@ lead to making the algorithm parallel.\\
 	  
 	  \section{Application of Maximum Flow problem in Computer Vision}
 	    In this section, we consider the problem of Energy Minimization, which is a problem very well studied in the computer vision community.
-	  Following the lines of \cite{Boykov:2004:ECM:1018034.1018355}, we show how this particular problem can be posed as a maximum flow problem. Hence, this will
+	  This is adapted from the work of \cite{Boykov:2004:ECM:1018034.1018355}. Following these lines, we show how this particular problem can be posed as a maximum flow problem. Hence, this will
 	  strengthen the importance of this problem outside the theory community. \\
 	  
-	  The energy function considered in the computer vision community [Link to grieg, et al paper] is usually represented as :
+	  The energy function considered in the computer vision community is usually represented as :
 	  $$E(L) = \displaystyle\sum_{p \in P} D_{p}(L_{p}) + \displaystyle\sum_{(p,q) \in N} V_{p,q}(L_p, L_q)$$
 	  where 
 	  $L = \{L_p : p \in P\}$ is a labeling of the image P, $D_p$ is a data penalty function, $V_{p,q}$ is an interaction potential, and 
@@ -705,7 +705,7 @@ lead to making the algorithm parallel.\\
 	    
 	   \section{Goldberg-Rao Blocking Flow Algorithm}
 	    In this section, we briefly describe the idea behind the Goldberg-Rao's algorithm. The description of this algorithm is adapted from 
-	    \cite{williamson} \\
+	    the lecture notes by \cite{williamson} \\
 	    
 	    Before describing the main algorithm, we need the following definitions. \\
 	    
@@ -1354,7 +1354,7 @@ lead to making the algorithm parallel.\\
 	      \end{algorithm}
 	      
 	      Similarly the main weights update is modified to accommodate for the removal of forbidden edges. As it is already clear, the weights update
-	      mechanism is untouched in this modified algorithm. Hence, our approach towards a parallel version can be easily adopted here. \\
+	      mechanism is untouched in this modified algorithm. Hence, our approach towards a parallel version can be easily adapted here. \\
 	      
 	      \subsection{Correctness and Running Time of the modified algorithm}
 		
