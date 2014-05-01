@@ -93,8 +93,14 @@ Date:
 % Acknowledgements
 \acknowledgements
 
-
-Acknoledgements
+  I would like to thank Prof. Narayanaswamy for guiding me through the course of this project and giving me pointers to various reading material
+  whenever I needed them. The discussions with him during the course of project enhanced my understanding of this topic and shaped my new ideas.
+  I would also like to convey my sincere gratitude to the other theory professors in the department namely Prof. Jayalal Sarma, Prof. Ragavendra Rao and
+  Prof. Pandu Rangan for the various courses I took with them which helped me enhance my interest towards this subject. \\
+  
+  I would also like to thank my parents and brother for their constant support during the ups and downs of my life. I would also like to thank 
+  my wingmates and classmates for their constant encouragement and help during my years of stay here. And finally, I would also like to thank the department
+  for providing an opportunity to conduct research as undergraduate, which greatly helped me in making an informed career choice.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Abstract
@@ -191,6 +197,7 @@ lead to making the algorithm parallel.\\
 		  \hspace{25mm}$\frac{\displaystyle\max_e u_e}{\displaystyle\min_e u_e}$ \\
  \textbf{$R$}  \> This defines the ratio between the highest and lowest resistance in an electrical network, i.e.\\
 		  \hspace{25mm}$\frac{\displaystyle\max_e r_e}{\displaystyle\min_e r_e}$ \\
+ \textbf{$A^{-1}$} \> $A^{-1} = (A^{T}.A)^{-1}.A^{T}$ (psuedo inverse) whenever A is a rectangular matrix.
  \end{tabbing}
  \end{singlespace}
  
@@ -452,7 +459,7 @@ lead to making the algorithm parallel.\\
 	    The part of the algorithm that is in bold is the only difference between this algorithm and Ford-Fulkerson's algorithm. The advantage 
 	    however is that now, the number of residual graphs generated is bounded independent of the edge capacities. \\
 	    
-	    The above algorithms were the most efficient known for a long time in the literature until, goldberg and others subsequently introduced the 
+	    The above algorithms were the most efficient known for a long time in the literature until, Goldberg and others subsequently introduced the 
 	    class of algorithms known as the push-relabel algorithms. The algorithms above always maintained edge capacities, while violating the 
 	    reservoir capacity at the vertices. Push-relabel algorithms on the other hand, do the converse. In every iteration, the flow is 
 	    conserved at every vertex, whereas the edge capacity may be violated. And hence, the algorithm progresses towards ``correcting'' these violations
@@ -575,7 +582,87 @@ lead to making the algorithm parallel.\\
 	    of the algorithm. In the following sub-section, we give a fully recursive specification of the relabel-to-front algorithm and bound the 
 	    running time of this algorithm. \\
 	    
-	    
+	    \subsection{Fully Recursive Specification of the Relabel-To-Front Algorithm}
+	      Relabel-To-Front is a specific implementation of the generic push-relabel template. In this algorithm, a list of vertices is maintained during
+	      the run of the algorithm. At any point, the lis is traversed from left to right, looking for an overflowing vertex and a ``discharge''
+	      operation is performed on it. A discharge operation either performs a push or a relabel. If the relabel operation is performed on a vertex v,
+	      it is then brought to the front of the list. Hence, the name ``Relabel-To-Front''. \\
+	      
+	      The algoritm contains one key procedure known as the ``discharge'' procedure. The procedure performs the action as follows:
+	      \begin{itemize}
+	       \item 
+		If there is no more vertices left in the list of vertex u 's neighbour, i.e. reached the end of the neighbour list, a relabel operation
+		is performed on u.
+		\item	
+		  If a neighbour v is found such that $(u,v)$ is an admissible edge, then a push operation is performed along that edge.
+		\item
+		  If both above doesn't happen, it just moves to the next element in the list of neighbours of u.
+	      \end{itemize}
+	      
+	      \textbf{Note}: pointer(u) represents the position of the pointer in the list currently. And neighbourList(u) represents list that 
+	      maintains the vertices which neighbour u. And head(list) represents the first element of the list. \\
+	      
+	      \begin{algorithm}[H]
+	       \caption{Discharge procedure of Relabel-To-Front algorithm}
+	       \Begin(Discharge {(u,v) :} )
+	       {
+		  \If{reservoir(u) $>$ 0}
+		  {
+		      return \;
+		  
+		  }
+		  \uIf{v is NULL}
+		  {
+		      RELABEL(u) \;
+		      pointer(u) = head(neighbourList(u)) \;
+		  }
+		  \uElseIf{ $c_f((u,v)) > 0$ and $potential(u) = potential(v) + 1$ }
+		  {
+		      PUSH(u,v) \;
+		  
+		  }
+		  \Else
+		  {
+		    pointer(u) = pointer(u) + 1 \;
+		  
+		  }
+		  Discharge(u, pointer(u)) \;
+	       }
+	      \end{algorithm}
+	      
+	      Now, we need another driver function which calls the discharge function on required set of vertices which will complete the specification
+	      of this algorithm. \\
+	      
+	      \begin{algorithm}[H]
+		\caption{Recursive specification for relabel-to-front algorithm}
+		\Begin(Relabel-To-Front {(s,t)} :){
+		    INIT\_PREFLOW(G, s) \;
+		    Append $V \setminus \{s,t\}$ to mainList \;
+		    
+		    $\forall~v \in V \setminus \{s,t\}$, Set pointer(v) = head(neighbourList(v)) \;
+		    u = head(mainList) \;
+		    
+		    ComputeFlow(u) \;
+		}
+	       
+	      \end{algorithm}
+	      The procedure compute flow recursively calls the discharge function on different set of vertices and reorganizes the list. More formally,
+	      it looks as follows
+	      
+	      \begin{algorithm}
+	       \caption{Recursive computation of flow}
+	       \Begin( ComputeFlow {(u)}: )
+	       {
+		  \If{u is NULL}
+		  {
+		      return \;
+		  }
+	       
+	       }
+	       
+	      \end{algorithm}
+
+
 	    
 	   \section{Goldberg-Rao Blocking Flow Algorithm}
 	    In this section, we briefly describe the idea behind the goldberg-rao's algorithm. The description of this algorithm is adapted from 
