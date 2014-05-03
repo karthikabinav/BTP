@@ -8,7 +8,7 @@
 }
 
 @book{williamson,
-  author = "David P. Williamson and Kathleen King",
+  author = "David P. Williamson, Kathleen King",
   title = "Lecture Notes on Network Flows",
   publisher = "Lecture Notes",
   year = "2007",
