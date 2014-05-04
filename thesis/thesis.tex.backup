@@ -1411,24 +1411,38 @@ lead to making the algorithm parallel.\\
 		problem which also gives the flow vector which approximates it. 
 		
 		\chapter{Future Directions and Important Open Problems}
-		 This work has received a lot of attention in the recent past and is still far from completeness. There are a number of important questions 
-		 arising out of this work. \\
+		  In summary, we have done the following in this thesis. We first gave an exhaustive survey of all the classical algorithms that are known.
+		  We then explained the CKMST algorithm in detail. We gave a procedure to generalize the weight updates. We then gave a baby-step
+		  approach towards parallelism and finally gave some remarks as to why we believe this is a right direction. \\
+		
+		    The literature so far, has a collection of algorithms to compute the maximum flow in the graph. The CKMST algorithm broke 
+		the running time barrier by introducing a bunch of newer techniques. Some of these techniques are applicable in other settings as well.
+		In fact, this work has received a lot of attention in the recent past and is still far from completeness.
+		There are a number of important questions arising out of this work. \\
 		 
-		 One important direction, as we have tried in this work, is to get a parallel version of the algorithm.
-		 The advantage is that it can be used to compute the maximum flow on even larger graphs. It is also worthwhile to note that 
+		 The following are some of the important open questions that are yet to be answered.
+		 \begin{itemize}
+		  \item 
+		    As we have been trying in this work, it remains an open problem to make the CKMST algorithm completely parallel.
+		    The advantage is that it can be used to compute the maximum flow on even larger graphs. It is also worthwhile to note that 
 		 the newer algorithm that followed this by \cite{DBLP:journals/corr/abs-1304-2338} is also inherently sequential. Hence, it is currently an open problem to
 		 to make the sequence of algorithms parallel. A first step towards this has been by \cite{DBLP:journals/corr/PengS13} where the authors have managed
-		 to give a fully parallel solver for Laplacian systems. 
+		 to give a fully parallel solver for Laplacian systems. \\
 		 
-		 \\
+		 \item
+		    Another important direction is devising a similar algorithm for directed graphs. The above algorithm looks at the graph as an electrical
+		 circuit. By nature, resistors are bidirectional and hence, cannot be easily adapted in a directed graph setting. Getting an algorithm 
+		 for directed graphs which runs in near linear time, will give a logical end to the sequence of sequential algorithms. \\
 		 
-		 Another important direction is devising a similar algorithm for directed graphs. The above algorithm looks at the graph as an electrical
-		 circuit. By nature, resistors are bidirectional and hence, cannot be easily adapted in a directed graph setting. 
+		 \item
+		    The current algorithm has a dependence of poly($\frac{1}{\epsilon}$) in its running time. It is interesting to make algorithms 
+		 improve this bound and hopefully, bring the dependence down to poly($\log (\frac{1}{\epsilon})$). It should be noted that (1-$\epsilon$) is the approximation
+		 ratio of the CKMST algorithm. The work by \cite{DBLP:journals/corr/abs-1304-2338} which followed this algorithm, also has a poly($\frac{1}{\epsilon}$)
+		 dependence on $\epsilon$. Hence, devising algorithms(sequential or parallel) which makes this improvement is another important
+		 direction researchers have been working in the recent times.
+		 \end{itemize}
 		 
-		 \\
 		 
-		 Another direction is the following. The current algorithm runs in poly($\frac{1}{\epsilon}$). It is interesting to make algorithms 
-		 improve this bound and hopefully bring the dependence down to poly($\log (\frac{1}{\epsilon})$).
 		
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography.
