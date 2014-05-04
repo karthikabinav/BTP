@@ -110,13 +110,13 @@ order=-1
 
 [item:iitmdiss.cls]
 archive=true
-column=10
+column=53
 encoding=UTF-8
 highlight=LaTeX
-line=81
+line=209
 mode=LaTeX
-open=false
-order=1
+open=true
+order=2
 
 [item:program.sty]
 archive=true
@@ -260,10 +260,10 @@ order=-1
 
 [item:thesis.tex]
 archive=true
-column=73
+column=20
 encoding=UTF-8
 highlight=LaTeX
-line=1414
+line=1422
 mode=LaTeX
 open=true
 order=0
@@ -299,10 +299,10 @@ open=false
 order=-1
 
 [view-settings,view=0,item:iitmdiss.cls]
-CursorColumn=10
-CursorLine=81
+CursorColumn=53
+CursorLine=209
 JumpList=
-ViMarks=.,81,9,[,81,9,],81,9
+ViMarks=.,209,53,[,209,53,],209,53
 
 [view-settings,view=0,item:program.sty]
 CursorColumn=0
@@ -329,7 +329,7 @@ JumpList=
 ViMarks=.,0,0,[,0,0,],-1,-1
 
 [view-settings,view=0,item:thesis.tex]
-CursorColumn=73
-CursorLine=1414
+CursorColumn=20
+CursorLine=1422
 JumpList=
-ViMarks=.,1414,72,[,1414,72,],1414,72
+ViMarks=.,1422,19,[,1422,10,],1422,19

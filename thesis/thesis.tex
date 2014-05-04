@@ -265,7 +265,7 @@ lead to making the algorithm parallel.\\
 	Given a capacitated graph G($V$, $E$, $\rho$, $\psi$), a source vertex s and a sink vertex t, the goal of the problem is to find the s-t flow
 	such that, the value of the flow is maximized among all possible s-t flows. \\
 	
-	\subsection{Simple Linear Program definition}
+	\subsection{Simple Linear Program Definition}
 	  This problem can be posed as a linear programming problem. The first observation is that since LP's are efficiently solvable in polynomial
 	  time, this will give us a polynomial time algorithm. The dual to the linear
 	  program has a specific interpretation in graph theory. Hence, one can devise potentially more faster algorithms by using primal-dual
@@ -357,7 +357,7 @@ lead to making the algorithm parallel.\\
 	  
 	  Hence, the dual to the maximum flow problem is a relaxation of the s-t minimum cut problem.
 	  
-	  \section{Application of Maximum Flow problem in Computer Vision}
+	  \section{Application of Maximum Flow Problem in Computer Vision}
 	    In this section, we consider the problem of Energy Minimization, which is a problem very well studied in the computer vision community.
 	  This is adapted from the work of \cite{Boykov:2004:ECM:1018034.1018355}. Following these lines, we show how this particular problem can be posed as a maximum flow problem. Hence, this will
 	  strengthen the importance of this problem outside the theory community. \\
@@ -472,7 +472,7 @@ lead to making the algorithm parallel.\\
 	      such as prolog. \\
 	      
 	      
-	      \subsubsection{Generic Template of the push-relabel algorithm}
+	      \subsubsection{Generic Template of the Push Relabel Algorithm}
 	      In this section, we will describe a generic template for any push-relabel algorithm. This is adapted from the text given by 
 	      \cite{clrs}.
 	      
@@ -817,7 +817,7 @@ lead to making the algorithm parallel.\\
 		
 		Plugging $i=1$ in the above equation gives the theorem on connectivity of the graph. \\
 		
-		\section{Laplacian system of equations}
+		\section{Laplacian System of Equations}
 		  A special subset of system of linear equations is a Laplacian system of equations. In this case, $A.x = b$ system has the matrix 
 		  $A$ as a graph Laplacian corresponding to some graph G. Hence, these are equations of the form $L.x = b$. It turns out that some 
 		  optimization problems over graphs can be posed as a Laplacian system of equations. In fact, one such procedure is used in the 
@@ -976,10 +976,10 @@ lead to making the algorithm parallel.\\
 	  approximate electrical flow parallel. This requires the SDD solver itself, to have a parallel implementation. In this regard, some progress has
 	  been made recently by \cite{DBLP:journals/corr/PengS13}. \\
 	
-	\section{A $\widetilde{O}(m^{\frac{3}{2}}\epsilon^{\frac{-5}{2}})$ time flow algorithm}
+	\section{A $\widetilde{O}(m^{\frac{3}{2}}\epsilon^{\frac{-5}{2}})$ time Flow Algorithm}
 	  In this section, we will first have a look at a simpler version of the algorithm. After taking key insights from this algorithm,
 	  we can make appropriate observations and modifications to improve the running time. \\
-	  \subsection{$\delta$-approximate flow}
+	  \subsection{$\delta$-approximate Flow}
 	    This subroutine is the one which approximates an electrical flow with another flow, known as the $\delta$-approximate flow, whose value is
 	    $F$. This routine uses the solver by Koutis-Miller-Peng as a black-box.
 	  
@@ -1125,7 +1125,7 @@ lead to making the algorithm parallel.\\
 		}
 	      \end{algorithm}
 	    
-	\section{Our observations and a baby step towards parallelism}
+	\section{Our Observations and a Baby Step Towards Parallelism}
 	  As stated earlier, the weights update procedure above inherently makes this algorithm highly sequential. In this section, we try and modify 
 	  some parameters of the algorithm which gives a first step towards parallelism. We hope that this can be fully extended to make it completely
 	  parallel. \\
@@ -1260,7 +1260,7 @@ lead to making the algorithm parallel.\\
 	    setting since, their modification still uses the same weights update procedure.
 
 	    
-	    \section{A $\widetilde{O}(m n^{\frac{1}{3}}\epsilon^{\frac{-11}{3}})$ time flow algorithm}
+	    \section{A $\widetilde{O}(m n^{\frac{1}{3}}\epsilon^{\frac{-11}{3}})$ time Flow Algorithm}
 	      In this section, we continue to explain the algorithm proposed by \cite{DBLP:journals/corr/abs-1010-2921}. They use the previous algorithm as a base and further improve 
 	      the running time. This improvement from the previous algorithm is achieved in two steps.
 	      \begin{itemize}
@@ -1355,7 +1355,7 @@ lead to making the algorithm parallel.\\
 	      Similarly the main weights update procedure is modified to accommodate for the removal of forbidden edges. As it is already clear, the weights update
 	      mechanism is untouched in this modified algorithm. Hence, our approach towards a parallel version can be easily adapted here. \\
 	      
-	      \subsection{Correctness and Running Time of the modified algorithm}
+	      \subsection{Correctness and Running Time of the Modified Algorithm}
 		
 		The strategy to show the correctness is to prove a bound on u(H), which is the total capacity of the edges added to set H when the algorithm
 		terminates. Also, the number of edges in set H is upperbounded at the end of the algorithm. More formally, the following theorem is proved. \\
