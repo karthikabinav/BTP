@@ -15,7 +15,7 @@
 \usepackage{caption}
 \usepackage{subfig}
 \usepackage[dvips]{graphicx}
-% \usepackage[square,numbers,sort]{natbib}
+%  \usepackage[square,numbers,sort]{natbib}
 \usepackage[square]{natbib}
 \usepackage[hypertex]{hyperref} % hyperlinks for references.
 % \usepackage{algorithmic}
@@ -41,7 +41,7 @@
 
 
 \begin{document}
-\bibliographystyle{iitm}
+\bibliographystyle{ieeetr}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 % Title page
 
@@ -98,7 +98,7 @@ Date:
   I would like to thank Prof. Narayanaswamy for guiding me through the course of this project and giving me pointers to various reading material
   whenever I needed them. The discussions with him during the course of project enhanced my understanding of this topic and shaped my new ideas.
   I would also like to convey my sincere gratitude to the other theory professors in the department namely Prof. Jayalal Sarma, Prof. Ragavendra Rao and
-  Prof. Pandu Rangan for the various courses I took with them which helped me enhance my interest towards this subject. \\
+  Prof. Pandu Rangan for the various courses I took with them, which helped me enhance my interest towards this subject. \\
   
   I would also like to thank my parents and brother for their constant support during the ups and downs of my life. I would also like to thank 
   my wingmates and classmates for their constant encouragement and help during my years of stay here. And finally, I would also like to thank the department
@@ -1410,18 +1410,39 @@ lead to making the algorithm parallel.\\
 		open problem until recently \cite{DBLP:journals/corr/abs-1304-2338}, devised a different procedure that obtains a near linear time approximation for this
 		problem which also gives the flow vector which approximates it. 
 		
-		\section{Future Directions and Important Open Problems}
-		 This work has received lot of attention and still far from completeness. One important direction as we have tried in this work is to
-		 get a parallel version of the same algorithm. This way it can be run on even larger graphs. It is also worthwhile to note that 
+		\chapter{Future Directions and Important Open Problems}
+		  In summary, we have done the following in this thesis. We first gave an exhaustive survey of all the classical algorithms that are known.
+		  We then explained the CKMST algorithm in detail. We gave a procedure to generalize the weight updates. We then gave a baby-step
+		  approach towards parallelism and finally gave some remarks as to why we believe this is a right direction. \\
+		
+		    The literature so far, has a collection of algorithms to compute the maximum flow in the graph. The CKMST algorithm broke 
+		the running time barrier by introducing a bunch of newer techniques. Some of these techniques are applicable in other settings as well.
+		In fact, this work has received a lot of attention in the recent past and is still far from completeness.
+		There are a number of important questions arising out of this work. \\
+		 
+		 The following are some of the important open questions that are yet to be answered.
+		 \begin{itemize}
+		  \item 
+		    As we have been trying in this work, it remains an open problem to make the CKMST algorithm completely parallel.
+		    The advantage is that it can be used to compute the maximum flow on even larger graphs. It is also worthwhile to note that 
 		 the newer algorithm that followed this by \cite{DBLP:journals/corr/abs-1304-2338} is also inherently sequential. Hence, it is currently an open problem to
-		 to make these sequence of algorithms parallel. A first step towards this has been by \cite{DBLP:journals/corr/PengS13} where the authors have managed
+		 to make the sequence of algorithms parallel. A first step towards this has been by \cite{DBLP:journals/corr/PengS13} where the authors have managed
 		 to give a fully parallel solver for Laplacian systems. \\
 		 
-		 Another important direction is devising a similar algorithm for directed graphs. The above algorithm looks at the graph as an electrical
-		 circuit. By nature, resistors are bidirectional and hence, cannot be easily adapted in a directed graph setting. \\
+		 \item
+		    Another important direction is devising a similar algorithm for directed graphs. The above algorithm looks at the graph as an electrical
+		 circuit. By nature, resistors are bidirectional and hence, cannot be easily adapted in a directed graph setting. Getting an algorithm 
+		 for directed graphs which runs in near linear time, will give a logical end to the sequence of sequential algorithms. \\
 		 
-		 Another direction is the following. The current algorithm runs in poly($\frac{1}{\epsilon}$). It is interesting to make algorithms 
-		 improve this bound and hopefully bring the dependence down to poly($\log (\frac{1}{\epsilon})$).
+		 \item
+		    The current algorithm has a dependence of poly($\frac{1}{\epsilon}$) in its running time. It is interesting to make algorithms 
+		 improve this bound and hopefully, bring the dependence down to poly($\log (\frac{1}{\epsilon})$). It should be noted that (1-$\epsilon$) is the approximation
+		 ratio of the CKMST algorithm. The work by \cite{DBLP:journals/corr/abs-1304-2338} which followed this algorithm, also has a poly($\frac{1}{\epsilon}$)
+		 dependence on $\epsilon$. Hence, devising algorithms(sequential or parallel) which makes this improvement is another important
+		 direction researchers have been working in the recent times.
+		 \end{itemize}
+		 
+		 
 		
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography.

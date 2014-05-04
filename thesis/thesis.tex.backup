@@ -15,12 +15,13 @@
 \usepackage{caption}
 \usepackage{subfig}
 \usepackage[dvips]{graphicx}
-% \usepackage[square,numbers,sort]{natbib}
+%  \usepackage[square,numbers,sort]{natbib}
 \usepackage[square]{natbib}
 \usepackage[hypertex]{hyperref} % hyperlinks for references.
 % \usepackage{algorithmic}
 \usepackage{program}
 \usepackage[boxed, algochapter, boxruled]{algorithm2e}
+% \usepackage{cite}
 
 
 %\include{commands}
@@ -35,12 +36,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\def\thesistitle{The Maximum-Flow problem in undirected graphs}
+\def\thesistitle{The Maximum Flow Problem in Undirected Graphs}
 \def\thesisauthor{Karthik Abinav S}
 
 
 \begin{document}
-\bibliographystyle{iitm}
+\bibliographystyle{ieeetr}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 % Title page
 
@@ -97,11 +98,11 @@ Date:
   I would like to thank Prof. Narayanaswamy for guiding me through the course of this project and giving me pointers to various reading material
   whenever I needed them. The discussions with him during the course of project enhanced my understanding of this topic and shaped my new ideas.
   I would also like to convey my sincere gratitude to the other theory professors in the department namely Prof. Jayalal Sarma, Prof. Ragavendra Rao and
-  Prof. Pandu Rangan for the various courses I took with them which helped me enhance my interest towards this subject. \\
+  Prof. Pandu Rangan for the various courses I took with them, which helped me enhance my interest towards this subject. \\
   
   I would also like to thank my parents and brother for their constant support during the ups and downs of my life. I would also like to thank 
   my wingmates and classmates for their constant encouragement and help during my years of stay here. And finally, I would also like to thank the department
-  for providing an opportunity to conduct research as undergraduate, which greatly helped me in making an informed career choice.
+  for providing an opportunity to conduct research as an undergraduate, which helped me in making an informed career choice.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Abstract
@@ -109,7 +110,7 @@ Date:
 \abstract
 
 \noindent KEYWORDS: \hspace*{0.5em} \parbox[t]{4.4in}{Graph Theory,
-Maximum Flow, Laplacian solvers }
+Maximum Flow, Laplacian Solvers }
 
 \vspace*{24pt}
 
@@ -118,24 +119,24 @@ Some of the age-old applications involving maximum flow have been in electrical 
 and social networks, this problem has found a newer practical relevance. And since the graphs in these networks are typically very large,
 researchers are sought after creating faster and more efficient algorithms for this problem. \\
 
-Some of the classical algorithms to solve this problem are the Ford-Fulkerson's augmenting path algorithm and the Dinic's Algorithm. These algorithms
+Some of the classical algorithms to solve this problem are the Ford-Fulkerson's augmenting path algorithm and the Dinic's algorithm. These algorithms
 compute the exact value of the maximum flow. It is also fairly straightforward to obtain the optimal flow vector after the termination of the
-algorithm. The main drawback with this algorithm is that the running time, though polynomial, is very high and is expensive to use in many practical
-situations. Following these algorithms a series of algorithms based on push-relabel and blocking flow techniques were devised which had a slightly better running time as compared to the 
+algorithm. The main drawback with this algorithm is that the running time, although polynomial, is very high and is expensive to use in many practical
+situations. Following these algorithms, a series of algorithms based on push-relabel and blocking flow techniques were devised which had a slightly better running time when compared to the 
 classical algorithms. The series of algorithms terminated with the algorithm by Goldberg-Rao which gave a O($\min(n^{\frac{2}{3}},m^{\frac{1}{2}}) \log(\frac{n^2}{m}) \log U$)-time algorithm
-for edge capacities in $\{1,2,\ldots,U\}$. For 
+where edge capacities are from the set $\{1,2,\ldots,U\}$. For 
 extremely large graphs, as in the case of social networks, this algorithm is still far from being practical. \\
 
-In 2008, the breakthrough result by Spielman and Teng gave an algorithm to solve the Symetric Diagonally Dominant(SDD) system of equations in 
-near-linear time. This work was immediately extended by Koutis-Miller-Peng which gave an efficient algorithm to produce an incremental graph sparsifier.
-Development of these techniques led to the development of an almost linear time algorithm to the maximum flow problem by Cristiano-Kelner-Madry-Spielman-Teng.
-This involved looking at the graph as a resistive network, approximating the electrical flow and producing an approximate s-t flow from this approximate
+In 2008, in the breakthrough result by \cite{DBLP:journals/corr/abs-0808-4134}, they gave an algorithm to solve the Symmetric Diagonally Dominant(SDD) system of equations in 
+near-linear time. This work was immediately extended by \cite{DBLP:journals/corr/abs-1003-2958} where they gave an efficient algorithm to produce an incremental graph sparsifier.
+Development of these techniques led to an almost linear time algorithm to the maximum flow problem by Christiano-Kelner-Madry-Spielman-Teng.
+This involved looking at the graph as a resistive network, approximating the electrical flow and producing an approximate $s-t$ flow from this approximate
 electrical flow. This algorithm broke the running time barrier of Golderg-Rao and gave the first almost-linear time algorithm. \\
 
 In this thesis, we give a survey of the above algorithms for the maximum flow problem. We first start off by giving a brief description of the 
 classical algorithms. We then conclude this by giving a completely recursive specification for the push-relabel algorithm.
-We then present the required tools from spectral graph theory and linear algebra that is required to understand the almost linear 
-time algorithm. We then present the Cristiano-Kelner-Madry-Spielman-Teng algorithm in detail. Finally, we give some arguments to justify the requirement of the weight updates and also show some steps that can possibly
+We then present tools from spectral graph theory and linear algebra that is required to understand the almost linear 
+time algorithm. Following this, we present the Christiano-Kelner-Madry-Spielman-Teng algorithm in detail. Finally, we give some arguments to justify the requirement of the weight updates and also show some steps that can possibly
 lead to making the algorithm parallel.\\
 
 \pagebreak
@@ -171,7 +172,7 @@ lead to making the algorithm parallel.\\
 \textbf{DFS} \> Depth First Search \\
  \textbf{SCC} \> Strongly Connected Components \\
 \textbf{SDD} \> Symmetric Diagonally Dominant \\
-\textbf{CKMST} \> Cristiano-Kelner-Madry-Spielman-Teng Algorithm \\
+\textbf{CKMST} \> Christiano-Kelner-Madry-Spielman-Teng Algorithm \\
  \textbf{KMP} \> Koutis-Miller-Peng Solver \\
 \end{tabbing}
 
@@ -190,9 +191,9 @@ lead to making the algorithm parallel.\\
  
  \textbf{$n$} \> The number of vertices in a graph G \\
  
- \textbf{$u$}  \> A $m \ast 1$ matrix containing the capacities of the edges \\
+ \textbf{$u$}  \> An $m \ast 1$ matrix containing the capacities of the edges \\
  
- \textbf{$r$}  \> A $m \ast 1$ matrix containing the resistances of the links in the network \\
+ \textbf{$r$}  \> An $m \ast 1$ matrix containing the resistances of the links in the network \\
  
  \textbf{$U$}  \> This defines the ratio between the highest and lowest capacity in the graph, i.e.\\
 		  \hspace{25mm}$\frac{\displaystyle\max_e u_e}{\displaystyle\min_e u_e}$ \\
@@ -216,10 +217,10 @@ lead to making the algorithm parallel.\\
  \chapter{INTRODUCTION}
  \label{chap:intro}
     Maximum-Flow problem is an age old optimization problem in mathematics and computer science. Hundreds of researchers have investigated this problem
-    and have given some interesting results. This problem has far-reaching applications in almost every field of engineering and sciences. Hence, this 
+    and have given some interesting results. This problem has far-reaching applications in almost every field of engineering and science. Hence, this 
     problem is of great importance, not just theoretically, but also in real-world applications. Devising better and more efficient algorithms
-    for this problem and its variants has always been the pursuit. Inspite, of having had so much research into this problem, for many years we were far from getting an algorithm
-    that runs in time that is good for practical purposes. This gives an indication of the hardness of this problem.
+    for this problem and its variants, has always been the pursuit. Inspite of having had so much research into this problem for many years, we were far from getting an algorithm
+    that has a running time suitable for practical purposes. This gives an indication of the hardness of this problem.
     
     \section{Basics}
       \subsubsection{Graph}
@@ -231,7 +232,7 @@ lead to making the algorithm parallel.\\
 	An \textit{undirected graph} is a graph where the function $\rho$ is symmetric, i.e. $\rho(a,b) = \rho(b,a)$.
  
       \subsubsection{Directed Graph}
-	An \textit{directed graph} is a graph where the function $\rho$ is not necessarily a symmetric function.
+	A \textit{directed graph} is a graph where the function $\rho$ is not necessarily a symmetric function.
 	
       \subsubsection{Capacitated Graph}
 	A \textit{capacitated graph} is a graph defined as G($V$, $E$, $\rho$, $\psi$), where the first three values in the tuple mean the same as before.
@@ -261,13 +262,13 @@ lead to making the algorithm parallel.\\
 	Given a weighted graph G, let $\phi(\{U_1,U_2\})$ denote the sum of weights of edges such that one of its endpoints is in $U_1$ and the other
 	end point is in $U_2$. The \textit{minimum s-t cut problem} is to select that cut, among all possible s-t cuts, whose value of $\phi$ is minimized.
       \section{Maximum Flow Problem}
-	Given a capacitated graph G($V$, $E$, $\rho$, $\psi$), a source vertex s and a sink vertex t, the goal of the problem is to find a s-t flow
-	such that the value of the flow is maximized among all possible s-t flows. \\
+	Given a capacitated graph G($V$, $E$, $\rho$, $\psi$), a source vertex s and a sink vertex t, the goal of the problem is to find the s-t flow
+	such that, the value of the flow is maximized among all possible s-t flows. \\
 	
 	\subsection{Simple Linear Program definition}
 	  This problem can be posed as a linear programming problem. The first observation is that since LP's are efficiently solvable in polynomial
-	  time, this will already give us a polynomial time algorithm. Though, this is helpful, this is not the main goal. The dual to the linear
-	  program has a specific interpretation in graph theory. Hence, one can devise potentially more faster algorithms by using some primal-dual
+	  time, this will give us a polynomial time algorithm. The dual to the linear
+	  program has a specific interpretation in graph theory. Hence, one can devise potentially more faster algorithms by using primal-dual
 	  methods.
 	  
 	  $$\max \displaystyle\sum_{u:(s,u) \in E} f((s,u))$$
@@ -285,7 +286,7 @@ lead to making the algorithm parallel.\\
 	  Note that a tuple (a, b) represents an edge e whose end points are a and b. \\
 	  
 	  Clearly, the vector $f \in \mathbb{R}^{\mid E\mid }$ forms the set of variables in this LP. The constraints are given to ensure that the set of 
-	  solutions are the set of valid s-t flows. hence, a constraint on the flow conservation on f and the capacity maintenance on f. Hence, for the
+	  solutions are the set of valid s-t flows. There is a constraint on the flow conservation on f and the capacity maintenance on f. Hence, for the
 	  given problem instance, the number of variables are polynomial in $\mid E\mid $ and $\mid V\mid $ and the number of constraints are also polynomial in $\mid E\mid $
 	  and $\mid V\mid $. \\
 	  
@@ -311,8 +312,8 @@ lead to making the algorithm parallel.\\
 	  is accumulated in the vertex v and $\gamma((i,j))$ denotes the flow that flows through the edge $(i,j)$. \\
 	  
 	  Clearly, the number of variables and the number of constraints are both exponential. Hence, we can't really hope to solve this in polynomial
-	  time. The only advantage of this formulation is that a optimal solution to this LP, helps one visualize the amount of flow that goes through
-	  each path independently. This formulation helps understanding of some of the path augmenting algorithms easier.
+	  time. The only advantage of this formulation is that an optimal solution to this LP helps one visualize the amount of flow that goes through
+	  each path independently. This formulation helps in the understanding of some of the path augmenting algorithms.
 	
 	\subsection{Dual of the Maximum Flow LP}
 	  The dual to the maximum flow LP has a very interesting connection to graph theory. In fact, as observed ahead, the dual is a relaxation 
@@ -329,10 +330,10 @@ lead to making the algorithm parallel.\\
 	   
 	  \end{itemize}
 
-	  Here, $y$ is the dual vector corresponding to the constraints in the primal. Hence, $y \in \mathbb{R}^{\mid E\mid }$. Here $P$ is the set of all
+	  Here, $y$ is the dual vector corresponding to the constraints in the primal; hence, $y \in \mathbb{R}^{\mid E\mid }$.  $P$ is the set of all
 	  s-t paths in the graph. \\
 	  
-	  From the constraints, we can now interpret this dual as the relaxation to the s-t minimum cut problem. The vector y can be interpreted 
+	  From the constraints, we can now interpret the dual as the relaxation to the s-t minimum cut problem. The vector y can be interpreted 
 	  as the weight assigned to each edge in the graph. For every s-t path, the sum of edge weights in that path should be atleast one. And the 
 	  objective is to minimize the weighted sum of these edge weights given by the vector $y$. Hence, one optimal solution to this above LP
 	  will consist of assigning a weight of 1 to the edge with minimum $c$ in every s-t path and 0 to the other edges. This, in fact, gives the 
@@ -358,10 +359,10 @@ lead to making the algorithm parallel.\\
 	  
 	  \section{Application of Maximum Flow problem in Computer Vision}
 	    In this section, we consider the problem of Energy Minimization, which is a problem very well studied in the computer vision community.
-	  Following the lines of [insert link to paper], we show how this particular problem can be posed as a maximum flow problem. Hence, this will
+	  This is adapted from the work of \cite{Boykov:2004:ECM:1018034.1018355}. Following these lines, we show how this particular problem can be posed as a maximum flow problem. Hence, this will
 	  strengthen the importance of this problem outside the theory community. \\
 	  
-	  The energy function considered in the computer vision community [Link to grieg, et al paper] is usually represented as :
+	  The energy function considered in the computer vision community is usually represented as :
 	  $$E(L) = \displaystyle\sum_{p \in P} D_{p}(L_{p}) + \displaystyle\sum_{(p,q) \in N} V_{p,q}(L_p, L_q)$$
 	  where 
 	  $L = \{L_p : p \in P\}$ is a labeling of the image P, $D_p$ is a data penalty function, $V_{p,q}$ is an interaction potential, and 
@@ -383,15 +384,14 @@ lead to making the algorithm parallel.\\
 	    The cost of these N-links are the penalty assigned for the discontinuity between the pixels. This can be obtained from the pixel interaction
 	    term $V_{p,q}$ in the energy equation.
 	    \item
-		The T-links, are the edges between the pixel and the terminal node which corresponds to either of
+		The T-links are the edges between the pixel and the terminal node, which corresponds to either of
 	    the two colours. It signifies the penalty of assigning the label corresponding to the terminal to that pixel. This is obtained from
 	    the term $D_p$ in the energy equation.
 	    \end{itemize}
 	    
-	    Any s-t cut partitions the pixels into two disjoint groups. Some vertices present in the same partition as the black label vertex
-	    and other vertices present in the same partition as the white label vertex. Hence, for an appropriate setting of the weights based
-	    on the parameters of an energy, a minimum s-t cut cost will correspond to a labeling with the minimum value of this energy. [link to
-	    that paper]
+	    Any s-t cut partitions the pixels into two disjoint groups. Some vertices are present in the same partition as the black label vertex
+	    and other vertices are present in the same partition as the white label vertex. Hence, for an appropriate setting of the weights based
+	    on the parameters of an energy, a minimum s-t cut cost will correspond to a labeling with the minimum value of this energy.
 	    
 	    
 	  \end{itemize}
@@ -399,7 +399,7 @@ lead to making the algorithm parallel.\\
 
 	 \chapter{Classical Algorithms}
 	  In this chapter, we describe some of the classical algorithms to find the exact value of the maximum flow in an undirected graph. These
-	  algorithms have been widely used and give a lot of insight into the nature of the problem. 
+	  algorithms have been widely used and gives lot of insight into the problem. 
 	  
 	  \section{Ford-Fulkerson Augmenting Path Algorithm}
 	    This is the probably the most widely known algorithm for this problem. This algorithm falls into the class of primal-dual algorithms.
@@ -426,9 +426,9 @@ lead to making the algorithm parallel.\\
 		\caption{Ford-Fulkerson algorithm to compute the maximum flow}
 	    \end{algorithm}
 	    
-	    The running time of this algorithm mostly depends the augmentation method to obtain the residual network. We can show that 
-	    for a suitably ill-set of edge capacities, the number of iterations taken by the above algorithm can be very large if the augmenting
-	    paths are not chose carefully. Dinic's algorithm precisely solves this part by choosing the shortest augmenting path in each iteration
+	    The running time of this algorithm mostly depends on the augmentation method used to obtain the residual network. We can show that 
+	    for a suitably chosen ``ill set'' of edge capacities, the number of iterations taken by the above algorithm can be very large, if the augmenting
+	    paths are not chosen carefully. Dinic's algorithm precisely solves this part by choosing the shortest augmenting path in each iteration
 	    and hence, bounding the overall running time to $O(V^2E)$.
 	  
 	  \section{Dinic's Algorithm}
@@ -458,9 +458,9 @@ lead to making the algorithm parallel.\\
 	    \end{algorithm}
 	    	  
 	    The part of the algorithm that is in bold is the only difference between this algorithm and Ford-Fulkerson's algorithm. The advantage 
-	    however is that now, the number of residual graphs generated is bounded independent of the edge capacities. \\
+	    however is that now, the number of residual graphs generated is bounded, independent of the edge capacities. \\
 	    
-	    The above algorithms were the most efficient known for a long time in the literature until, Goldberg and others subsequently introduced the 
+	    The above algorithms were the most efficient known for a long time in the literature until, Goldberg and others introduced the 
 	    class of algorithms known as the push-relabel algorithms. The algorithms above always maintained edge capacities, while violating the 
 	    reservoir capacity at the vertices. Push-relabel algorithms on the other hand, do the converse. In every iteration, the flow is 
 	    conserved at every vertex, whereas the edge capacity may be violated. And hence, the algorithm progresses towards ``correcting'' these violations
@@ -473,14 +473,14 @@ lead to making the algorithm parallel.\\
 	      
 	      
 	      \subsubsection{Generic Template of the push-relabel algorithm}
-	      In this section we will describe a generic template for any push-relabel algorithm. This is adapted from the text given by 
-	      [bibreference to cormen]
+	      In this section, we will describe a generic template for any push-relabel algorithm. This is adapted from the text given by 
+	      \cite{clrs}.
 	      
 	      Associate with every vertex in the graph two parameters, namely potential and reservoir.
 	      \begin{itemize}
 	       \item 
 		  The potential is a measure of knowing the direction in which particular flow should be sent.
-	      In some sense, it is used to measure the progress of the algorithm between two iterations of the algorithm.
+	      In some sense, it is used to measure the progress of the algorithm between two iterations.
 	      The flow is always sent from a vertex of higher potential to a vertex of lower potential. \\
 	      
 	      \item
@@ -577,7 +577,7 @@ lead to making the algorithm parallel.\\
 	    \end{algorithm}
 
 	    The proof of correctness of this algorithm can be shown by using the potential function on the vertices. We omit the proof here. The 
-	    reader is encouraged to read [bib to cormen] for more details. \\
+	    reader is encouraged to read \cite{clrs} for more details. \\
 	    	    
 	    Based on the specific implementation of the template i.e. the order of push and relabel operations performed, we can bound the running time 
 	    of the algorithm. In the following sub-section, we give a fully recursive specification of the relabel-to-front algorithm and bound the 
@@ -602,16 +602,16 @@ lead to making the algorithm parallel.\\
 	      The algorithm contains one key procedure known as the ``discharge'' procedure. The procedure performs the action as follows:
 	      \begin{itemize}
 	       \item 
-		If there is no more vertices left in the list of vertex u 's neighbour, i.e. reached the end of the neighbour list, a relabel operation
+		If there is no more vertices left in the list of vertex u's neighbour, i.e. reached the end of the neighbour list, a relabel operation
 		is performed on u.
 		\item	
 		  If a neighbour v is found such that $(u,v)$ is an admissible edge, then a push operation is performed along that edge.
 		\item
-		  If both above doesn't happen, it just moves to the next element in the list of neighbours of u.
+		  If the above two doesn't happen, it just moves to the next element in the list of neighbours of u.
 	      \end{itemize}
 	      
-	      \textbf{Note}: pointer(u) represents the position of the pointer in the list currently. And neighbourList(u) represents list that 
-	      maintains the vertices which neighbour u. And head(list) represents the first element of the list. \\
+	      \textbf{Note}: pointer(u) represents the position of the pointer in the list currently. And neighbourList(u) represents a list that 
+	      maintains the vertices which are neighbours to u. And head(list) represents the first element of the list. \\
 	      
 	      \begin{algorithm}[H]
 	       \caption{Discharge procedure of Relabel-To-Front algorithm}
@@ -641,7 +641,7 @@ lead to making the algorithm parallel.\\
 	       }
 	      \end{algorithm}
 	      
-	      Now, we need another driver function which calls the discharge function on required set of vertices which will complete the specification
+	      Now, we need another driver function which calls the discharge function on required set of vertices, which will complete the specification
 	      of this algorithm. \\
 	      
 	      \begin{algorithm}[H]
@@ -657,7 +657,7 @@ lead to making the algorithm parallel.\\
 		}
 	       
 	      \end{algorithm}
-	      The procedure compute flow recursively calls the discharge function on different set of vertices and reorganizes the list. More formally,
+	      The procedure computes flow by making recursively calls to the discharge function on different set of vertices and reorganizes the list. More formally,
 	      it looks as follows \\
 	      
 	      \textbf{Note}: Follow(list, v) is the vertex that follows vertex v in the list l. \\
@@ -689,15 +689,15 @@ lead to making the algorithm parallel.\\
 	      This completes the specification of the algorithm. The following proposition proves the bound on the running time.
 	      
 	      \begin{prop}
-	       The above Relabel-To-Front runs in time O($n^3$)
+	       The above Relabel-To-Front algorithm runs in time O($n^3$)
 	      \end{prop}
 	      
 	      \begin{proof}
-		We give a rough idea of the proof. For complete details, the reader is encouraged to refer [link to cormen].\\
+		We give a rough idea of the proof. For complete details, the reader is encouraged to refer \cite{clrs}.\\
 		
-		Define ``phase'' as number of operations between two calls to relabel function. Number of relabel operations is O($n^2$). 
+		Define ``phase'' as the number of operations between two calls to relabel function. Number of relabel operations is O($n^2$). 
 		Number of calls to discharge function between two phases is O($	n$). Next, bound the number of operations taken by discharge function
-		and hence prove overall running time is O($n^3$).
+		and hence, prove that overall running time is O($n^3$).
 	       
 	      \end{proof}
 
@@ -705,7 +705,7 @@ lead to making the algorithm parallel.\\
 	    
 	   \section{Goldberg-Rao Blocking Flow Algorithm}
 	    In this section, we briefly describe the idea behind the Goldberg-Rao's algorithm. The description of this algorithm is adapted from 
-	    [link to the lecture notes containing the algorithm] \\
+	    the lecture notes by \cite{williamson} \\
 	    
 	    Before describing the main algorithm, we need the following definitions. \\
 	    
@@ -755,15 +755,15 @@ lead to making the algorithm parallel.\\
 	    single vertex, whose incoming edges are the incoming edges of all vertices of the SCC, and whose outgoing edges
 	    are outgoing edges of all vertices of the SCC. \\
 	    
-	    As again, we encourage the reader to refer to [link to the notes] for a complete analysis of the correctness of the above algorithm
+	    As again, we encourage the reader to refer to the lecture notes by \cite{williamson} for a complete analysis of the correctness of the above algorithm
 	    and its running time.
 	 \chapter{Spectral Graphs}
-	     In this chapter, we give some requisite mathematics from spectral graph theory. The definitions and theorems stated in this chapter,
-	     will be the key to understanding the breakthrough Cristiano-Kelner-Madry-Spielman-Teng algorithm and our attempts and observations. We only give the required amount of definitions and would avoid most proofs. This section is adapted from the monograph [link to lx=b].
-	     For a detailed explanation of some of these topics, the reader is advised to refer to [link to Lx=b].\\
+	     In this chapter, we give some requisite mathematics from spectral graph theory. The definitions and theorems stated in this chapter
+	     will be the key to understanding the breakthrough Christiano-Kelner-Madry-Spielman-Teng algorithm, our attempts and observations. We only give the required amount of definitions and would avoid most proofs. This section is adapted from the monograph \cite{DBLP:journals/fttcs/Vishnoi13}.
+	     For a detailed explanation of some of these topics, the reader is advised to refer to it.\\
 	     
 	     \section{Eigen Values}
-	       Throughout this report, we will be dealing with square matrices which are symmetric unless explicitly mentioned otherwise. \\
+	       Throughout this report, we will be dealing with square matrices which are symmetric, unless explicitly mentioned otherwise. \\
 	       
 	       \textbf{Eigen value}: A value $\lambda$ is called the \textit{eigen value} of the matrix A if there exists a vector $x$ such that 
 	       $A.x = \lambda . x$. This vector $x$ is called the \textit{eigen vector} of the matrix A. \\
@@ -782,12 +782,12 @@ lead to making the algorithm parallel.\\
 		$$\lambda_k(A) = \displaystyle\max_{x \in \mathbb{R}^n \setminus \{0\}~:~x^T.v_i = 0~~\forall i \in \{k+1,k+2,\ldots,n\}} \frac{x^TAx}{x^Tx}$$
 	       
 	    \section{Graph Laplacian}
-		Graph Laplacian is a $n \ast n$ matrix which gives lot of algebraic properties of a graph. This matrix is useful for testing many properties
+		Graph Laplacian is a $n \ast n$ matrix which gives a lot of algebraic properties of a graph. This matrix is useful for testing many properties
 		of a graph algebraically. For example, one can test connectivity of a graph using the eigen values of this matrix. In fact, we can also extend
 		this and find the number of connected components in the graph by using the eigen values. \\
 		
 		Let $A$ be the adjacency matrix of the graph and let $D$ be a diagonal matrix which contains the degree of the vertex $i$ in the 
-		$i^{th}$ entry of the principal diagonal and 0 elsewhere. The \textit{graph laplacian} $L$ is defined as $D - A$. \\
+		$i^{th}$ entry of the principal diagonal and 0 elsewhere. The \textit{graph Laplacian} $L$ is defined as $D - A$. \\
 		
 		\begin{prop}
 		The graph Laplacian L is a positive semi-definite matrix i.e. $\lambda_1(L) \geq 0$.
@@ -795,22 +795,22 @@ lead to making the algorithm parallel.\\
 		\end{prop}
 
 		
-		In fact, we can also claim that graph laplacian is not positive definite. It can be easily shown that $\lambda_1(L) = 0$. \\
+		In fact, we can also claim that graph Laplacian is not positive definite. It can be easily shown that $\lambda_1(L) = 0$. \\
 		
 		The above definition also translates to a weighted graph, where every edge of weight $w$ is replaced by $w$ parallel edges and use the 
 		same definition as above. \\
 		
-		One important advantage of this laplacian is that we can test connectivity properties using the eigen values of this matrix. The 
+		One important advantage of the Laplacian is that we can test connectivity properties using the eigen values of this matrix. The 
 		following theorem gives the exact relationship. \\
 		
 		\begin{thm}
-		A graph G is connected if and only if the second smallest eigen value of its laplacian is strictly greater than 0. 
+		A graph G is connected if and only if the second smallest eigen value of its Laplacian is strictly greater than 0. 
 		\end{thm}
 		
 		In fact, a more generalized version of the above theorem can be shown. \\
 		
 		\begin{thm}
-		Let G be a graph and $L$ be the corresponding laplacian matrix. Let $\lambda_1(L) \leq \lambda_2(L) \leq \ldots \leq \lambda_n(L)$ be the
+		Let G be a graph and $L$ be the corresponding Laplacian matrix. Let $\lambda_1(L) \leq \lambda_2(L) \leq \ldots \leq \lambda_n(L)$ be the
 		eigen values of L. Let $i$ be such that $\lambda_{i}(L) = 0 $ and $\lambda_{i+1}(L) > 0$.
 		Then, the graph G has exactly $i$ connected components. 
 		\end{thm}
@@ -818,25 +818,25 @@ lead to making the algorithm parallel.\\
 		Plugging $i=1$ in the above equation gives the theorem on connectivity of the graph. \\
 		
 		\section{Laplacian system of equations}
-		  A special subset of system of linear equations is a laplacian system of equations. In this case $A.x = b$ system, has the matrix 
-		  $A$ as a graph laplacian corresponding to some graph G. Hence, these are equations of the form $L.x = b$. It turns out that some 
-		  optimization problems over graphs can be posed as a laplacian system of equations. In fact, one such procedure is used in the 
-		  Cristiano-Kelner-Madry-Spielman-Teng algorithm and hence, being able to solve this system effectively is a requirement. \\
+		  A special subset of system of linear equations is a Laplacian system of equations. In this case, $A.x = b$ system has the matrix 
+		  $A$ as a graph Laplacian corresponding to some graph G. Hence, these are equations of the form $L.x = b$. It turns out that some 
+		  optimization problems over graphs can be posed as a Laplacian system of equations. In fact, one such procedure is used in the 
+		  Christiano-Kelner-Madry-Spielman-Teng algorithm and hence, being able to solve this system effectively is a requirement. \\
 		  
-		  We know that a gaussian procedure to solve $A.x = b$ takes about $O(n^3)$ steps. This is not practically relevant since we are 
-		  looking for flow algorithms that are close to linear time. But, it turns out that for the case of laplacian systems there exists 
-		  nice solvers which can solve it efficiently. The following theorem states this more precisely. \\
+		  We know that a Gaussian procedure to solve $A.x = b$ takes about $O(n^3)$ steps. This is not practically relevant since we are 
+		  looking for flow algorithms that are close to linear time. But, it turns out that for the case of Laplacian systems, there exists 
+		  nice solvers which can solve it efficiently. The following theorem states the above discussion precisely. \\
 		  
 		  \begin{thm}
-		    There exists an algorithm for solving the Laplacian system which takes as input a graph laplacian L, a vector b and an error parameter
+		    There exists an algorithm for solving the Laplacian system which takes as input a graph Laplacian L, a vector b and an error parameter
 		    $\epsilon$ and returns a solution $x$ to the system such that:
 		    $$\|x - L^{-1}b \|_L \leq \epsilon \|L^{-1}b\|_L$$
 		  \end{thm}
 		    
 		    Additionally, this algorithm runs in time $\tilde{O}(m \log(\frac{1}{\epsilon}))$ where m is the number of non-zero entries in the 
-		    laplacian matrix. \\
+		    Laplacian matrix. \\
 		    
-		    We would like to direct the reader [link to olivia simpson's research exam] for a brief survey on the development of various 
+		    We would like to direct the reader to a brief survey by \cite{olivia} on the development of various 
 		    Laplacian solvers.
 		    
 		    \section{Electrical Flows}
@@ -857,24 +857,24 @@ lead to making the algorithm parallel.\\
 		      0 & \quad \text{otherwise}
 		      \end{array} \right.\]
 		      
-		     The graph laplacian can now be related to this incidence matrix B by the following theorem. \\
+		     The graph Laplacian can now be related to this incidence matrix B by the following theorem. \\
 		     
 		     
 		     \begin{thm}
 		     
-		     For a graph G having an incidence matrix B and a laplacian L,  $B^TB = L$. 
+		     For a graph G having an incidence matrix B and a Laplacian L,  $B^TB = L$. 
 		     \end{thm}
 		     
 		     Note in the above theorem, there is no mention of the orientation of the edges for B. Hence, it is true for any arbitrary
 		     orientation of the edges. \\
 		     
 		     \textbf{Current vector}: As stated before, we can look at a graph as an electrical network. Replace every undirected edge by 
-		     a resistor of resistance 1. Now, associate a voltage difference of $v$ across the vertices s and t. The current flowing through
+		     a resistor of resistance 1 ohm. Now, associate a voltage difference of $v$ across the vertices s and t. The current flowing through
  		     each of the resistors(which are edges in the original graph) is given by the \textit{current vector}. It is denoted as $c$. \\
  		     
- 		     Since, the above is an electrical network, we know that the current and voltage satisfies the Kirchoff's current and voltage laws.
+ 		     Since, the above network is an electrical network, we know that the current and voltage satisfies the Kirchoff's current and voltage laws.
  		     Using the laws, we can easily show that, $B^TB.v = c$ and hence, $L.v = c$. Therefore, given the current flowing through each of 
- 		     the edges and the laplacian, finding the vertex potentials is essentially solving a laplacian system of equations. \\
+ 		     the edges and the Laplacian, finding the vertex potentials is essentially solving a Laplacian system of equations. \\
  		     
  		     \textbf{Effective Resistance}: Given a particular current vector $c$, we define the effective resistance of an edge $e=(i,j)$ as the 
  		     potential difference across e when a current of value 1A is sent across i to j. \\
@@ -887,7 +887,7 @@ lead to making the algorithm parallel.\\
 
  		     
  		     We would like to know what is the voltage across a particular edge, when a current of 1A is put across a fixed set of two vertices
- 		     s and t. To do that we will now define the following matrix called the \textit{$\Pi$ matrix}. \\
+ 		     s and t. To do that, we will now define the following matrix called the \textit{$\Pi$ matrix}. \\
  		     
  		     \textbf{$\Pi$ matrix}: \\
  		     This matrix is defined on $\mathbb{R}^{\mid E \mid \ast \mid E \mid}$. 
@@ -938,47 +938,46 @@ lead to making the algorithm parallel.\\
 		
 	      
 	      
-	 \chapter{Cristiano-Kelner-Madry-Spielman-Teng Algorithm}
-	    In this chapter we describe the Cristiano-Kelner-Madry-Spielman-Teng algorithm[CKMST] in detail. This will aid the reader to understand
-	 the new tools used to get to a near linear running time for the maximum flow problem in undirected graphs. Later in the section
+	 \chapter{Christiano-Kelner-Madry-Spielman-Teng Algorithm}
+	    In this chapter, we describe the Christiano-Kelner-Madry-Spielman-Teng algorithm[CKMST] in detail. Later in the chapter,
 	 we will also provide some observations and give a method which could possibly lead to a parallel version of the same. This will help in 
-	 making the algorithm further robust and hence, can compute the maximum flow in even larger graphs.\\
+	 making the algorithm more robust and hence, can compute the maximum flow in even larger graphs.\\
 	 
 	 \section{Overview}
 	    The key idea of the CKMST algorithm is that given an electrical circuit, an approximate set of currents and node potentials can be calculated
-	 very efficiently using a fast SDD solver. The research on algorithms for laplacian solvers is a closely related topic. But, 
+	 very efficiently using a fast SDD solver. The research on algorithms for Laplacian solvers is a closely related topic. But, 
 	 in this report we will avoid stating them in detail and just state the necessary theorems whenever needed. The CKMST algorithm in
-	 particular, uses the Koutis-Miller-Peng algorithm[Link to the Koutis, Miller, Peng paper] as a subroutine. Given, an approximation to the 
-	 electrical currents and potentials(in short we call this the electrical flow), the algorithm, then constructs two subroutines. 
+	 particular, uses the algorithm by \cite{DBLP:journals/corr/abs-1003-2958} as a subroutine. Given an approximation to the 
+	 electrical currents and potentials(in short we call this the electrical flow), the algorithm then constructs two subroutines. 
 	 
 	 \begin{itemize}
 	  \item 
-	    \textbf{$(\epsilon, \rho)$ - oracle}: The authors call this an oracle since, given a flow value $F$ and a graph $G$ whose every
+	    \textbf{$(\epsilon, \rho)$ - oracle}: The authors call this an ($\epsilon$, $\rho$)-oracle since, given a flow value $F$ and a graph $G$ whose every
 	    edge capacity is 1, this subroutine either returns a flow f whose edge capacities are violated by atmost $\rho$ on each edge 
-	    and whose average is atmost $\epsilon$ or returns a fail which indicates that the required flow value $F$ is too large. Note, that 
+	    and whose average is atmost $\epsilon$ or returns a fail which indicates that the required flow value $F$ is too large. Note that, 
 	    having an upperbound on the average makes the sub-routine do more work.
 	  \item
-	    \textbf{Weights update routine}: This function assigns different weights to each edge in each iteration and then uses the flow returned 
-	    by the oracle for a suitable $\epsilon$ and $\rho$ to finally return a flow which does not violate edge capacity at all edges. The main 
+	    \textbf{Weights update routine}: This function assigns different weights to every edge in each iteration and then uses the flow returned 
+	    by the oracle for a suitable $\epsilon$ and $\rho$ to finally return a flow, which does not violate edge capacity at all edges. The main 
 	    intuition behind why a flow that has violated edge capacities in some iteration can be modified to give a flow that does not violate 
 	    any capacity is the fact that the oracle maintains the average capacity as a weighted average over the weights used by the weights
 	    update routine. Hence, by suitably modifying the weights across iterations, one can obtain a required flow.
 	 \end{itemize}
 
-	  This algorithm achieves a $(1- \epsilon)$- approximation to maximum flow problem in undirected graphs. The main drawback with this algorithm,
+	  This algorithm achieves a $(1- \epsilon)$- approximation to the maximum flow problem in undirected graphs. The main drawback with this algorithm,
 	  as we will see ahead, is that it doesn't actually give a flow vector, but merely gives the value of the flow. This issue was resolved 
-	  in a follow-up work by Orecchia, Kelner et al[link to paper], which adapts a completely different approach using a variety of new techniques
+	  in a follow-up work by \cite{DBLP:journals/corr/abs-1304-2338}, which adapts a completely different approach using a variety of new techniques
 	  such as non-euclidean gradient descent, construction of oblivious routing and flow sparsifiers. \\
 	  
 	  An important attempt has been to make this algorithm parallel or atleast ``less'' serial. To do that efficiently, a two step method is 
 	  required. Firstly, the update routine itself should be modified to ensure that some updates can be done in parallel. In this regard, we make
-	  certain observations on the update procedure which will lead to a modification in making every two iterations into two parallel iterations.
+	  certain observations on the update procedure, which will lead to a modification in making k parallel iterations.
 	  Although the main crux of the algorithm is in the weights update method, it is also helpful to try and make the subroutine that computes the
-	  approximate electrical flow parallel. This requires the SDD solver itself to have a parallel implementation. In this regard some progress has
-	  been made recently by [link to the new STOC paper]. \\
+	  approximate electrical flow parallel. This requires the SDD solver itself, to have a parallel implementation. In this regard, some progress has
+	  been made recently by \cite{DBLP:journals/corr/PengS13}. \\
 	
 	\section{A $\widetilde{O}(m^{\frac{3}{2}}\epsilon^{\frac{-5}{2}})$ time flow algorithm}
-	  In this section, first we will have a look at a simpler version of the algorithm. After taking key insights from this algorithm,
+	  In this section, we will first have a look at a simpler version of the algorithm. After taking key insights from this algorithm,
 	  we can make appropriate observations and modifications to improve the running time. \\
 	  \subsection{$\delta$-approximate flow}
 	    This subroutine is the one which approximates an electrical flow with another flow, known as the $\delta$-approximate flow, whose value is
@@ -1076,8 +1075,8 @@ lead to making the algorithm parallel.\\
 	  \subsection{Main Algorithm}
 	      The main algorithm calls the $(\epsilon,\rho)$ subroutine many times with different weights and then takes an average of all the values
 	      returned by the oracle as the required value of flow. Note, the flow returned by this algorithm should maintain the congestion criteria
-	      for each of the edges. On the other hand, the oracle may return a flow whose congestion at each edge is as bad as $\rho$. But, since
-	      the oracle gives a upper bound on the average congestion, the algorithm uses that critically to, in some sense ``correct'' the value of 
+	      for every edge. On the other hand, the oracle may return a flow whose congestion at every edge is as bad as $\rho$. But, since
+	      the oracle gives a upper bound on the average congestion, the algorithm uses that critically, to in some sense ``correct'' the value of 
 	      flows. \\
 	      
 	      The update of weights in each iteration of the algorithm is the key to the correctness of this algorithm. One severe drawback that can 
@@ -1131,9 +1130,9 @@ lead to making the algorithm parallel.\\
 	  some parameters of the algorithm which gives a first step towards parallelism. We hope that this can be fully extended to make it completely
 	  parallel. \\
 	  
-	  Clearly, the two key parameters of the algorithm are the the number of iterations it runs for, which is N, and the weights update mechanism.
-	  Once, these two are fixed, the final multiplicative term for the averaging of all the flows is fixed. Here, we fix these as variables and prove bounds 
-	  on these variables. This is done similar to the technique with which the correctness of the CKMST algorithm was shown [link to paper]. \\
+	  Clearly, the two key parameters of the algorithm are the number of iterations it runs for, which is N, and the weights update mechanism.
+	  Once these two are fixed, the final multiplicative term for the averaging of all the flows is fixed. Here, we fix these as variables and prove bounds 
+	  on these variables. This is done similar to the technique with which the correctness of the CKMST algorithm was shown by \cite{DBLP:journals/corr/abs-1010-2921}. \\
 	  
 	  \begin{modif}
 	    Replace the number of iterations $\frac{2 \rho ln m}{\epsilon^2}$ with a variable N. The exact value of this will be fixed after the analysis.
@@ -1174,7 +1173,7 @@ lead to making the algorithm parallel.\\
 	   \end{thm}
 	   
 	   \begin{proof}
-	      The proof for this is similar to the one given in [link to the paper]. 
+	      The proof for this is similar to the one given by \cite{DBLP:journals/corr/abs-1010-2921}. 
 	      \begin{align*}
 	      \hspace{2em}&\hspace{-2em}\mu^{i+1}\\
 	      &= \displaystyle\sum_{e \in E} w_e^{i+1} \text{\hspace{15mm}(From definition)}\\
@@ -1238,38 +1237,38 @@ lead to making the algorithm parallel.\\
 	      upperbound will ensure that the edge capacities on every edge will be maintained. This gives the required theorem.
 	    \end{proof}
 	    
-	    Given the above theorems we will now show a possible approach to get to parallelism. The original algorithm uses $\alpha$ as $\frac{\epsilon}{\rho}$
+	    Given the above theorems, we will now show a possible approach to get to parallelism. The original algorithm uses $\alpha$ as $\frac{\epsilon}{\rho}$
 	    and runs for N = $\frac{2 \rho \log m}{\epsilon^2}$ steps. On the other hand, theorem 7 gives a generalized relationship between the values of 
 	    $\alpha$ and N. Hence, our approach is to try and run many instances of the above algorithm on different values of ($\alpha$, N, $\beta$)
-	    satisfying the above theorem and finally take a some combination of the outputs obtained. The most intuitive method to merge the solutions
+	    satisfying the above theorem and finally take some combination of the outputs obtained. The most intuitive method to merge the solutions
 	    is to take the best of the solutions. Since, all of them return an $O(1-\epsilon)$ approximation to the flow, the best solution also will 
 	    be a O($1-\epsilon$) - approximation. \\
 	    
 	    We have attempted to start off with a simplistic method to get the various tuples to be run in parallel. We first assume that we have a 
 	    constant k number of processors. Hence, we will need k tuples of the form ($\alpha_i, N_i, \beta_i$). \\
 	    
-	    We use $N_1 = N_2 = \ldots = N_k = N$, where N is the value used in the original algorithm. Now, fixing N we have to choose 
+	    We use $N_1 = N_2 = \ldots = N_k = N$, where N is the value used in the original algorithm. Fixing N, we have to choose 
 	    $k$ values of $\alpha$, one for each $\alpha_i$ such that $\alpha_i.\rho \leq \frac{1}{2}$. This will give us corresponding $k$ values of 
 	    $\beta$, one for each $\beta_i$. Hence, in some sense, we get a k repeated trials of the same algorithm for different parameters and 
 	    we choose the best outcome among these. \\
 	    
 	    We call this the baby-step because, asymptotically, the approximation ratio has remained the same. We just have managed to possibly be 
 	    better off in terms of the constants. We have been pursuing this approach primarily for the fact that, we believe this could be extended
-	    further to possibly logarithmic in $\rho$ number of processors and hope to get to a closer approximation ratio. The other advantage is that 
-	    this approach easily translates to the modification of CKMST algorithm. In their work, they start off with this algorithm and perform a modification
-	    to this to get to another algorithm which performs even better in terms of running time. This approach can be directly translated in that 
+	    further, possibly to logarithmic in $\rho$ number of processors and hope to get to a better running time. The other advantage is that 
+	    this approach easily translates to the modification of CKMST algorithm. In their work, they start off with the above algorithm and perform a modification
+	    to get to another algorithm which performs even better in terms of running time. This modified weights approach can be directly translated in that 
 	    setting since, their modification still uses the same weights update procedure.
 
 	    
 	    \section{A $\widetilde{O}(m n^{\frac{1}{3}}\epsilon^{\frac{-11}{3}})$ time flow algorithm}
-	      In this section, we continue to explain the algorithm proposed by Cristiano, et al. They use the previous algorithm as a base and further improve 
+	      In this section, we continue to explain the algorithm proposed by \cite{DBLP:journals/corr/abs-1010-2921}. They use the previous algorithm as a base and further improve 
 	      the running time. This improvement from the previous algorithm is achieved in two steps.
 	      \begin{itemize}
 	       \item 
-		In the first step, by making some observations and hence, modifying the updates procedure and the ($\epsilon, \rho$)-oracle a
+		In the first step, by making some observations and hence modifying the updates procedure and the ($\epsilon, \rho$)-oracle, a
 		$\widetilde(m^{\frac{4}{3}}\epsilon^{-3})$ algorithm is obtained.
 	      \item
-		 In the second step, the randomized sparsification method, as introduced by Benczar and Karger[link to the paper], is used to first 
+		 In the second step, the randomized sparsification method, as introduced by \cite{Benczur:1996:ASM:237814.237827}, is used to first 
 		 sparsify the graph and then apply the algorithm which gives the required $\widetilde{O}(m n^{\frac{1}{3}}\epsilon^{\frac{-11}{3}})$
 		 time flow algorithm.
 	      \end{itemize}
@@ -1353,8 +1352,8 @@ lead to making the algorithm parallel.\\
 		}
 	      \end{algorithm}
 	      
-	      Similarly the main weights update is modified to accommodate for the removal of forbidden edges. As it is already clear, the weights update
-	      mechanism is untouched in this modified algorithm. Hence, our approach towards a parallel version can be easily adopted here. \\
+	      Similarly the main weights update procedure is modified to accommodate for the removal of forbidden edges. As it is already clear, the weights update
+	      mechanism is untouched in this modified algorithm. Hence, our approach towards a parallel version can be easily adapted here. \\
 	      
 	      \subsection{Correctness and Running Time of the modified algorithm}
 		
@@ -1368,7 +1367,7 @@ lead to making the algorithm parallel.\\
 		  
 		\end{thm}
 		
-		We will avoid the detailed proof of this theorem. The reader is advised to take a look at [link to paper] for the proof. We will 
+		We will avoid the detailed proof of this theorem. The reader is advised to take a look at the proof given by \cite{DBLP:journals/corr/abs-1010-2921}. We will 
 		just give the overall idea here. The key idea is to use the resistances of the network as potential function and note that edges
 		that are added into H set are those that contribute to a significant fraction of the energy. Then, bound the maximum change in effective
 		resistance during the run of the algorithm and hence bound H. \\
@@ -1408,17 +1407,28 @@ lead to making the algorithm parallel.\\
 		
 		The drawback with using the above method of sparsification is that it is a probabilistic method. Hence, even though one can efficiently
 		approximate the value of the flow, it is not possible to get a vector $f$ which is the approximation for this flow. This was an important
-		open problem until recently Kelner, Orrechia, et al [link to paper], devised a different procedure that obtains a near linear time approximation for this
+		open problem until recently \cite{DBLP:journals/corr/abs-1304-2338}, devised a different procedure that obtains a near linear time approximation for this
 		problem which also gives the flow vector which approximates it. 
 		
-		\section{Future Directions and Important Open Problems}
-		 This work has received lot of attention and still far from completeness. One important direction as we have tried in this work is to
-		 get a parallel version of the same algorithm. This way it can be run in even larger graphs. It is also worthwhile to note that 
-		 the newer algorithm that followed this [link to kelner paper] is also inherently sequential. Hence, it is currently an open problem to
-		 to make all of these sequence of algorithms parallel. A first step towards this has been [link to STOC] where the authors have managed
-		 to give a fully parallel solver for Laplacian systems. \\
+		\chapter{Future Directions and Important Open Problems}
+		 This work has received a lot of attention in the recent past and is still far from completeness. There are a number of important questions 
+		 arising out of this work. \\
 		 
-		 Another important direction is devising a similar algorithm for directed graphs. 
+		 One important direction, as we have tried in this work, is to get a parallel version of the algorithm.
+		 The advantage is that it can be used to compute the maximum flow on even larger graphs. It is also worthwhile to note that 
+		 the newer algorithm that followed this by \cite{DBLP:journals/corr/abs-1304-2338} is also inherently sequential. Hence, it is currently an open problem to
+		 to make the sequence of algorithms parallel. A first step towards this has been by \cite{DBLP:journals/corr/PengS13} where the authors have managed
+		 to give a fully parallel solver for Laplacian systems. 
+		 
+		 \\
+		 
+		 Another important direction is devising a similar algorithm for directed graphs. The above algorithm looks at the graph as an electrical
+		 circuit. By nature, resistors are bidirectional and hence, cannot be easily adapted in a directed graph setting. 
+		 
+		 \\
+		 
+		 Another direction is the following. The current algorithm runs in poly($\frac{1}{\epsilon}$). It is interesting to make algorithms 
+		 improve this bound and hopefully bring the dependence down to poly($\log (\frac{1}{\epsilon})$).
 		
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography.
