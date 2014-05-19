@@ -176,6 +176,7 @@ lead to making the algorithm parallel.\\
 \textbf{SDD} \> Symmetric Diagonally Dominant \\
 \textbf{CKMST} \> Christiano-Kelner-Madry-Spielman-Teng Algorithm \\
  \textbf{KMP} \> Koutis-Miller-Peng Solver \\
+ \textbf{PSD Matrix} \> Positive Semi-Definite Matrix \\
 \end{tabbing}
 
 \pagebreak
@@ -585,13 +586,6 @@ lead to making the algorithm parallel.\\
 		\item
 		  If the above two conditions aren't true, it just moves to the next element in the list of neighbours of u.
 	      \end{itemize}
-	      
-	      \subsubsection{Algorithm in Simple Words}
-		In this subsection, we will first describe the algorithm in words. Following this section, we will give a complete specification of the 
-		algorithm.
-		
-		%TODO: Complete this section
-		
 	      
 	      \textbf{Note}: pointer(u) represents the position of the pointer in the list currently. And neighbourList(u) represents a list that 
 	      maintains the vertices which are neighbours to u. And head(list) represents the first element of the list. \\
@@ -1326,6 +1320,62 @@ lead to making the algorithm parallel.\\
 	    tuples such that a simple merge will give the required parallelism, but we believe that by intelligently choosing different tuples, we can get a way to divide the iterations.
 	    
 	  
+	  \section{A Simple Example}
+	    In this section, we will show one iteration of the weight update procedure as an example. This will give a clear picture of the various 
+	    steps involved. Consider a graph on four vertices and four edges as shown in the figure below. The number on the edges indicate the edge capacities.
+	    Let us now invoke the main algorithm with the value of flow F = 3. \\
+	    
+	    \begin{figure}[htb]
+	     \begin{center}
+		\leavevmode
+	      \includegraphics{initial_graph.eps}
+	    \end{center}
+	    \end{figure}
+
+	      The algorithm will start with the weights vector being [1,1,1,1]. It will give the above graph and the weights vector as input to the 
+	      ($\epsilon$, $\rho$)-oracle. For this example, let $\epsilon = \frac{1}{5}$ and let $\rho = \frac{3}{2}$. The oracle then constructs
+	      a circuit as shown in the figure below, such that the values of resistances are as follows:
+	      
+	      
+	      \begin{itemize}
+	       \item 
+		  $R_1 = (1 + \frac{1}{15}) = \frac{16}{15}$
+		\item	
+		  $R_2 = \frac{1}{4}(1 + \frac{1}{15}) = \frac{4}{15}$
+		\item
+		  $R_3 = \frac{1}{4}(1+\frac{1}{15}) = \frac{4}{15}$
+		\item
+		  $R_4 = \frac{1}{9}(1+\frac{1}{15}) = \frac{16}{135}$
+	      \end{itemize}
+
+	      \begin{figure}[htb]
+		\begin{center}
+		\leavevmode
+		   \includegraphics{resistance.eps}
+		\end{center}
+	    \end{figure}
+	      
+	      The oracle gives the above circuit with the resistance values as described, to the procedure that computes a $\delta$-approximate electrical
+	      flow. Let the output flow by that procedure be [$\frac{5}{4}$, 1, $\frac{7}{4}$, 2]. It is easy to verify that this is infact an $\frac{\epsilon}{3}$
+	      approximate electrical flow. \\
+	      
+	      Given this as the output, the weight update procedure updates the weights as follows
+	      \begin{itemize}
+	       \item 
+		$w_1 = 1(1 + \frac{2}{15}(1+\frac{1}{4})) = \frac{7}{6}$
+	      \item
+		$w_2 = 1(1 + \frac{2}{15}) = \frac{17}{15}$
+	      \item
+		$w_3 = 1(1 + \frac{2}{15}(\frac{7}{8})) = \frac{67}{60}$
+	      \item
+		$w_4 = 1(1 + \frac{2}{15}) = \frac{17}{15}$
+	      \end{itemize}
+	      
+	      With this new weights and the original graph and flow value of F=3, the algorithm again invokes the oracle. And a similar iteration happens.
+	      This happens for about $N=150$ iterations, before the algorithm terminates. It takes the average of all the flows returned and multiplies
+	      it by $\frac{8}{15}$. It returns this as the final flow vector.\\
+	      
+	      The simple example above illustrates the role of each procedure in the algorithm. \\
 	    
 	    \section{A $\widetilde{O}(m n^{\frac{1}{3}}\epsilon^{\frac{-11}{3}})$ time Flow Algorithm}
 	      In this section, we continue to explain the algorithm proposed by \cite{DBLP:journals/corr/abs-1010-2921}. They use the previous algorithm as a base and further improve 
@@ -1503,7 +1553,8 @@ lead to making the algorithm parallel.\\
 		    The advantage is that it can be used to compute the maximum flow on even larger graphs. It is also worthwhile to note that 
 		 the newer algorithm that followed this by \cite{DBLP:journals/corr/abs-1304-2338} is also inherently sequential. Hence, it is currently an open problem to
 		 to make the sequence of algorithms parallel. A first step towards this has been by \cite{DBLP:journals/corr/PengS13} where the authors have managed
-		 to give a fully parallel solver for Laplacian systems. \\
+		 to give a fully parallel solver for Laplacian systems. It must also be noted that all the classical algorithms are sequential
+		 in nature and hence, parallelism has been a herculean task since the beginning.\\
 		 
 		 \item
 		    Another important direction is devising a similar algorithm for directed graphs. The above algorithm looks at the graph as an electrical

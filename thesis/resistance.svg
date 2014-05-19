@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+    xmlns:latexdraw="http://latexdraw.sourceforge.net/namespaces/latexdraw"
+    version="1.1" baseProfile="full">
+    <defs/>
+    <g>
+        <g latexdraw:type="circle" id="id16">
+            <circle cx="237.0" cy="155.0" r="6.0"
+                latexdraw:borderPos="outer" stroke-width="2.0"
+                stroke="black" fill="none"/>
+        </g>
+        <g latexdraw:type="circle" id="id18">
+            <circle cx="351.0" cy="91.0" r="6.0"
+                latexdraw:borderPos="outer" stroke-width="2.0"
+                stroke="black" fill="none"/>
+        </g>
+        <g latexdraw:type="circle" id="id20">
+            <circle cx="351.0" cy="203.0" r="6.0"
+                latexdraw:borderPos="outer" stroke-width="2.0"
+                stroke="black" fill="none"/>
+        </g>
+        <g latexdraw:type="circle" id="id22">
+            <circle cx="483.0" cy="147.0" r="6.0"
+                latexdraw:borderPos="outer" stroke-width="2.0"
+                stroke="black" fill="none"/>
+        </g>
+        <g latexdraw:type="line" id="id24">
+            <line x1="242.0" x2="346.0" y1="153.0" y2="97.0"
+                stroke-width="2.0" stroke="black" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="line" id="id25">
+            <line x1="360.0" x2="477.0" y1="96.0" y2="145.0"
+                stroke-width="2.0" stroke="black" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="line" id="id26">
+            <line x1="242.0" x2="345.0" y1="160.0" y2="201.0"
+                stroke-width="2.0" stroke="black" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="line" id="id27">
+            <line x1="357.0" x2="478.0" y1="203.0" y2="153.0"
+                stroke-width="2.0" stroke="black" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="rectangle" id="id28">
+            <rect x="277.0" y="114.0" width="51.0" height="19.0"
+                latexdraw:borderPos="outer" stroke-width="2.0"
+                stroke="black" fill="none"/>
+        </g>
+        <g latexdraw:type="rectangle" id="id29">
+            <rect x="270.0" y="173.0" width="51.0" height="19.0"
+                latexdraw:borderPos="outer" stroke-width="2.0"
+                stroke="black" fill="none"/>
+        </g>
+        <g latexdraw:type="rectangle" id="id30">
+            <rect x="384.0" y="169.0" width="51.0" height="19.0"
+                latexdraw:borderPos="outer" stroke-width="2.0"
+                stroke="black" fill="none"/>
+        </g>
+        <g latexdraw:type="rectangle" id="id31">
+            <rect x="383.0" y="108.0" width="51.0" height="19.0"
+                latexdraw:borderPos="outer" stroke-width="2.0"
+                stroke="black" fill="none"/>
+        </g>
+        <g latexdraw:type="text" id="id32" font-family="Times New Roman"
+            fill="black" font-size="18" latexdraw:x="298.0">
+            <text x="298.0" y="107.0"><![CDATA[R1]]></text>
+        </g>
+        <g latexdraw:type="text" id="id34" font-family="Times New Roman"
+            fill="black" font-size="18" latexdraw:x="413.0">
+            <text x="413.0" y="104.0"><![CDATA[R2]]></text>
+        </g>
+        <g latexdraw:type="text" id="id36" font-family="Times New Roman"
+            fill="black" font-size="18" latexdraw:x="292.0">
+            <text x="292.0" y="169.0"><![CDATA[R3]]></text>
+        </g>
+        <g latexdraw:type="text" id="id38" font-family="Times New Roman"
+            fill="black" font-size="18" latexdraw:x="407.0">
+            <text x="407.0" y="167.0"><![CDATA[R4]]></text>
+        </g>
+        <g latexdraw:type="akinPoints" id="id40" latexdraw:pathType="1"
+            latexdraw:interval="5" latexdraw:points="285.0 125.0 288.0 123.0 289.0 122.0 290.0 121.0 291.0 121.0 293.0 120.0 294.0 119.0 295.0 119.0 296.0 120.0 297.0 121.0 298.0 122.0 299.0 123.0 300.0 124.0 301.0 125.0 302.0 126.0 304.0 127.0 305.0 127.0 306.0 128.0 307.0 128.0 308.0 128.0 310.0 128.0 311.0 128.0 312.0 128.0 313.0 127.0 314.0 125.0 314.0 124.0 315.0 123.0 315.0 122.0 315.0 121.0 ">
+            <path
+                d="M 285.0 125.0 L 289.0 122.5 C 291.0 121.25 294.25 120.5 295.5 121.0 C 296.75 121.5 299.5 123.25 301.0 124.5 C 302.5 125.75 305.5 127.25 307.0 127.5 C 308.5 127.75 311.0 127.0 312.0 126.0 C 313.0 125.0 314.25 123.25 315.0 121.0 "
+                stroke-width="2.0" stroke="black" fill="none" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="akinPoints" id="id41" latexdraw:pathType="1"
+            latexdraw:interval="5" latexdraw:points="395.0 120.0 398.0 118.0 399.0 117.0 400.0 116.0 401.0 116.0 403.0 115.0 404.0 114.0 405.0 114.0 406.0 115.0 407.0 116.0 408.0 117.0 409.0 118.0 410.0 119.0 411.0 120.0 412.0 121.0 414.0 122.0 415.0 122.0 416.0 123.0 417.0 123.0 418.0 123.0 420.0 123.0 421.0 123.0 422.0 123.0 423.0 122.0 424.0 120.0 424.0 119.0 425.0 118.0 425.0 117.0 425.0 116.0 ">
+            <path
+                d="M 395.0 120.0 L 399.0 117.5 C 401.0 116.25 404.25 115.5 405.5 116.0 C 406.75 116.5 409.5 118.25 411.0 119.5 C 412.5 120.75 415.5 122.25 417.0 122.5 C 418.5 122.75 421.0 122.0 422.0 121.0 C 423.0 120.0 424.25 118.25 425.0 116.0 "
+                stroke-width="2.0" stroke="black" fill="none" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="akinPoints" id="id42" latexdraw:pathType="1"
+            latexdraw:interval="5" latexdraw:points="281.0 184.0 284.0 182.0 285.0 181.0 286.0 180.0 287.0 180.0 289.0 179.0 290.0 178.0 291.0 178.0 292.0 179.0 293.0 180.0 294.0 181.0 295.0 182.0 296.0 183.0 297.0 184.0 298.0 185.0 300.0 186.0 301.0 186.0 302.0 187.0 303.0 187.0 304.0 187.0 306.0 187.0 307.0 187.0 308.0 187.0 309.0 186.0 310.0 184.0 310.0 183.0 311.0 182.0 311.0 181.0 311.0 180.0 ">
+            <path
+                d="M 281.0 184.0 L 285.0 181.5 C 287.0 180.25 290.25 179.5 291.5 180.0 C 292.75 180.5 295.5 182.25 297.0 183.5 C 298.5 184.75 301.5 186.25 303.0 186.5 C 304.5 186.75 307.0 186.0 308.0 185.0 C 309.0 184.0 310.25 182.25 311.0 180.0 "
+                stroke-width="2.0" stroke="black" fill="none" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="akinPoints" id="id43" latexdraw:pathType="1"
+            latexdraw:interval="5" latexdraw:points="395.0 180.0 398.0 178.0 399.0 177.0 400.0 176.0 401.0 176.0 403.0 175.0 404.0 174.0 405.0 174.0 406.0 175.0 407.0 176.0 408.0 177.0 409.0 178.0 410.0 179.0 411.0 180.0 412.0 181.0 414.0 182.0 415.0 182.0 416.0 183.0 417.0 183.0 418.0 183.0 420.0 183.0 421.0 183.0 422.0 183.0 423.0 182.0 424.0 180.0 424.0 179.0 425.0 178.0 425.0 177.0 425.0 176.0 ">
+            <path
+                d="M 395.0 180.0 L 399.0 177.5 C 401.0 176.25 404.25 175.5 405.5 176.0 C 406.75 176.5 409.5 178.25 411.0 179.5 C 412.5 180.75 415.5 182.25 417.0 182.5 C 418.5 182.75 421.0 182.0 422.0 181.0 C 423.0 180.0 424.25 178.25 425.0 176.0 "
+                stroke-width="2.0" stroke="black" fill="none" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="text" id="id44" font-family="Times New Roman"
+            fill="black" font-size="22" latexdraw:x="236.0">
+            <text x="236.0" y="144.0"><![CDATA[s]]></text>
+        </g>
+        <g latexdraw:type="text" id="id47" font-family="Times New Roman"
+            fill="black" font-size="22" latexdraw:x="483.0">
+            <text x="483.0" y="133.0"><![CDATA[t]]></text>
+        </g>
+    </g>
+    <metadata>
+        <latexdraw:metadata>
+            <latexdraw:displayBorders>false</latexdraw:displayBorders>
+            <latexdraw:autoAdjust>true</latexdraw:autoAdjust>
+            <latexdraw:ppc>50</latexdraw:ppc>
+            <latexdraw:zoom>1.0</latexdraw:zoom>
+            <latexdraw:unit>cm</latexdraw:unit>
+            <latexdraw:classicGrid>false</latexdraw:classicGrid>
+            <latexdraw:gridGap>10</latexdraw:gridGap>
+            <latexdraw:code>0</latexdraw:code>
+            <latexdraw:displayGrid>true</latexdraw:displayGrid>
+            <latexdraw:magneticGrid>false</latexdraw:magneticGrid>
+            <latexdraw:autoUpdate>true</latexdraw:autoUpdate>
+            <latexdraw:version>2.0.8</latexdraw:version>
+            <latexdraw:size>
+                <latexdraw:width>1366</latexdraw:width>
+                <latexdraw:height>716</latexdraw:height>
+            </latexdraw:size>
+            <latexdraw:position>
+                <latexdraw:x>0</latexdraw:x>
+                <latexdraw:y>28</latexdraw:y>
+            </latexdraw:position>
+            <latexdraw:dividerPosition>0.7920937042459737</latexdraw:dividerPosition>
+            <latexdraw:displayCodePanel>true</latexdraw:displayCodePanel>
+            <latexdraw:displayXScale>true</latexdraw:displayXScale>
+            <latexdraw:displayYScale>true</latexdraw:displayYScale>
+            <latexdraw:delimitorOpacity>130</latexdraw:delimitorOpacity>
+        </latexdraw:metadata>
+    </metadata>
+</svg>

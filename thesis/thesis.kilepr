@@ -110,12 +110,12 @@ order=-1
 
 [item:iitmdiss.cls]
 archive=true
-column=53
+column=51
 encoding=UTF-8
 highlight=LaTeX
-line=209
+line=205
 mode=LaTeX
-open=false
+open=true
 order=2
 
 [item:program.sty]
@@ -133,9 +133,9 @@ archive=true
 column=41
 encoding=UTF-8
 highlight=BibTeX
-line=74
+line=27
 mode=BibTeX
-open=false
+open=true
 order=1
 
 [item:setspace.sty]
@@ -260,10 +260,10 @@ order=-1
 
 [item:thesis.tex]
 archive=true
-column=9
+column=91
 encoding=UTF-8
 highlight=LaTeX
-line=861
+line=1377
 mode=LaTeX
 open=true
 order=0
@@ -299,10 +299,10 @@ open=false
 order=-1
 
 [view-settings,view=0,item:iitmdiss.cls]
-CursorColumn=53
-CursorLine=209
+CursorColumn=51
+CursorLine=205
 JumpList=
-ViMarks=.,209,53,[,209,53,],209,53
+ViMarks=.,242,34,[,242,28,],242,34
 
 [view-settings,view=0,item:program.sty]
 CursorColumn=0
@@ -312,7 +312,7 @@ ViMarks=.,1006,63,[,0,0,],-1,-1
 
 [view-settings,view=0,item:refs.bib]
 CursorColumn=41
-CursorLine=74
+CursorLine=27
 JumpList=
 ViMarks=
 
@@ -329,7 +329,7 @@ JumpList=
 ViMarks=.,0,0,[,0,0,],-1,-1
 
 [view-settings,view=0,item:thesis.tex]
-CursorColumn=9
-CursorLine=861
+CursorColumn=91
+CursorLine=1377
 JumpList=
-ViMarks=.,914,45,[,914,2,],914,45
+ViMarks=.,1377,90,[,1377,89,],1377,90
